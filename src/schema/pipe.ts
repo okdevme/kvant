@@ -1,0 +1,34 @@
+import type { KvantSchema } from '../types'
+import type { input, KvantGenericSchema, KvantType, output, rawInput } from './core'
+import { generics } from './core'
+
+export interface KvantPipe<
+  A extends KvantGenericSchema,
+  B extends KvantSchema<any, output<A>, output<A>>,
+> extends KvantType<
+    output<B>,
+    input<A>,
+    rawInput<A>
+  > {
+  readonly type: 'pipe'
+}
+
+export function pipe<
+  A extends KvantGenericSchema,
+  B extends KvantSchema<any, output<A>, output<A>>,
+>(a: A, b: B): KvantPipe<A, B> {
+  return {
+    ...generics,
+    type: 'pipe',
+    parse(value) {
+      return b.parse(
+        a.parse(value),
+      )
+    },
+    encode(value) {
+      return a.encode(
+        b.encode(value),
+      )
+    },
+  }
+}

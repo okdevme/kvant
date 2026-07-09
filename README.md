@@ -31,22 +31,33 @@ kvant.nullable(schema)
  * Schemas chaining
  *
  * Executes the schemas from left to right in parse, from right to left in encode
+ *
+ * Must check type compatibility:
+ * - between Output of schema1 and RawInput of schema2
+ * - between Input of schema2 and Output of schema1
  */
 kvant.pipe(schema1, schema2)
 /**
  * Transform the value without changing the type
  *
- * Serves as the base for max(), min(), gt(), lt(), etc.
- *
- * Cannot change the type as it needs to be bidirectional, pipe() should be used for changing the type instead
+ * Cannot change the type as it needs to be bidirectional, transform() should be used for changing the type instead
  */
-kvant.transform((value) => {})
+kvant.overwrite(schema, (value) => {})
 /**
- * FIXME: Draft
+ * Transform the value and change the type
+ *
+ * Essentially a custom schema, but with a RawInput type equal to Input type, meant to be used inside pipe()
  */
-kvant.custom<T>({
-  parse: (value: unknown) => {},
-  encode: (value: T | undefined) => {},
+kvant.transform<Input, Output>({
+  parse: (value: Input) => Output,
+  encode: (value: Output) => Input,
+})
+/**
+ * Custom schema
+ */
+kvant.custom<Output, Input>({
+  parse: (value: unknown) => Output,
+  encode: (value: Output) => Input,
 })
 ```
 
