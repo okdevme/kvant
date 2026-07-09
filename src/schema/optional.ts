@@ -1,4 +1,5 @@
-import type { input, KvantGenericSchema, KvantType, output, rawInput } from './core'
+import type { KvantGenericSchema } from '../types'
+import type { input, KvantType, output, rawInput } from './core'
 import { generics } from './core'
 
 export interface KvantOptional<S extends KvantGenericSchema> extends KvantType<

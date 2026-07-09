@@ -1,4 +1,11 @@
-import type { KvantSchema } from '../types'
+import type {
+  KvantGenericSchema,
+  KvantSchema,
+  KvantSchemaInput,
+  KvantSchemaOutput,
+  KvantSchemaRawInput,
+} from '../types'
+import type { NoUndefined } from '../utils'
 import type { KvantArray } from './array'
 import type { KvantDefault, KvantDefaultOptions, KvantPrefault, KvantPrefaultOptions } from './default'
 import type { KvantJSON, KvantJSONOptions } from './json'
@@ -7,7 +14,6 @@ import type { KvantOptional } from './optional'
 import type { KvantPipe } from './pipe'
 import type { KvantSingular } from './singular'
 import type { KvantTransform, KvantTransformDef } from './transform'
-import type { NoUndefined } from './utils'
 import { array } from './array'
 import { _default, prefault } from './default'
 import { json } from './json'
@@ -18,22 +24,14 @@ import { pipe } from './pipe'
 import { singular } from './singular'
 import { transform } from './transform'
 
-export type KvantGenericSchema<RawInput = any> = KvantSchema<any, any, RawInput>
-
 export type output<S extends KvantGenericSchema>
-  = S extends KvantSchema<infer Output, any, any>
-    ? Output
-    : never
+  = KvantSchemaOutput<S>
 
 export type input<S extends KvantGenericSchema>
-  = S extends KvantSchema<any, infer Input, any>
-    ? Input
-    : never
+  = KvantSchemaInput<S>
 
 export type rawInput<S extends KvantGenericSchema>
-  = S extends KvantSchema<any, any, infer RawInput>
-    ? RawInput
-    : never
+  = KvantSchemaRawInput<S>
 
 export interface KvantTypeGenerics {
   readonly optional: <S extends KvantGenericSchema>(this: S) => KvantOptional<S>

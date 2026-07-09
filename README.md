@@ -163,9 +163,28 @@ const { get, set, watch } = createKvantState(adapter, { key1: schema, key2: sche
 
 ## React
 
+### All-in-one Setup
+
+Sets up the adapters on demand, adapters should be imported and provided by hooks.
+`KvantProvider` should match them and give the ability to set up default options for adapters via unique string keys.
+
+```tsx
+(
+  <KvantProvider
+    localStorage={defaultOptions}
+    sessionStorage={defaultOptions}
+    nextSearchParams={defaultOptions}
+    reactRouterParams={defaultOptions}
+    /* ... */
+  >
+    {children}
+  </KvantProvider>
+)
+```
+
 ### React Router
 
-#### In root component
+#### Setup
 
 ```tsx
 import { ParamsProvider, SearchParamsProvider } from 'kvant/react/adapters/react-router'
@@ -208,7 +227,7 @@ const {
 
 ### Local Storage
 
-#### In root component
+#### Setup
 
 ```tsx
 import { LocalStorageProvider } from 'kvant/react/adapters/storage'

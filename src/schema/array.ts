@@ -1,5 +1,6 @@
-import type { input, KvantGenericSchema, KvantType, output, rawInput } from './core'
-import type { MaybeMultiple } from './utils'
+import type { KvantGenericSchema } from '../types'
+import type { MaybeMultiple } from '../utils'
+import type { input, KvantType, output, rawInput } from './core'
 import { generics } from './core'
 
 export interface KvantArray<S extends KvantGenericSchema> extends KvantType<
