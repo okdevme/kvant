@@ -12,7 +12,7 @@ export function useStorageKvantAdapter(
   let cache: Record<string, string | undefined> = Object.fromEntries(
     keys.map(key => [key, storage?.getItem(key) ?? undefined]),
   )
-  const bus = useEventBus<SyncEvent>(`adapter:${adapterKey}`)
+  const bus = useEventBus<SyncEvent>(`adapter:storage:${adapterKey}`)
   const hook = createEventHook()
 
   const onSync = (event: SyncEvent): void => {
@@ -88,9 +88,9 @@ export function useStorageKvantAdapter(
 }
 
 export function useLocalStorageKvantAdapter(keys: string[]): KvantAdapterInterface<string> {
-  return useStorageKvantAdapter(defaultWindow?.localStorage, 'localStorage', keys)
+  return useStorageKvantAdapter(defaultWindow?.localStorage, 'local', keys)
 }
 
 export function useSessionStorageKvantAdapter(keys: string[]): KvantAdapterInterface<string> {
-  return useStorageKvantAdapter(defaultWindow?.sessionStorage, 'sessionStorage', keys)
+  return useStorageKvantAdapter(defaultWindow?.sessionStorage, 'session', keys)
 }

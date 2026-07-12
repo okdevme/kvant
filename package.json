@@ -15,6 +15,7 @@
   },
   "exports": {
     ".": "./dist/index.mjs",
+    "./next/app": "./dist/next/app.mjs",
     "./react": "./dist/react/index.mjs",
     "./schema": "./dist/schema/index.mjs",
     "./storage": "./dist/storage.mjs",
@@ -33,9 +34,13 @@
     "prepare": "simple-git-hooks"
   },
   "peerDependencies": {
+    "next": ">=14.2.0",
     "react": ">=18.0.0"
   },
   "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    },
     "react": {
       "optional": true
     }

@@ -1,9 +1,9 @@
-export type KvantAdapterUpdateFn<Options extends Record<string, unknown> = Record<string, unknown>>
+export type KvantAdapterUpdateFn<Options extends object = Record<string, unknown>>
   = (values: Record<string, unknown>, options?: Partial<Options>) => void
 
 export interface KvantAdapterInterface<
   T = unknown,
-  Options extends Record<string, unknown> = Record<string, unknown>,
+  Options extends object = Record<string, unknown>,
 > {
   readonly key: string
   readonly subscribe: (callback: () => void) => () => void
@@ -14,7 +14,7 @@ export interface KvantAdapterInterface<
 
 export type KvantAdapter<
   T = unknown,
-  Options extends Record<string, unknown> = Record<string, unknown>,
+  Options extends object = Record<string, unknown>,
 > = (keys: string[]) => KvantAdapterInterface<T, Options>
 
 export type KvantAdapterValue<T extends KvantAdapter | KvantAdapterInterface> = T extends KvantAdapter<infer U>

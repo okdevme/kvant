@@ -8,7 +8,7 @@ import type {
 
 export interface KvantReactAdapterInterface<
   T = unknown,
-  Options extends Record<string, unknown> = Record<string, unknown>,
+  Options extends object = Record<string, unknown>,
 > {
   readonly key: string
   readonly snapshot: Record<string, T | undefined>
@@ -17,7 +17,7 @@ export interface KvantReactAdapterInterface<
 
 export type KvantReactAdapter<
   T = unknown,
-  Options extends Record<string, unknown> = Record<string, unknown>,
+  Options extends object = Record<string, unknown>,
 > = (keys: string[]) => KvantReactAdapterInterface<T, Options>
 
 export type KvantReactAdapterValue<
