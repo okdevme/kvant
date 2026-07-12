@@ -64,142 +64,45 @@ kvant.custom<Output, Input>({
 Documentation for schemas like `nullable` and `object` should note that not all adapters support them
 and the data can become inconsistent between reads/writes if they are used in combination with such adapters.
 
-## Adapters
-```ts
-// const adapter = new URLSearchParamsKvantAdapter()
-// const adapter = new QsKvantAdapter()
-const adapter = new StorageKvantAdapter(localStorage)
-const adapter = new LocalStorageKvantAdapter()
-const adapter = new SessionStorageKvantAdapter()
-adapter.get('key')
-adapter.set('key', {}, /* adapter-specific options: */{ mode: 'replace' })
-adapter.watch((key, value, oldValue) => {})
-adapter.dispose()
-```
-
 ## Vanilla
-
-**[HEADS UP]** Perhaps schema should be optional in all kvant utilities
-and if not provided return raw data received from adapter via `adapter.get()`,
-which possibly can have some better typing than `unknown` (also applies to frameworks).
 
 ### Local Storage
 
 ```ts
-// lazy kvant (createLazyKvant), sets up the adapter only when any of the methods are called
-import {
-  createLocalStorageState,
-  disposeLocalStorageAdapter, // disposing the automatically created adapter if needed
-  getLocalStorage,
-  setLocalStorage,
-  watchLocalStorage,
-} from 'kvant/adapters/storage'
+import { useLocalStorage } from 'kvant/storage'
 
-getLocalStorage('key', schema)
-setLocalStorage('key', schema, 'value', {})
-setLocalStorage('key', schema, current => 'value', {})
-watchLocalStorage('key', schema, (key, value, oldValue) => {})
-const { get, set, watch } = createLocalStorageState('key', schema)
-
-getLocalStorage({ key1: schema, key2: schema })
-setLocalStorage({ key1: schema, key2: schema }, 'value', {})
-setLocalStorage({ key1: schema, key2: schema }, current => 'value', {})
-watchLocalStorage({ key1: schema, key2: schema }, (key, value, oldValue) => {})
-const { get, set, watch } = createLocalStorageState({ key1: schema, key2: schema })
+const { subscribe, getSnapshot, update, dispose } = useLocalStorage('key', {})
+const { subscribe, getSnapshot, update, dispose } = useLocalStorage('key', schema, {})
+const { subscribe, getSnapshot, update, dispose } = useLocalStorage({ key1: schema, key2: schema }, {})
 ```
 
 #### Manual Setup
 
-##### Global
-
-```ts
-import { StorageKvantAdapter } from 'kvant/adapters/storage'
-
-const adapter = new StorageKvantAdapter(localStorage)
-```
-
-##### Usage
-
-via `createKvant` helper:
+via `defineKvant` helper:
 ```ts
 import { createKvant } from 'kvant'
+import { useLocalStorageKvantAdapter, useStorageKvantAdapter } from 'kvant/storage'
 
-const {
-  getState: getLocalStorage,
-  setState: setLocalStorage,
-  watchState: watchLocalStorage,
-  createState: createLocalStorageState,
-} = createKvant(adapter)
-
-getLocalStorage('key', schema)
-setLocalStorage('key', schema, 'value', {})
-setLocalStorage('key', schema, current => 'value', {})
-watchLocalStorage('key', schema, (key, value, oldValue) => {})
-const { get, set, watch } = createLocalStorageState('key', schema)
-
-getLocalStorage({ key1: schema, key2: schema })
-setLocalStorage({ key1: schema, key2: schema }, 'value', {})
-setLocalStorage({ key1: schema, key2: schema }, current => 'value', {})
-watchLocalStorage({ key1: schema, key2: schema }, (key, value, oldValue) => {})
-const { get, set, watch } = createLocalStorageState({ key1: schema, key2: schema })
+const useLocalStorage = defineKvant(() => useStorageKvantAdapter(localStorage), {})
+const useLocalStorage = defineKvant(useLocalStorageKvantAdapter, {})
 ```
 
 or directly:
 ```ts
-import { createKvantState, getKvantState, setKvantState, watchKvantState } from 'kvant'
+import { useKvantState } from 'kvant'
+import { useLocalStorageKvantAdapter } from 'kvant/storage'
 
-getKvantState(adapter, 'key', schema)
-setKvantState(adapter, 'key', schema, 'value', {})
-setKvantState(adapter, 'key', schema, current => 'value', {})
-watchKvantState(adapter, 'key', schema, (key, value, oldValue) => {})
-const { get, set, watch } = createKvantState(adapter, 'key', schema)
-
-getKvantState(adapter, { key1: schema, key2: schema })
-setKvantState(adapter, { key1: schema, key2: schema }, 'value', {})
-setKvantState(adapter, { key1: schema, key2: schema }, current => 'value', {})
-watchKvantState(adapter, { key1: schema, key2: schema }, (key, value, oldValue) => {})
-const { get, set, watch } = createKvantState(adapter, { key1: schema, key2: schema })
+const { subscribe, getSnapshot, update, dispose } = useKvantState(useLocalStorageKvantAdapter, 'key', {})
+const { subscribe, getSnapshot, update, dispose } = useKvantState(useLocalStorageKvantAdapter, 'key', schema, {})
+const { subscribe, getSnapshot, update, dispose } = useKvantState(useLocalStorageKvantAdapter, { key1: schema, key2: schema }, {})
 ```
 
 ## React
 
-### All-in-one Setup
-
-Sets up the adapters on demand, adapters should be imported and provided by hooks.
-`KvantProvider` should match them and give the ability to set up default options for adapters via unique string keys.
-
-```tsx
-(
-  <KvantProvider
-    localStorage={defaultOptions}
-    sessionStorage={defaultOptions}
-    nextSearchParams={defaultOptions}
-    reactRouterParams={defaultOptions}
-    /* ... */
-  >
-    {children}
-  </KvantProvider>
-)
-```
-
 ### React Router
 
-#### Setup
-
-```tsx
-import { ParamsProvider, SearchParamsProvider } from 'kvant/react/adapters/react-router'
-
-(
-  <SearchParamsProvider options={{ mode: 'replace', processUrlSearchParams: () => {} }}>
-    {children}
-  </SearchParamsProvider>
-)
-```
-
-#### Usage
-
 ```ts
-import { ParamsAdapterContext, SearchParamsAdapterContext, useParams, useSearchParams } from 'kvant/react/adapters/react-router'
+import { useParams, useSearchParams } from 'kvant/react/react-router'
 
 const [value, setValue] = useSearchParams('key', schema, { mode: 'replace' })
 setValue('value', { mode: 'replace' })
@@ -208,91 +111,57 @@ setValue(current => 'value', { mode: 'replace' })
 const [values, setValues] = useSearchParams({ key1: schema, key2: schema }, { mode: 'replace' })
 setValues({ key1: 'value1', key2: 'value2' }, { mode: 'replace' })
 setValues(current => ({ key1: 'value1', key2: 'value2' }), { mode: 'replace' })
-
-const adapter = use(SearchParamsAdapterContext)
 ```
 
 #### Manual Setup
 
+via `defineKvant` helper:
 ```ts
-import { createKvant } from 'kvant/react'
-import { useParamsKvantAdapter, useSearchParamsKvantAdapter } from 'kvant/react/adapters/react-router'
+import { defineKvant } from 'kvant/react'
+import { useParamsKvantAdapter, useSearchParamsKvantAdapter } from 'kvant/react/react-router'
 
-const {
-  Provider: SearchParamsProvider,
-  useState: useSearchParams,
-  AdapterContext: SearchParamsAdapterContext,
-} = createKvant(useSearchParamsKvantAdapter)
+const useSearchParams = defineKvant(useSearchParamsKvantAdapter, { mode: 'replace' })
+```
+
+or directly:
+```ts
+import { useKvantState } from 'kvant/react'
+import { useLocalStorageKvantAdapter } from 'kvant/storage'
+
+const [values, setValues] = useKvantState(useLocalStorageKvantAdapter, 'key', {})
+const [values, setValues] = useKvantState(useLocalStorageKvantAdapter, 'key', schema, {})
+const [values, setValues] = useKvantState(useLocalStorageKvantAdapter, { key1: schema, key2: schema }, {})
 ```
 
 ### Local Storage
 
-#### Setup
-
-```tsx
-import { LocalStorageProvider } from 'kvant/react/adapters/storage'
-
-(
-  <LocalStorageProvider>
-    {children}
-  </LocalStorageProvider>
-)
-```
-
-#### Usage
-
 ```ts
-import { LocalStorageAdapterContext, LocalStorageProvider, useLocalStorage } from 'kvant/react/adapters/storage'
+import { useLocalStorage } from 'kvant/react/storage'
 
 const [value, setValue] = useLocalStorage('key', schema)
 const [values, setValues] = useLocalStorage({ key1: schema, key2: schema })
-const adapter = use(LocalStorageAdapterContext)
 ```
 
 #### Manual Setup
 
+via `defineKvant` helper:
 ```ts
-import { StorageKvantAdapter } from 'kvant/adapters/storage'
-import { createKvant } from 'kvant/react'
+import { defineKvant } from 'kvant/react'
+import { useLocalStorageKvantAdapter, useStorageKvantAdapter } from 'kvant/storage'
 
-const {
-  Provider: LocalStorageProvider,
-  useState: useLocalStorage,
-  AdapterContext: LocalStorageAdapterContext,
-} = createKvant(StorageKvantAdapter, localStorage)
+const useLocalStorage = defineKvant(() => useStorageKvantAdapter(localStorage), {})
+const useLocalStorage = defineKvant(useLocalStorageKvantAdapter, {})
 ```
 
-#### Using a Globally Defined Adapter
-
-if the provider supports global definition
-
-##### Global
-
-```ts
-import { StorageKvantAdapter } from 'kvant/adapters/storage'
-
-const adapter = new StorageKvantAdapter(localStorage)
-```
-
-##### Usage
-
+or directly:
 ```ts
 import { useKvantState } from 'kvant/react'
+import { useLocalStorageKvantAdapter } from 'kvant/storage'
 
-const [value, setValue] = useKvantState(adapter, 'key', schema)
-const [values, setValues] = useKvantState(adapter, { key1: schema, key2: schema })
+const [values, setValues] = useKvantState(useLocalStorageKvantAdapter, 'key', {})
+const [values, setValues] = useKvantState(useLocalStorageKvantAdapter, 'key', schema, {})
+const [values, setValues] = useKvantState(useLocalStorageKvantAdapter, { key1: schema, key2: schema }, {})
 ```
-
-or via self-written helper:
-```ts
-import { useKvantState } from 'kvant/react'
-
-const useLocalStorage = (...args) => useKvantState(adapter, ...args)
-
-const [value, setValue] = useLocalStorage('key', schema)
-const [values, setValues] = useLocalStorage({ key1: schema, key2: schema })
-```
-
 
 /**
 * Vue

@@ -1,4 +1,4 @@
-import type { KvantGenericSchema, KvantSchema } from '../types'
+import type { KvantGenericSchema, KvantSchema } from '../defs/schema'
 import type { input, KvantType, output, rawInput } from './core'
 import { generics } from './core'
 

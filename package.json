@@ -15,7 +15,9 @@
   },
   "exports": {
     ".": "./dist/index.mjs",
+    "./react": "./dist/react/index.mjs",
     "./schema": "./dist/schema/index.mjs",
+    "./storage": "./dist/storage.mjs",
     "./package.json": "./package.json"
   },
   "files": [
@@ -30,13 +32,23 @@
     "test": "vitest",
     "prepare": "simple-git-hooks"
   },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^9.0.0",
     "@types/node": "^25.9.3",
+    "@types/react": "^19.2.17",
     "eslint": "^10.5.0",
     "jiti": "^2.7.0",
     "lint-staged": "^17.0.7",
     "publint": "^0.3.21",
+    "react": "^19.2.7",
     "simple-git-hooks": "^2.13.1",
     "tsdown": "^0.22.3",
     "typescript": "^6.0.3",

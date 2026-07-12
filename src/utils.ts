@@ -10,6 +10,10 @@ export type InferOptionality<T extends object> = Prettify<
   }
 >
 
+// https://stackoverflow.com/questions/55541275/typescript-check-for-the-any-type
+export type IfAny<T, Y, N> = 0 extends (1 & T) ? Y : N
+export type IsAny<T> = IfAny<T, true, false>
+
 export type MaybeMultiple<T> = T extends any[] ? T : T | T[]
 
 export type NoUndefined<T> = T extends undefined ? never : T

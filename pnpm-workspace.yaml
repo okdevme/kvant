@@ -1,6 +1,12 @@
 shellEmulator: true
 
 trustPolicy: no-downgrade
+trustPolicyExclude:
+  - undici-types
+
+packages:
+  - playground/**
 
 allowBuilds:
+  sharp: true
   simple-git-hooks: true

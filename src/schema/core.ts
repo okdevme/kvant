@@ -4,7 +4,7 @@ import type {
   KvantSchemaInput,
   KvantSchemaOutput,
   KvantSchemaRawInput,
-} from '../types'
+} from '../defs/schema'
 import type { NoUndefined } from '../utils'
 import type { KvantArray } from './array'
 import type { KvantDefault, KvantDefaultOptions, KvantPrefault, KvantPrefaultOptions } from './default'
