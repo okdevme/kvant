@@ -46,18 +46,18 @@
     }
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^9.0.0",
-    "@types/node": "^25.9.3",
+    "@antfu/eslint-config": "^9.1.0",
+    "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
-    "eslint": "^10.5.0",
+    "eslint": "^10.7.0",
     "jiti": "^2.7.0",
-    "lint-staged": "^17.0.7",
+    "lint-staged": "^17.1.0",
     "publint": "^0.3.21",
     "react": "^19.2.7",
     "simple-git-hooks": "^2.13.1",
-    "tsdown": "^0.22.3",
+    "tsdown": "^0.22.9",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && pnpm build && npx lint-staged"
