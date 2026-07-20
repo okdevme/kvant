@@ -2,7 +2,7 @@ export type KvantAdapterUpdateFn<Options extends object = Record<string, unknown
   = (values: Record<string, unknown>, options?: Partial<Options>) => void
 
 export interface KvantAdapterInterface<
-  T = unknown,
+  T = any,
   Options extends object = Record<string, unknown>,
 > {
   readonly key: string
@@ -13,7 +13,7 @@ export interface KvantAdapterInterface<
 }
 
 export type KvantAdapter<
-  T = unknown,
+  T = any,
   Options extends object = Record<string, unknown>,
 > = (keys: string[]) => KvantAdapterInterface<T, Options>
 

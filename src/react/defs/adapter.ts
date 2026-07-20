@@ -7,7 +7,7 @@ import type {
 } from '../../defs/adapter'
 
 export interface KvantReactAdapterInterface<
-  T = unknown,
+  T = any,
   Options extends object = Record<string, unknown>,
 > {
   readonly key: string
@@ -16,7 +16,7 @@ export interface KvantReactAdapterInterface<
 }
 
 export type KvantReactAdapter<
-  T = unknown,
+  T = any,
   Options extends object = Record<string, unknown>,
 > = (keys: string[]) => KvantReactAdapterInterface<T, Options>
 

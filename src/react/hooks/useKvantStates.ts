@@ -12,7 +12,7 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from '
 import { useEventBus } from '../../events/bus'
 import { parseMap } from '../../parse'
 
-export type KvantSetState<
+export type KvantSetStates<
   A extends KvantReactAdapter | KvantAdapter,
   M extends KvantKeyMap<KvantReactAdapterValue<A>>,
 > = (
@@ -69,7 +69,7 @@ export function useKvantStates<
   options: Partial<KvantReactAdapterOptions<A>> = {},
 ): [
   KvantKeyMapOutput<M>,
-  KvantSetState<A, M>,
+  KvantSetStates<A, M>,
 ] {
   const { key: adapterKey, snapshot, update } = useNormalizedAdapter(adapter, Object.keys(keyMap))
 
@@ -122,7 +122,7 @@ export function useKvantStates<
     })
   }), [])
 
-  const setState: KvantSetState<A, M> = useCallback((newState, callOptions) => {
+  const setState: KvantSetStates<A, M> = useCallback((newState, callOptions) => {
     newState = typeof newState === 'function'
       ? newState(stateCacheRef.current)
       : newState
