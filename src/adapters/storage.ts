@@ -6,13 +6,15 @@ import { defaultWindow } from '../globals'
 
 export function useStorageKvantAdapter(
   storage: Storage | undefined,
-  adapterKey: string,
+  storageKey: string,
   keys: string[],
 ): KvantAdapterInterface<string> {
   let cache: Record<string, string | undefined> = Object.fromEntries(
     keys.map(key => [key, storage?.getItem(key) ?? undefined]),
   )
-  const bus = useEventBus<SyncEvent>(`adapter:storage:${adapterKey}`)
+
+  const adapterKey = `storage:${storageKey}`
+  const bus = useEventBus<SyncEvent>(`adapter:${adapterKey}`)
   const hook = createEventHook()
 
   const onSync = (event: SyncEvent): void => {
