@@ -2,7 +2,7 @@ import type { KvantAdapter, KvantAdapterInterface, KvantAdapterUpdateFn } from '
 import type { SyncEvent, SyncEventItem } from '../defs/events'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
-import { defaultWindow } from '../globals'
+import { defaultWindow, isClient } from '../globals'
 
 export function useStorageKvantAdapter(
   storage: Storage | undefined,
@@ -53,8 +53,10 @@ export function useStorageKvantAdapter(
     }
   }
 
-  bus.on(onSync)
-  defaultWindow?.addEventListener('storage', onStorageEvent)
+  if (isClient) {
+    bus.on(onSync)
+    defaultWindow?.addEventListener('storage', onStorageEvent)
+  }
   const dispose = (): void => {
     hook.clear()
     bus.off(onSync)
