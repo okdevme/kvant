@@ -9,7 +9,7 @@ export default defineConfig({
     'react/*': 'src/react/adapters/*',
     'next/*': 'src/react/adapters/next/*',
     'vue': 'src/vue/index.ts',
-    // 'vue/*': 'src/vue/adapters/*',
+    'vue/*': 'src/vue/adapters/*',
   },
   dts: true,
   exports: true,

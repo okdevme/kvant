@@ -1,2 +1,4 @@
+export * from './composables/useKvantState'
 export * from './composables/useKvantStates'
 export * from './defs/adapter'
+export * from './utils/defineKvantState'
