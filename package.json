@@ -17,11 +17,8 @@
     ".": "./dist/index.mjs",
     "./next/app": "./dist/next/app.mjs",
     "./react": "./dist/react.mjs",
-    "./react/storage": "./dist/react/storage.mjs",
     "./schema": "./dist/schema.mjs",
-    "./storage": "./dist/storage.mjs",
     "./vue": "./dist/vue.mjs",
-    "./vue/storage": "./dist/vue/storage.mjs",
     "./package.json": "./package.json"
   },
   "files": [
@@ -39,7 +36,7 @@
   "peerDependencies": {
     "next": ">=14.2.0",
     "react": ">=18.0.0",
-    "vue": ">=3.5.0"
+    "vue": ">=3.0.0"
   },
   "peerDependenciesMeta": {
     "next": {

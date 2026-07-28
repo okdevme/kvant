@@ -1,8 +1,8 @@
 import type { KvantAdapterUpdateFn } from '../../../defs/adapter'
-import type { KvantReactAdapter } from '../../defs/adapter'
+import type { KvantReactAdapter } from '../../../react'
 import { useSearchParams as _useSearchParams, useRouter } from 'next/navigation'
 import { startTransition, useCallback, useMemo, useOptimistic } from 'react'
-import { defineKvantState } from '../../utils/defineKvantState'
+import { defineKvantState } from '../../../react'
 
 export interface SearchParamsKvantAdapterOptions {
   shallow?: boolean
