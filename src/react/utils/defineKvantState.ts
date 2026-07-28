@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from 'react'
 import type { KvantAdapter } from '../../defs/adapter'
 import type {
   KvantGenericSchema,
@@ -7,8 +8,6 @@ import type {
   KvantSchemaOutput,
 } from '../../defs/schema'
 import type { KvantReactAdapter, KvantReactAdapterOptions, KvantReactAdapterValue } from '../defs/adapter'
-import type { KvantSetState } from '../hooks/useKvantState'
-import type { KvantSetStates } from '../hooks/useKvantStates'
 import { useKvantState } from '../hooks/useKvantState'
 
 export interface UseKvantState<A extends KvantReactAdapter | KvantAdapter> {
@@ -24,7 +23,7 @@ export interface UseKvantState<A extends KvantReactAdapter | KvantAdapter> {
     options?: Partial<KvantReactAdapterOptions<A>>,
   ): [
     KvantSchemaOutput<S>,
-    KvantSetState<A, S>,
+    Dispatch<SetStateAction<KvantSchemaOutput<S>>>,
   ]
   <
     M extends KvantKeyMap<KvantReactAdapterValue<A>>,
@@ -33,7 +32,7 @@ export interface UseKvantState<A extends KvantReactAdapter | KvantAdapter> {
     options?: Partial<KvantReactAdapterOptions<A>>,
   ): [
     KvantKeyMapOutput<M>,
-    KvantSetStates<A, M>,
+    Dispatch<SetStateAction<KvantKeyMapOutput<M>>>,
   ]
 }
 

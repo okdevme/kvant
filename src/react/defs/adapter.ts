@@ -11,7 +11,7 @@ export interface KvantReactAdapterInterface<
   Options extends object = Record<string, unknown>,
 > {
   readonly key: string
-  readonly snapshot: Record<string, T | undefined>
+  readonly snapshot: Readonly<Record<string, T | undefined>>
   readonly update: KvantAdapterUpdateFn<Options>
 }
 

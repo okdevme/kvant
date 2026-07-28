@@ -16,10 +16,11 @@
   "exports": {
     ".": "./dist/index.mjs",
     "./next/app": "./dist/next/app.mjs",
-    "./react": "./dist/react/index.mjs",
+    "./react": "./dist/react.mjs",
     "./react/storage": "./dist/react/storage.mjs",
-    "./schema": "./dist/schema/index.mjs",
+    "./schema": "./dist/schema.mjs",
     "./storage": "./dist/storage.mjs",
+    "./vue": "./dist/vue.mjs",
     "./package.json": "./package.json"
   },
   "files": [
@@ -36,13 +37,17 @@
   },
   "peerDependencies": {
     "next": ">=14.2.0",
-    "react": ">=18.0.0"
+    "react": ">=18.0.0",
+    "vue": ">=3.5.0"
   },
   "peerDependenciesMeta": {
     "next": {
       "optional": true
     },
     "react": {
+      "optional": true
+    },
+    "vue": {
       "optional": true
     }
   },
@@ -58,7 +63,8 @@
     "simple-git-hooks": "^2.13.1",
     "tsdown": "^0.22.9",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "vue": "^3.5.40"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && pnpm build && npx lint-staged"

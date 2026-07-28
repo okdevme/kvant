@@ -1,6 +1,6 @@
 import type { KvantGenericSchema } from './schema'
 
-export interface SyncEventItem {
+export interface Update {
   key: string
   rawValue: any
   schema?: KvantGenericSchema
@@ -9,5 +9,5 @@ export interface SyncEventItem {
 
 export interface SyncEvent {
   type: 'sync'
-  updates: SyncEventItem[]
+  updates: Update[]
 }

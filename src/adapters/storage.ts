@@ -1,5 +1,5 @@
 import type { KvantAdapter, KvantAdapterInterface, KvantAdapterUpdateFn } from '../defs/adapter'
-import type { SyncEvent, SyncEventItem } from '../defs/events'
+import type { SyncEvent, Update } from '../defs/events'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
 import { defaultWindow, isClient } from '../globals'
@@ -64,7 +64,7 @@ export function useStorageKvantAdapter(
   }
 
   const update: KvantAdapterUpdateFn = (values) => {
-    const updates: SyncEventItem[] = []
+    const updates: Update[] = []
     for (const key in values) {
       const value = values[key] !== undefined ? String(values[key]) : undefined
       if (value === cache[key])

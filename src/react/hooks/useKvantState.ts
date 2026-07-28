@@ -1,4 +1,4 @@
-import type { SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import type { KvantAdapter } from '../../defs/adapter'
 import type {
   KvantGenericSchema,
@@ -8,17 +8,8 @@ import type {
   KvantSchemaOutput,
 } from '../../defs/schema'
 import type { KvantReactAdapter, KvantReactAdapterOptions, KvantReactAdapterValue } from '../defs/adapter'
-import type { KvantSetStates } from './useKvantStates'
 import { useCallback } from 'react'
 import { useKvantStates } from './useKvantStates'
-
-export type KvantSetState<
-  A extends KvantReactAdapter | KvantAdapter,
-  S extends KvantGenericSchema<KvantReactAdapterValue<A>>,
-> = (
-  state: SetStateAction<KvantSchemaOutput<S>>,
-  options?: Partial<KvantReactAdapterOptions<A>>,
-) => void
 
 function noopSchema<T>(): KvantSchema<T, T, T> {
   return {
@@ -41,7 +32,7 @@ export function useKvantState<
   options?: Partial<KvantReactAdapterOptions<A>>,
 ): [
   KvantSchemaOutput<S>,
-  KvantSetState<A, S>,
+  Dispatch<SetStateAction<KvantSchemaOutput<S>>>,
 ]
 export function useKvantState<
   A extends KvantReactAdapter | KvantAdapter,
@@ -52,7 +43,7 @@ export function useKvantState<
   options?: Partial<KvantReactAdapterOptions<A>>,
 ): [
   KvantKeyMapOutput<M>,
-  KvantSetStates<A, M>,
+  Dispatch<SetStateAction<KvantKeyMapOutput<M>>>,
 ]
 export function useKvantState<
   A extends KvantReactAdapter | KvantAdapter,
@@ -65,10 +56,10 @@ export function useKvantState<
   options?: Partial<KvantReactAdapterOptions<A>>,
 ): [
   KvantSchemaOutput<S>,
-  KvantSetState<A, S>,
+  Dispatch<SetStateAction<KvantSchemaOutput<S>>>,
 ] | [
   KvantKeyMapOutput<M>,
-  KvantSetStates<A, M>,
+  Dispatch<SetStateAction<KvantKeyMapOutput<M>>>,
 ] {
   if (typeof keyOrMap === 'object') {
     return useKvantStates(
@@ -86,12 +77,12 @@ export function useKvantState<
     },
     options,
   )
-  const setState: KvantSetState<A, S> = useCallback((newState, callOptions) => {
+  const setState: Dispatch<SetStateAction<KvantSchemaOutput<S>>> = useCallback((newState) => {
     return setStates(state => ({
       [keyOrMap]: typeof newState === 'function'
         ? (newState as (value: KvantSchemaOutput<S>) => KvantSchemaOutput<S>)(state[keyOrMap]!)
         : newState,
-    }), callOptions)
+    }))
   }, [keyOrMap, setStates])
 
   return [
