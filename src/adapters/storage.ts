@@ -1,5 +1,5 @@
 import type { KvantAdapter, KvantAdapterInterface, KvantAdapterUpdateFn } from '../defs/adapter'
-import type { SyncEvent, Update } from '../defs/events'
+import type { SyncEvent, Update } from '../defs/sync'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
 import { defaultWindow, isClient } from '../globals'
@@ -22,12 +22,12 @@ export function useStorageKvantAdapter(
     for (const item of event.updates) {
       if (
         !keys.includes(item.key)
-        || item.rawValue === cache[item.key]
+        || item.value === cache[item.key]
       ) {
         continue
       }
 
-      cache = { ...cache, [item.key]: item.rawValue }
+      cache = { ...cache, [item.key]: item.value }
       hasChanged = true
     }
 
@@ -42,13 +42,13 @@ export function useStorageKvantAdapter(
     if (event.key === null) {
       onSync({
         type: 'sync',
-        updates: keys.map(key => ({ key, rawValue: undefined })),
+        updates: keys.map(key => ({ key, value: undefined })),
       })
     }
     else if (keys.includes(event.key)) {
       onSync({
         type: 'sync',
-        updates: [{ key: event.key, rawValue: event.newValue ?? undefined }],
+        updates: [{ key: event.key, value: event.newValue ?? undefined }],
       })
     }
   }
@@ -75,7 +75,7 @@ export function useStorageKvantAdapter(
       else
         storage?.removeItem(key)
 
-      updates.push({ key, rawValue: value })
+      updates.push({ key, value })
     }
 
     if (updates.length)

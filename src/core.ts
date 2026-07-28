@@ -1,5 +1,5 @@
-import type { Update } from './defs/events'
 import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput, KvantSchema } from './defs/schema'
+import type { Update } from './defs/sync'
 
 export interface KeyMapCache<M extends KvantKeyMap> {
   snapshot: Record<string, KvantKeyMapRawInput<M> | undefined>
@@ -13,12 +13,12 @@ export function parseMap<M extends KvantKeyMap>(
 ): KvantKeyMapOutput<M> {
   let hasChanged = false
   const state = Object.entries(keyMap).reduce((output, [key, schema]) => {
-    const rawValue = snapshot[key]
+    const value = snapshot[key]
     if (
       cache
       && key in cache.snapshot
       && key in cache.state
-      && cache.snapshot[key] === rawValue
+      && cache.snapshot[key] === value
     ) {
       // Cache hit
       output[key as keyof M] = cache.state[key]!
@@ -26,9 +26,9 @@ export function parseMap<M extends KvantKeyMap>(
     }
     // Cache miss
     hasChanged = true
-    output[key as keyof M] = schema.parse(rawValue)
+    output[key as keyof M] = schema.parse(value)
     if (cache)
-      cache.snapshot[key] = rawValue
+      cache.snapshot[key] = value
     return output
   }, {} as KvantKeyMapOutput<M>)
 
@@ -53,20 +53,20 @@ export function syncMap<M extends KvantKeyMap>(
   updates.forEach((item) => {
     if (
       !Object.keys(keyMap).includes(item.key)
-      // || item.rawValue === cache.snapshot[item.key]
+      // || item.value === cache.snapshot[item.key]
     ) {
       return
     }
 
     const schema = keyMap[item.key]!
-    const value = item.schema !== schema ? schema.parse(item.rawValue) : item.value
-    if (value === newState[item.key])
+    const state = item.schema !== schema ? schema.parse(item.value) : item.state
+    if (state === newState[item.key])
       return
 
     if (cache)
-      cache.snapshot[item.key] = item.rawValue
+      cache.snapshot[item.key] = item.value
 
-    newState = { ...newState, [item.key]: value }
+    newState = { ...newState, [item.key]: state }
   })
   return newState
 }
@@ -75,21 +75,21 @@ export function stateToUpdates<M extends KvantKeyMap>(
   keyMap: M,
   state: KvantKeyMapOutput<M>,
 ): Update[] {
-  return Object.entries(state).map(([key, value]) => {
+  return Object.entries(state).map(([key, state]) => {
     const schema = keyMap[key]!
-    const rawValue = schema.encode(value)
+    const value = schema.encode(state)
     return {
       key,
-      rawValue,
-      schema,
       value,
+      schema,
+      state,
     }
   })
 }
 
 export function updatesToObject(updates: Update[]): Record<string, unknown> {
   return Object.fromEntries(
-    updates.map(({ key, rawValue }) => [key, rawValue]),
+    updates.map(({ key, value }) => [key, value]),
   )
 }
 

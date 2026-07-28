@@ -2,9 +2,9 @@ import type { KvantGenericSchema } from './schema'
 
 export interface Update {
   key: string
-  rawValue: any
+  value: any
   schema?: KvantGenericSchema
-  value?: any
+  state?: any
 }
 
 export interface SyncEvent {

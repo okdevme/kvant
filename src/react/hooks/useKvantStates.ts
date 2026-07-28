@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 import type { KvantAdapter, KvantAdapterInterface } from '../../defs/adapter'
-import type { SyncEvent } from '../../defs/events'
 import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput } from '../../defs/schema'
+import type { SyncEvent } from '../../defs/sync'
 import type {
   KvantReactAdapter,
   KvantReactAdapterInterface,
