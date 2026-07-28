@@ -1,5 +1,5 @@
 import type { Update } from './defs/events'
-import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput } from './defs/schema'
+import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput, KvantSchema } from './defs/schema'
 
 export interface KeyMapCache<M extends KvantKeyMap> {
   snapshot: Record<string, KvantKeyMapRawInput<M> | undefined>
@@ -91,4 +91,11 @@ export function updatesToObject(updates: Update[]): Record<string, unknown> {
   return Object.fromEntries(
     updates.map(({ key, rawValue }) => [key, rawValue]),
   )
+}
+
+export function noopSchema<T>(): KvantSchema<T, T, T> {
+  return {
+    parse: value => value,
+    encode: value => value,
+  }
 }

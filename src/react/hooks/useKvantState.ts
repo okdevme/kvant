@@ -9,14 +9,8 @@ import type {
 } from '../../defs/schema'
 import type { KvantReactAdapter, KvantReactAdapterOptions, KvantReactAdapterValue } from '../defs/adapter'
 import { useCallback } from 'react'
+import { noopSchema } from '../../core'
 import { useKvantStates } from './useKvantStates'
-
-function noopSchema<T>(): KvantSchema<T, T, T> {
-  return {
-    parse: value => value,
-    encode: value => value,
-  }
-}
 
 export function useKvantState<
   A extends KvantReactAdapter | KvantAdapter,
