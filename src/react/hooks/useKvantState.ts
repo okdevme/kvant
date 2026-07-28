@@ -74,7 +74,7 @@ export function useKvantState<
     return useKvantStates(
       adapter,
       keyOrMap,
-      schemaOrOptions as Partial<KvantReactAdapterOptions<A>>,
+      schemaOrOptions as Partial<KvantReactAdapterOptions<A>> | undefined,
     )
   }
 

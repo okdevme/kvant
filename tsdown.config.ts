@@ -7,6 +7,7 @@ export default defineConfig({
     'src/react/index.ts',
     {
       '*': 'src/adapters/*',
+      'react/*': 'src/react/adapters/*',
       'next/*': 'src/react/adapters/next/*',
     },
   ],

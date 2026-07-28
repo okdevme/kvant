@@ -1,4 +1,4 @@
-import type { KvantAdapterInterface, KvantAdapterUpdateFn } from '../defs/adapter'
+import type { KvantAdapter, KvantAdapterInterface, KvantAdapterUpdateFn } from '../defs/adapter'
 import type { SyncEvent, SyncEventItem } from '../defs/events'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
@@ -89,10 +89,10 @@ export function useStorageKvantAdapter(
   }
 }
 
-export function useLocalStorageKvantAdapter(keys: string[]): KvantAdapterInterface<string> {
-  return useStorageKvantAdapter(defaultWindow?.localStorage, 'local', keys)
-}
+export type StorageKvantAdapter = KvantAdapter<string>
 
-export function useSessionStorageKvantAdapter(keys: string[]): KvantAdapterInterface<string> {
-  return useStorageKvantAdapter(defaultWindow?.sessionStorage, 'session', keys)
-}
+export const useLocalStorageKvantAdapter: StorageKvantAdapter
+  = keys => useStorageKvantAdapter(defaultWindow?.localStorage, 'local', keys)
+
+export const useSessionStorageKvantAdapter: StorageKvantAdapter
+  = keys => useStorageKvantAdapter(defaultWindow?.sessionStorage, 'session', keys)

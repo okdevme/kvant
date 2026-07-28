@@ -1,13 +1,19 @@
 import type { KvantAdapterUpdateFn } from '../../../defs/adapter'
-import type { KvantReactAdapterInterface } from '../../defs/adapter'
-import { useRouter, useSearchParams } from 'next/navigation'
+import type { KvantReactAdapter } from '../../defs/adapter'
+import { useSearchParams as _useSearchParams, useRouter } from 'next/navigation'
 import { startTransition, useCallback, useMemo, useOptimistic } from 'react'
+import { defineKvantState } from '../../utils/defineKvantState'
 
-export interface NextAppRouterKvantAdapterOptions {
+export interface SearchParamsKvantAdapterOptions {
   shallow?: boolean
   history?: 'push' | 'replace'
   scroll?: boolean
 }
+
+export type SearchParamsKvantAdapter = KvantReactAdapter<
+  string | string[],
+  SearchParamsKvantAdapterOptions
+>
 
 function toSnapshot(
   searchParams: URLSearchParams,
@@ -48,12 +54,9 @@ function renderURL(searchParams: URLSearchParams): string {
   return origin + pathname + search + hash
 }
 
-export function useNextAppRouterKvantAdapter(keys: string[]): KvantReactAdapterInterface<
-  string | string[],
-  NextAppRouterKvantAdapterOptions
-> {
+export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys) => {
   const router = useRouter()
-  const searchParams = useSearchParams()
+  const searchParams = _useSearchParams()
   const [optimisticSearchParams, setOptimisticSearchParams]
     = useOptimistic<URLSearchParams>(searchParams)
   const snapshot = useMemo(
@@ -61,7 +64,7 @@ export function useNextAppRouterKvantAdapter(keys: string[]): KvantReactAdapterI
     [optimisticSearchParams],
   )
 
-  const update: KvantAdapterUpdateFn<NextAppRouterKvantAdapterOptions> = useCallback((values, options = {}) => {
+  const update: KvantAdapterUpdateFn<SearchParamsKvantAdapterOptions> = useCallback((values, options = {}) => {
     const {
       shallow = true,
       scroll = false,
@@ -113,3 +116,5 @@ export function useNextAppRouterKvantAdapter(keys: string[]): KvantReactAdapterI
     update,
   }
 }
+
+export const useSearchParams = defineKvantState(useSearchParamsKvantAdapter)

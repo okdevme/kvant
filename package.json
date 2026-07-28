@@ -17,6 +17,7 @@
     ".": "./dist/index.mjs",
     "./next/app": "./dist/next/app.mjs",
     "./react": "./dist/react/index.mjs",
+    "./react/storage": "./dist/react/storage.mjs",
     "./schema": "./dist/schema/index.mjs",
     "./storage": "./dist/storage.mjs",
     "./package.json": "./package.json"
