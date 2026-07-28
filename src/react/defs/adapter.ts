@@ -26,7 +26,9 @@ export type KvantReactAdapterValue<
   ? U | undefined
   : T extends KvantReactAdapterInterface<infer U>
     ? U | undefined
-    : KvantAdapterValue<T>
+    : T extends KvantAdapter | KvantAdapterInterface
+      ? KvantAdapterValue<T>
+      : never
 
 export type KvantReactAdapterOptions<
   T extends KvantReactAdapter | KvantReactAdapterInterface | KvantAdapter | KvantAdapterInterface,
@@ -34,4 +36,6 @@ export type KvantReactAdapterOptions<
   ? U
   : T extends KvantReactAdapterInterface<any, infer U>
     ? U
-    : KvantAdapterOptions<T>
+    : T extends KvantAdapter | KvantAdapterInterface
+      ? KvantAdapterOptions<T>
+      : never

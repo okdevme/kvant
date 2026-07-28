@@ -31,12 +31,8 @@ function useNormalizedAdapter<A extends KvantReactAdapter | KvantAdapter>(
 
   if (!standaloneAdapterRef.current) {
     const api = adapter(keys)
-    if ('snapshot' in api) {
-      return api as KvantReactAdapterInterface<
-        KvantReactAdapterValue<A>,
-        KvantReactAdapterOptions<A>
-      >
-    }
+    if ('snapshot' in api)
+      return api
 
     standaloneAdapterRef.current = api
   }
@@ -54,10 +50,7 @@ function useNormalizedAdapter<A extends KvantReactAdapter | KvantAdapter>(
     key: api.key,
     snapshot,
     update: api.update,
-  } as KvantReactAdapterInterface<
-    KvantReactAdapterValue<A>,
-    KvantReactAdapterOptions<A>
-  >
+  }
 }
 
 export function useKvantStates<
@@ -76,7 +69,7 @@ export function useKvantStates<
   const [internalState, setInternalState] = useState<KvantKeyMapOutput<M>>(
     () => parseMap(
       keyMap,
-      snapshot as Record<string, KvantKeyMapRawInput<M>>,
+      snapshot,
     ),
   )
 
@@ -86,7 +79,7 @@ export function useKvantStates<
   useEffect(() => {
     const state = parseMap(
       keyMap,
-      snapshot as Record<string, KvantKeyMapRawInput<M>>,
+      snapshot,
       {
         snapshot: snapshotCacheRef.current,
         state: stateCacheRef.current,
