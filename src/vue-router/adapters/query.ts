@@ -3,12 +3,10 @@ import type { KvantAdapterUpdateFn } from '../../types/adapter'
 import type { KvantVueAdapter } from '../../vue'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { defaultWindow } from '../../globals'
 import { defineKvantState } from '../../vue'
 
 export interface RouteQueryKvantAdapterOptions {
   history?: 'push' | 'replace'
-  scroll?: boolean
 }
 
 export type RouteQueryKvantAdapter = KvantVueAdapter<
@@ -26,24 +24,22 @@ function toSnapshot(
   )
 }
 
+function normalizeItem(
+  value: unknown,
+): LocationQueryValueRaw {
+  return typeof value === 'string'
+    || typeof value === 'number'
+    || value == null
+    ? value
+    : String(value)
+}
+
 function normalizeValue(
   value: unknown,
-  nested: boolean = false,
 ): LocationQueryValueRaw | LocationQueryValueRaw[] {
-  switch (typeof value) {
-    case 'string':
-    case 'number':
-    case 'undefined':
-      return value
-    case 'object':
-      if (value === null)
-        return null
-      if (!nested && Array.isArray(value))
-        return value.map(v => normalizeValue(v, true) as LocationQueryValueRaw)
-      // falls through
-    default:
-      return String(value)
-  }
+  return Array.isArray(value)
+    ? value.map(normalizeItem)
+    : normalizeItem(value)
 }
 
 function normalizeValues(
@@ -64,7 +60,6 @@ export const useRouteQueryKvantAdapter: RouteQueryKvantAdapter = (keys) => {
   const update: KvantAdapterUpdateFn<RouteQueryKvantAdapterOptions> = (values, options = {}) => {
     const {
       history: mode = 'replace',
-      scroll = false,
     } = options
 
     const { params, query, hash } = route
@@ -76,10 +71,6 @@ export const useRouteQueryKvantAdapter: RouteQueryKvantAdapter = (keys) => {
       },
       hash,
     })
-
-    if (scroll) {
-      defaultWindow?.scrollTo(0, 0)
-    }
   }
 
   return {
