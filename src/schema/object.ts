@@ -1,4 +1,4 @@
-import type { KvantGenericSchema } from '../defs/schema'
+import type { KvantGenericSchema } from '../types/schema'
 import type { Extend, Flatten, InferOptionality, Mask, Writeable } from '../utils'
 import type { KvantUnknown } from './any'
 import type { input, KvantType, output } from './core'

@@ -1,5 +1,5 @@
-import type { KvantAdapter, KvantAdapterInterface, KvantAdapterUpdateFn } from '../defs/adapter'
-import type { SyncEvent, Update } from '../defs/sync'
+import type { KvantAdapter, KvantAdapterInterface, KvantAdapterUpdateFn } from '../types/adapter'
+import type { SyncEvent, Update } from '../types/sync'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
 import { defaultWindow, isClient } from '../globals'

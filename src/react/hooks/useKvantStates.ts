@@ -1,13 +1,13 @@
 import type { Dispatch, SetStateAction } from 'react'
-import type { KvantAdapter, KvantAdapterInterface } from '../../defs/adapter'
-import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput } from '../../defs/schema'
-import type { SyncEvent } from '../../defs/sync'
+import type { KvantAdapter, KvantAdapterInterface } from '../../types/adapter'
+import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput } from '../../types/schema'
+import type { SyncEvent } from '../../types/sync'
 import type {
   KvantReactAdapter,
   KvantReactAdapterInterface,
   KvantReactAdapterOptions,
   KvantReactAdapterValue,
-} from '../defs/adapter'
+} from '../types/adapter'
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { parseMap, stateToUpdates, syncMap, updatesToObject } from '../../core'
 import { useEventBus } from '../../events/bus'

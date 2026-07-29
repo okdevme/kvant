@@ -4,7 +4,7 @@ import type {
   KvantAdapterOptions,
   KvantAdapterUpdateFn,
   KvantAdapterValue,
-} from '../../defs/adapter'
+} from '../../types/adapter'
 
 export interface KvantReactAdapterInterface<
   T = any,

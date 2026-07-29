@@ -1,13 +1,13 @@
 import type { Ref } from 'vue'
-import type { KvantAdapter } from '../../defs/adapter'
+import type { KvantAdapter } from '../../types/adapter'
 import type {
   KvantGenericSchema,
   KvantKeyMap,
   KvantKeyMapOutput,
   KvantSchema,
   KvantSchemaOutput,
-} from '../../defs/schema'
-import type { KvantVueAdapter, KvantVueAdapterOptions, KvantVueAdapterValue } from '../defs/adapter'
+} from '../../types/schema'
+import type { KvantVueAdapter, KvantVueAdapterOptions, KvantVueAdapterValue } from '../types/adapter'
 import { useKvantState } from '../composables/useKvantState'
 
 export interface UseKvantState<A extends KvantVueAdapter | KvantAdapter> {

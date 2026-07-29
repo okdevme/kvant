@@ -1,13 +1,13 @@
 import type { Dispatch, SetStateAction } from 'react'
-import type { KvantAdapter } from '../../defs/adapter'
+import type { KvantAdapter } from '../../types/adapter'
 import type {
   KvantGenericSchema,
   KvantKeyMap,
   KvantKeyMapOutput,
   KvantSchema,
   KvantSchemaOutput,
-} from '../../defs/schema'
-import type { KvantReactAdapter, KvantReactAdapterOptions, KvantReactAdapterValue } from '../defs/adapter'
+} from '../../types/schema'
+import type { KvantReactAdapter, KvantReactAdapterOptions, KvantReactAdapterValue } from '../types/adapter'
 import { useCallback } from 'react'
 import { noopSchema } from '../../core'
 import { useKvantStates } from './useKvantStates'

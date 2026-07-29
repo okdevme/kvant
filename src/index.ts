@@ -1,3 +1,3 @@
 export * from './adapters/storage'
-export * from './defs/adapter'
-export * from './defs/schema'
+export * from './types/adapter'
+export * from './types/schema'

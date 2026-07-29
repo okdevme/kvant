@@ -1,13 +1,13 @@
 import type { Ref } from 'vue'
-import type { KvantAdapter } from '../../defs/adapter'
-import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput } from '../../defs/schema'
-import type { SyncEvent } from '../../defs/sync'
+import type { KvantAdapter } from '../../types/adapter'
+import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput } from '../../types/schema'
+import type { SyncEvent } from '../../types/sync'
 import type {
   KvantVueAdapter,
   KvantVueAdapterInterface,
   KvantVueAdapterOptions,
   KvantVueAdapterValue,
-} from '../defs/adapter'
+} from '../types/adapter'
 import { onScopeDispose, ref, shallowRef, watch } from 'vue'
 import { parseMap, stateToUpdates, syncMap, updatesToObject } from '../../core'
 import { useEventBus } from '../../events/bus'

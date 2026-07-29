@@ -1,4 +1,4 @@
-import type { KvantGenericSchema } from '../defs/schema'
+import type { KvantGenericSchema } from '../types/schema'
 import type { output } from './core'
 
 export function overwrite<S extends KvantGenericSchema>(

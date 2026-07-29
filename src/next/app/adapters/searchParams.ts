@@ -1,5 +1,5 @@
-import type { KvantAdapterUpdateFn } from '../../../defs/adapter'
 import type { KvantReactAdapter } from '../../../react'
+import type { KvantAdapterUpdateFn } from '../../../types/adapter'
 import { useSearchParams as _useSearchParams, useRouter } from 'next/navigation'
 import { startTransition, useCallback, useMemo, useOptimistic } from 'react'
 import { defineKvantState } from '../../../react'

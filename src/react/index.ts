@@ -1,5 +1,5 @@
 export * from './adapters/storage'
-export * from './defs/adapter'
 export * from './hooks/useKvantState'
 export * from './hooks/useKvantStates'
+export * from './types/adapter'
 export * from './utils/defineKvantState'

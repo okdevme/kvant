@@ -1,5 +1,5 @@
-import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput, KvantSchema } from './defs/schema'
-import type { Update } from './defs/sync'
+import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput, KvantSchema } from './types/schema'
+import type { Update } from './types/sync'
 
 export interface KeyMapCache<M extends KvantKeyMap> {
   snapshot: Record<string, KvantKeyMapRawInput<M> | undefined>
