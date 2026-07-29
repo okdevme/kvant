@@ -35,6 +35,9 @@ function normalizeValue(
   if (Array.isArray(value))
     return value.map(String)
 
+  // Passing undefined when setting the state
+  // results in the param not being updated and remaining in its previous state.
+  // Passing an empty string instead results in the value properly becoming undefined.
   if (value == null)
     return ''
 

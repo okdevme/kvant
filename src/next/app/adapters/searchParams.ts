@@ -6,8 +6,8 @@ import { defaultWindow } from '../../../globals'
 import { defineKvantState } from '../../../react'
 
 export interface SearchParamsKvantAdapterOptions {
-  shallow?: boolean
   history?: 'push' | 'replace'
+  shallow?: boolean
   scroll?: boolean
 }
 
@@ -67,9 +67,9 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys) => {
 
   const update: KvantAdapterUpdateFn<SearchParamsKvantAdapterOptions> = useCallback((values, options = {}) => {
     const {
+      history: historyMethod = 'replace',
       shallow = true,
       scroll = false,
-      history: historyMethod = 'replace',
     } = options
 
     startTransition(() => {
@@ -81,29 +81,15 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys) => {
         setOptimisticSearchParams(search)
       }
       const url = renderURL(search)
-      // debug('[nuqs next/app] Updating url: %s', url)
-      // First, update the URL locally without triggering a network request,
-      // this allows keeping a reactive URL if the network is slow.
-      const updateMethod
-        = historyMethod === 'push' ? history.pushState : history.replaceState
-      // Since replaceState calls are not monitored (see patchHistory above),
-      // the mutex is not needed to absorb cascade calls — they go undetected.
-      // Set to 0 so that the next external pushState immediately resets.
-      // setQueueResetMutex(0)
-      updateMethod.call(
-        history,
-        // In next@14.1.0, useSearchParams becomes reactive to shallow updates,
-        // but only if passing `null` as the history state.
+      history[`${historyMethod}State`](
         null,
-        '', // historyUpdateMarker,
+        '',
         url,
       )
       if (scroll) {
         defaultWindow?.scrollTo(0, 0)
       }
       if (!shallow) {
-        // Call the Next.js router to perform a network request
-        // and re-render server components.
         router.replace(url, {
           scroll: false,
         })
