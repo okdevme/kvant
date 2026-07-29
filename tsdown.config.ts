@@ -7,6 +7,7 @@ export default defineConfig({
     'react': 'src/react/index.ts',
     'next/app': 'src/next/app/index.ts',
     'vue': 'src/vue/index.ts',
+    'vue-router': 'src/vue-router/index.ts',
   },
   dts: true,
   exports: true,

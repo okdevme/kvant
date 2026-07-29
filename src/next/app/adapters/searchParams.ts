@@ -2,6 +2,7 @@ import type { KvantReactAdapter } from '../../../react'
 import type { KvantAdapterUpdateFn } from '../../../types/adapter'
 import { useSearchParams as _useSearchParams, useRouter } from 'next/navigation'
 import { startTransition, useCallback, useMemo, useOptimistic } from 'react'
+import { defaultWindow } from '../../../globals'
 import { defineKvantState } from '../../../react'
 
 export interface SearchParamsKvantAdapterOptions {
@@ -98,7 +99,7 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys) => {
         url,
       )
       if (scroll) {
-        window.scrollTo(0, 0)
+        defaultWindow?.scrollTo(0, 0)
       }
       if (!shallow) {
         // Call the Next.js router to perform a network request
@@ -111,7 +112,7 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys) => {
   }, [])
 
   return {
-    key: 'next:app',
+    key: 'next:app:search-params',
     snapshot,
     update,
   }

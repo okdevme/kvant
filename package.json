@@ -19,6 +19,7 @@
     "./react": "./dist/react.mjs",
     "./schema": "./dist/schema.mjs",
     "./vue": "./dist/vue.mjs",
+    "./vue-router": "./dist/vue-router.mjs",
     "./package.json": "./package.json"
   },
   "files": [
@@ -36,7 +37,8 @@
   "peerDependencies": {
     "next": ">=14.2.0",
     "react": ">=18.0.0",
-    "vue": ">=3.0.0"
+    "vue": ">=3.0.0",
+    "vue-router": ">=4.0.0"
   },
   "peerDependenciesMeta": {
     "next": {
@@ -46,6 +48,9 @@
       "optional": true
     },
     "vue": {
+      "optional": true
+    },
+    "vue-router": {
       "optional": true
     }
   },
@@ -62,7 +67,8 @@
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:",
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "vue-router": "catalog:"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && pnpm build && npx lint-staged"
