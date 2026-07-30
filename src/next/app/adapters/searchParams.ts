@@ -4,6 +4,7 @@ import { useSearchParams as _useSearchParams, useRouter } from 'next/navigation'
 import { startTransition, useCallback, useMemo, useOptimistic } from 'react'
 import { defaultWindow } from '../../../globals'
 import { defineKvantState } from '../../../react'
+import { applySearchValues, searchToObject, withSearch } from '../../../utils/search'
 
 export interface SearchParamsKvantAdapterOptions {
   history?: 'push' | 'replace'
@@ -16,46 +17,7 @@ export type SearchParamsKvantAdapter = KvantReactAdapter<
   SearchParamsKvantAdapterOptions
 >
 
-function toSnapshot(
-  searchParams: URLSearchParams,
-  keys: string[],
-): Record<string, string | string[] | undefined> {
-  return Object.fromEntries(
-    keys.map((key) => {
-      const values = searchParams.getAll(key)
-      return [
-        key,
-        values.length > 1
-          ? values
-          : values[0],
-      ]
-    }),
-  )
-}
-
-function applyValues(
-  searchParams: URLSearchParams,
-  values: Record<string, unknown>,
-): URLSearchParams {
-  for (const [key, value] of Object.entries(values)) {
-    searchParams.delete(key)
-    if (Array.isArray(value))
-      value.forEach(entry => searchParams.append(key, String(entry)))
-    else if (value !== undefined)
-      searchParams.set(key, String(value))
-  }
-  return searchParams
-}
-
-function renderURL(searchParams: URLSearchParams): string {
-  const { origin, pathname, hash } = location
-  const search = searchParams.size > 0
-    ? `?${searchParams.toString()}`
-    : ''
-  return origin + pathname + search + hash
-}
-
-export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, options = {}) => {
+export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, options) => {
   const {
     history: historyMethod = 'replace',
     shallow = true,
@@ -67,20 +29,21 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
   const [optimisticSearchParams, setOptimisticSearchParams]
     = useOptimistic<URLSearchParams>(searchParams)
   const snapshot = useMemo(
-    () => toSnapshot(optimisticSearchParams, keys),
+    () => searchToObject(optimisticSearchParams, keys),
     [optimisticSearchParams],
   )
 
   const update: KvantAdapterUpdateFn = useCallback((values) => {
+    const location = defaultWindow?.location
+    if (!location)
+      return
+
     startTransition(() => {
-      const search = applyValues(
-        new URLSearchParams(location.search),
-        values,
-      )
+      const search = applySearchValues(location.search, values)
       if (!shallow) {
         setOptimisticSearchParams(search)
       }
-      const url = renderURL(search)
+      const url = withSearch(location, search).toString()
       history[`${historyMethod}State`](
         null,
         '',

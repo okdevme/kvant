@@ -1,3 +1,4 @@
+export * from './adapters/searchParams'
 export * from './adapters/storage'
 export * from './composables/useKvantState'
 export * from './composables/useKvantStates'

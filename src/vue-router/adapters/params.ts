@@ -36,7 +36,7 @@ function normalizeValue(
     : String(value)
 }
 
-export const useRouteParamsKvantAdapter: RouteParamsKvantAdapter = (keys, options = {}) => {
+export const useRouteParamsKvantAdapter: RouteParamsKvantAdapter = (keys, options) => {
   const {
     history: mode = 'replace',
   } = options

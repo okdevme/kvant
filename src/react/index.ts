@@ -1,3 +1,4 @@
+export * from './adapters/searchParams'
 export * from './adapters/storage'
 export * from './hooks/useKvantState'
 export * from './hooks/useKvantStates'

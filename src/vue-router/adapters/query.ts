@@ -33,7 +33,7 @@ function normalizeValue(
     : normalizeItem(value)
 }
 
-export const useRouteQueryKvantAdapter: RouteQueryKvantAdapter = (keys, options = {}) => {
+export const useRouteQueryKvantAdapter: RouteQueryKvantAdapter = (keys, options) => {
   const {
     history: mode = 'replace',
   } = options

@@ -51,7 +51,7 @@ function normalizeValue(
     : normalizeItem(value)
 }
 
-export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys, options = {}) => {
+export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys, options) => {
   const {
     history: historyMethod = 'replace',
     shallow = true,
