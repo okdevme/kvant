@@ -1,8 +1,9 @@
-import type { LocationQuery, LocationQueryRaw, LocationQueryValue, LocationQueryValueRaw } from 'vue-router'
+import type { LocationQueryValue, LocationQueryValueRaw } from 'vue-router'
 import type { KvantAdapterUpdateFn } from '../../types/adapter'
 import type { KvantVueAdapter } from '../../vue'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { mapValues, pick } from '../../utils/object'
 import { defineKvantState } from '../../vue'
 
 export interface RouteQueryKvantAdapterOptions {
@@ -13,16 +14,6 @@ export type RouteQueryKvantAdapter = KvantVueAdapter<
   LocationQueryValue | LocationQueryValue[],
   RouteQueryKvantAdapterOptions
 >
-
-function toSnapshot(
-  query: LocationQuery,
-  keys: string[],
-): Record<string, LocationQueryValue | LocationQueryValue[]> {
-  return Object.fromEntries(
-    Object.entries(query)
-      .filter(([key]) => keys.includes(key)),
-  )
-}
 
 function normalizeItem(
   value: unknown,
@@ -42,20 +33,11 @@ function normalizeValue(
     : normalizeItem(value)
 }
 
-function normalizeValues(
-  values: Record<string, unknown>,
-): LocationQueryRaw {
-  return Object.fromEntries(
-    Object.entries(values)
-      .map(([key, value]) => [key, normalizeValue(value)]),
-  )
-}
-
 export const useRouteQueryKvantAdapter: RouteQueryKvantAdapter = (keys) => {
   const router = useRouter()
   const route = useRoute()
 
-  const snapshot = computed(() => toSnapshot(route.query, keys))
+  const snapshot = computed(() => pick(route.query, keys))
 
   const update: KvantAdapterUpdateFn<RouteQueryKvantAdapterOptions> = (values, options = {}) => {
     const {
@@ -67,7 +49,7 @@ export const useRouteQueryKvantAdapter: RouteQueryKvantAdapter = (keys) => {
       params,
       query: {
         ...query,
-        ...normalizeValues(values),
+        ...mapValues(values, normalizeValue),
       },
       hash,
     })

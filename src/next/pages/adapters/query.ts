@@ -1,11 +1,12 @@
 import type { NextRouter } from 'next/router'
-import type { ParsedUrlQuery, ParsedUrlQueryInput } from 'node:querystring'
+import type { ParsedUrlQueryInput } from 'node:querystring'
 import type { KvantReactAdapter } from '../../../react'
 import type { KvantAdapterUpdateFn } from '../../../types/adapter'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import { defaultWindow } from '../../../globals'
 import { defineKvantState } from '../../../react'
+import { mapValues, pick } from '../../../utils/object'
 
 declare global {
   interface Window {
@@ -25,16 +26,6 @@ export type RouterQueryKvantAdapter = KvantReactAdapter<
   string | string[],
   RouterQueryKvantAdapterOptions
 >
-
-function toSnapshot(
-  params: ParsedUrlQuery,
-  keys: string[],
-): Record<string, string | string[] | undefined> {
-  return Object.fromEntries(
-    Object.entries(params)
-      .filter(([key]) => keys.includes(key)),
-  )
-}
 
 function normalizeItem(
   value: unknown,
@@ -60,19 +51,10 @@ function normalizeValue(
     : normalizeItem(value)
 }
 
-function normalizeValues(
-  values: Record<string, unknown>,
-): ParsedUrlQueryInput {
-  return Object.fromEntries(
-    Object.entries(values)
-      .map(([key, value]) => [key, normalizeValue(value)]),
-  )
-}
-
 export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys) => {
   const router = useRouter()
   const snapshot = useMemo(
-    () => toSnapshot(router.query, keys),
+    () => pick(router.query, keys),
     [JSON.stringify(router.query)],
   )
 
@@ -96,7 +78,7 @@ export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys) => {
         pathname: router.pathname,
         query: {
           ...router.query,
-          ...normalizeValues(values),
+          ...mapValues(values, normalizeValue),
         },
         hash: location.hash,
       },

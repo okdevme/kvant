@@ -1,6 +1,4 @@
 import type {
-  RouteParamsGeneric,
-  RouteParamsRawGeneric,
   RouteParamValue,
   RouteParamValueRaw,
 } from 'vue-router'
@@ -8,6 +6,7 @@ import type { KvantAdapterUpdateFn } from '../../types/adapter'
 import type { KvantVueAdapter } from '../../vue'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { mapValues, pick } from '../../utils/object'
 import { defineKvantState } from '../../vue'
 
 export interface RouteParamsKvantAdapterOptions {
@@ -18,16 +17,6 @@ export type RouteParamsKvantAdapter = KvantVueAdapter<
   RouteParamValue | RouteParamValue[],
   RouteParamsKvantAdapterOptions
 >
-
-function toSnapshot(
-  params: RouteParamsGeneric,
-  keys: string[],
-): Record<string, RouteParamValue | RouteParamValue[]> {
-  return Object.fromEntries(
-    Object.entries(params)
-      .filter(([key]) => keys.includes(key)),
-  )
-}
 
 function normalizeValue(
   value: unknown,
@@ -47,20 +36,11 @@ function normalizeValue(
     : String(value)
 }
 
-function normalizeValues(
-  values: Record<string, unknown>,
-): RouteParamsRawGeneric {
-  return Object.fromEntries(
-    Object.entries(values)
-      .map(([key, value]) => [key, normalizeValue(value)]),
-  )
-}
-
 export const useRouteParamsKvantAdapter: RouteParamsKvantAdapter = (keys) => {
   const router = useRouter()
   const route = useRoute()
 
-  const snapshot = computed(() => toSnapshot(route.params, keys))
+  const snapshot = computed(() => pick(route.params, keys))
 
   const update: KvantAdapterUpdateFn<RouteParamsKvantAdapterOptions> = (values, options = {}) => {
     const {
@@ -71,7 +51,7 @@ export const useRouteParamsKvantAdapter: RouteParamsKvantAdapter = (keys) => {
     router[mode]({
       params: {
         ...params,
-        ...normalizeValues(values),
+        ...mapValues(values, normalizeValue),
       },
       query,
       hash,
