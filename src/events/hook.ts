@@ -2,7 +2,7 @@
  * The source code for this function was inspired by vue-apollo's `useEventHook` util
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
  */
-import type { IsAny } from '../utils'
+import type { IsAny } from '../utils/types'
 
 // any extends void = true
 // so we need to check if T is any first

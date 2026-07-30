@@ -5,7 +5,7 @@ import type {
   KvantSchemaOutput,
   KvantSchemaRawInput,
 } from '../types/schema'
-import type { NoUndefined } from '../utils'
+import type { NoUndefined } from '../utils/types'
 import type { KvantArray } from './array'
 import type { KvantDefault, KvantDefaultOptions, KvantPrefault, KvantPrefaultOptions } from './default'
 import type { KvantJSON, KvantJSONOptions } from './json'

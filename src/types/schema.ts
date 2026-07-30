@@ -1,4 +1,4 @@
-import type { Prettify } from '../utils'
+import type { Prettify } from '../utils/types'
 
 export interface KvantSchema<Output, Input = Output, RawInput = unknown> {
   readonly parse: (value: RawInput) => Output

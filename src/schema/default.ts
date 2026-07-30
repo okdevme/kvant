@@ -1,7 +1,7 @@
 import type { KvantGenericSchema } from '../types/schema'
-import type { NoUndefined } from '../utils'
+import type { NoUndefined } from '../utils/types'
 import type { input, KvantType, output, rawInput } from './core'
-import { shallowClone } from '../utils'
+import { shallowClone } from '../utils/object'
 import { generics } from './core'
 
 const basicIsDefault = (value: unknown, defaultValue: unknown): boolean => value === defaultValue

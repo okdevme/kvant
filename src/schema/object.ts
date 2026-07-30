@@ -1,5 +1,5 @@
 import type { KvantGenericSchema } from '../types/schema'
-import type { Extend, Flatten, InferOptionality, Mask, Writeable } from '../utils'
+import type { Extend, Flatten, InferOptionality, Mask, Writeable } from '../utils/types'
 import type { KvantUnknown } from './any'
 import type { input, KvantType, output } from './core'
 import type { KvantOptional } from './optional'

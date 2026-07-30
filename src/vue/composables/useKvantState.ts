@@ -9,7 +9,7 @@ import type {
 } from '../../types/schema'
 import type { KvantVueAdapter, KvantVueAdapterOptions, KvantVueAdapterValue } from '../types/adapter'
 import { computed } from 'vue'
-import { noopSchema } from '../../core'
+import { noopSchema } from '../../utils/schema'
 import { useKvantStates } from './useKvantStates'
 
 export function useKvantState<

@@ -9,9 +9,10 @@ import type {
   KvantVueAdapterValue,
 } from '../types/adapter'
 import { onScopeDispose, ref, shallowRef, watch } from 'vue'
-import { parseMap, stateToUpdates, syncMap, updatesToObject } from '../../core'
 import { useEventBus } from '../../events/bus'
 import { isClient } from '../../globals'
+import { parseMap, syncMap } from '../../utils/map'
+import { stateToUpdates, updatesToObject } from '../../utils/sync'
 import { watchSyncIgnorable } from './watchSyncIgnorable'
 
 function useNormalizedAdapter<A extends KvantVueAdapter | KvantAdapter>(

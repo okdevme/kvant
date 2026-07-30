@@ -1,5 +1,5 @@
 import type { KvantGenericSchema } from '../types/schema'
-import type { MaybeMultiple } from '../utils'
+import type { MaybeMultiple } from '../utils/types'
 import type { input, KvantType, output, rawInput } from './core'
 import { generics } from './core'
 

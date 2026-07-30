@@ -1,5 +1,5 @@
-import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput, KvantSchema } from './types/schema'
-import type { Update } from './types/sync'
+import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput } from '../types/schema'
+import type { Update } from '../types/sync'
 
 export interface KeyMapCache<M extends KvantKeyMap> {
   snapshot: Record<string, KvantKeyMapRawInput<M> | undefined>
@@ -69,33 +69,4 @@ export function syncMap<M extends KvantKeyMap>(
     newState = { ...newState, [item.key]: state }
   })
   return newState
-}
-
-export function stateToUpdates<M extends KvantKeyMap>(
-  keyMap: M,
-  state: KvantKeyMapOutput<M>,
-): Update[] {
-  return Object.entries(state).map(([key, state]) => {
-    const schema = keyMap[key]!
-    const value = schema.encode(state)
-    return {
-      key,
-      value,
-      schema,
-      state,
-    }
-  })
-}
-
-export function updatesToObject(updates: Update[]): Record<string, unknown> {
-  return Object.fromEntries(
-    updates.map(({ key, value }) => [key, value]),
-  )
-}
-
-export function noopSchema<T>(): KvantSchema<T, T, T> {
-  return {
-    parse: value => value,
-    encode: value => value,
-  }
 }

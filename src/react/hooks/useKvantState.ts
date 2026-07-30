@@ -9,7 +9,7 @@ import type {
 } from '../../types/schema'
 import type { KvantReactAdapter, KvantReactAdapterOptions, KvantReactAdapterValue } from '../types/adapter'
 import { useCallback } from 'react'
-import { noopSchema } from '../../core'
+import { noopSchema } from '../../utils/schema'
 import { useKvantStates } from './useKvantStates'
 
 export function useKvantState<

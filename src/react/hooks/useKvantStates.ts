@@ -9,8 +9,9 @@ import type {
   KvantReactAdapterValue,
 } from '../types/adapter'
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
-import { parseMap, stateToUpdates, syncMap, updatesToObject } from '../../core'
 import { useEventBus } from '../../events/bus'
+import { parseMap, syncMap } from '../../utils/map'
+import { stateToUpdates, updatesToObject } from '../../utils/sync'
 
 function useNormalizedAdapter<A extends KvantReactAdapter | KvantAdapter>(
   adapter: A,
