@@ -18,11 +18,11 @@ import { watchSyncIgnorable } from './watchSyncIgnorable'
 function useNormalizedAdapter<A extends KvantVueAdapter | KvantAdapter>(
   adapter: A,
   keys: string[],
+  options: Partial<KvantVueAdapterOptions<A>>,
 ): KvantVueAdapterInterface<
-  KvantVueAdapterValue<A>,
-  KvantVueAdapterOptions<A>
+  KvantVueAdapterValue<A>
 > {
-  const api = adapter(keys)
+  const api = adapter(keys, options)
   if ('snapshot' in api)
     return api
 
@@ -50,7 +50,11 @@ export function useKvantStates<
   keyMap: M,
   options: Partial<KvantVueAdapterOptions<A>> = {},
 ): Ref<KvantKeyMapOutput<M>> {
-  const { key: adapterKey, snapshot, update } = useNormalizedAdapter(adapter, Object.keys(keyMap))
+  const { key: adapterKey, snapshot, update } = useNormalizedAdapter(
+    adapter,
+    Object.keys(keyMap),
+    options,
+  )
 
   const internalState = ref(
     parseMap(
@@ -73,7 +77,7 @@ export function useKvantStates<
     bus.emit({ type: 'sync', updates })
 
     // TODO: Throttle, debounce
-    update(updatesToObject(updates), options)
+    update(updatesToObject(updates))
   }, { deep: true })
 
   watch(snapshot, (snapshot) => {

@@ -55,7 +55,13 @@ function renderURL(searchParams: URLSearchParams): string {
   return origin + pathname + search + hash
 }
 
-export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys) => {
+export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, options = {}) => {
+  const {
+    history: historyMethod = 'replace',
+    shallow = true,
+    scroll = false,
+  } = options
+
   const router = useRouter()
   const searchParams = _useSearchParams()
   const [optimisticSearchParams, setOptimisticSearchParams]
@@ -65,13 +71,7 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys) => {
     [optimisticSearchParams],
   )
 
-  const update: KvantAdapterUpdateFn<SearchParamsKvantAdapterOptions> = useCallback((values, options = {}) => {
-    const {
-      history: historyMethod = 'replace',
-      shallow = true,
-      scroll = false,
-    } = options
-
+  const update: KvantAdapterUpdateFn = useCallback((values) => {
     startTransition(() => {
       const search = applyValues(
         new URLSearchParams(location.search),

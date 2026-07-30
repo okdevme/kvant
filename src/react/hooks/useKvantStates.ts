@@ -16,14 +16,14 @@ import { stateToUpdates, updatesToObject } from '../../utils/sync'
 function useNormalizedAdapter<A extends KvantReactAdapter | KvantAdapter>(
   adapter: A,
   keys: string[],
+  options: Partial<KvantReactAdapterOptions<A>>,
 ): KvantReactAdapterInterface<
-  KvantReactAdapterValue<A>,
-  KvantReactAdapterOptions<A>
+  KvantReactAdapterValue<A>
 > {
   const standaloneAdapterRef = useRef<KvantAdapterInterface>(null)
 
   if (!standaloneAdapterRef.current) {
-    const api = adapter(keys)
+    const api = adapter(keys, options)
     if ('snapshot' in api)
       return api
 
@@ -57,7 +57,11 @@ export function useKvantStates<
   KvantKeyMapOutput<M>,
   Dispatch<SetStateAction<KvantKeyMapOutput<M>>>,
 ] {
-  const { key: adapterKey, snapshot, update } = useNormalizedAdapter(adapter, Object.keys(keyMap))
+  const { key: adapterKey, snapshot, update } = useNormalizedAdapter(
+    adapter,
+    Object.keys(keyMap),
+    options,
+  )
 
   const [internalState, setInternalState] = useState<KvantKeyMapOutput<M>>(
     () => parseMap(
@@ -82,11 +86,8 @@ export function useKvantStates<
     bus.emit({ type: 'sync', updates })
 
     // TODO: Throttle, debounce
-    update(updatesToObject(updates), options)
-  }, [
-    ...Object.entries(options).flat(),
-    bus.emit,
-  ])
+    update(updatesToObject(updates))
+  }, [])
 
   useEffect(() => {
     const state = parseMap(

@@ -36,17 +36,17 @@ function normalizeValue(
     : String(value)
 }
 
-export const useRouteParamsKvantAdapter: RouteParamsKvantAdapter = (keys) => {
+export const useRouteParamsKvantAdapter: RouteParamsKvantAdapter = (keys, options = {}) => {
+  const {
+    history: mode = 'replace',
+  } = options
+
   const router = useRouter()
   const route = useRoute()
 
   const snapshot = computed(() => pick(route.params, keys))
 
-  const update: KvantAdapterUpdateFn<RouteParamsKvantAdapterOptions> = (values, options = {}) => {
-    const {
-      history: mode = 'replace',
-    } = options
-
+  const update: KvantAdapterUpdateFn = (values) => {
     const { params, query, hash } = route
     router[mode]({
       params: {

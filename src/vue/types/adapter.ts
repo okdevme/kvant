@@ -7,19 +7,19 @@ import type {
   KvantAdapterValue,
 } from '../../types/adapter'
 
-export interface KvantVueAdapterInterface<
-  T = any,
-  Options extends object = Record<string, unknown>,
-> {
+export interface KvantVueAdapterInterface<T = any> {
   readonly key: string
   readonly snapshot: Readonly<Ref<Record<string, T | undefined>>>
-  readonly update: KvantAdapterUpdateFn<Options>
+  readonly update: KvantAdapterUpdateFn
 }
 
 export type KvantVueAdapter<
   T = any,
   Options extends object = Record<string, unknown>,
-> = (keys: string[]) => KvantVueAdapterInterface<T, Options>
+> = (
+  keys: string[],
+  options: Partial<Options>,
+) => KvantVueAdapterInterface<T>
 
 export type KvantVueAdapterValue<
   T extends KvantVueAdapter | KvantVueAdapterInterface | KvantAdapter | KvantAdapterInterface,
@@ -32,11 +32,9 @@ export type KvantVueAdapterValue<
       : never
 
 export type KvantVueAdapterOptions<
-  T extends KvantVueAdapter | KvantVueAdapterInterface | KvantAdapter | KvantAdapterInterface,
+  T extends KvantVueAdapter | KvantAdapter,
 > = T extends KvantVueAdapter<any, infer U>
   ? U
-  : T extends KvantVueAdapterInterface<any, infer U>
-    ? U
-    : T extends KvantAdapter | KvantAdapterInterface
-      ? KvantAdapterOptions<T>
-      : never
+  : T extends KvantAdapter
+    ? KvantAdapterOptions<T>
+    : never

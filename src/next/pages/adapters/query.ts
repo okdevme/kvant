@@ -51,20 +51,20 @@ function normalizeValue(
     : normalizeItem(value)
 }
 
-export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys) => {
+export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys, options = {}) => {
+  const {
+    history: historyMethod = 'replace',
+    shallow = true,
+    scroll = false,
+  } = options
+
   const router = useRouter()
   const snapshot = useMemo(
     () => pick(router.query, keys),
     [JSON.stringify(router.query)],
   )
 
-  const update: KvantAdapterUpdateFn<RouterQueryKvantAdapterOptions> = useCallback((values, options = {}) => {
-    const {
-      history: historyMethod = 'replace',
-      shallow = true,
-      scroll = false,
-    } = options
-
+  const update: KvantAdapterUpdateFn = useCallback((values) => {
     // While the Next.js team doesn't recommend using internals like this,
     // we need direct access to the pages router, as a bound/closured version from
     // useRouter may be out of date by the time the updateUrl function is called,
