@@ -17,6 +17,7 @@
     ".": "./dist/index.mjs",
     "./next/app": "./dist/next/app.mjs",
     "./next/pages": "./dist/next/pages.mjs",
+    "./nuxt": "./dist/nuxt.mjs",
     "./react": "./dist/react.mjs",
     "./schema": "./dist/schema.mjs",
     "./vue": "./dist/vue.mjs",
@@ -37,12 +38,16 @@
   },
   "peerDependencies": {
     "next": ">=14.2.0",
+    "nuxt": ">=3.0.0",
     "react": ">=18.0.0",
     "vue": ">=3.0.0",
     "vue-router": ">=4.0.0"
   },
   "peerDependenciesMeta": {
     "next": {
+      "optional": true
+    },
+    "nuxt": {
       "optional": true
     },
     "react": {
@@ -62,6 +67,7 @@
     "eslint": "catalog:",
     "jiti": "catalog:",
     "lint-staged": "catalog:",
+    "nuxt": "catalog:",
     "publint": "catalog:",
     "react": "catalog:",
     "simple-git-hooks": "catalog:",

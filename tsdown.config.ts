@@ -9,6 +9,7 @@ export default defineConfig({
     'next/pages': 'src/next/pages/index.ts',
     'vue': 'src/vue/index.ts',
     'vue-router': 'src/vue-router/index.ts',
+    'nuxt': 'src/nuxt/index.ts',
   },
   dts: true,
   exports: true,
