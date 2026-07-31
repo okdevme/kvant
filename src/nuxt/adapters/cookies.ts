@@ -62,4 +62,7 @@ export const useCookiesKvantAdapter: CookiesKvantAdapter = (keys, options) => {
   }
 }
 
-export const useCookies = defineKvantState(useCookiesKvantAdapter)
+export const {
+  useState: useCookies,
+  provideOptions: provideCookiesOptions,
+} = defineKvantState(useCookiesKvantAdapter)

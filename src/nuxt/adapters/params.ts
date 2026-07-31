@@ -66,4 +66,7 @@ export const useRouteParamsKvantAdapter: RouteParamsKvantAdapter = (keys, option
   }
 }
 
-export const useRouteParams = defineKvantState(useRouteParamsKvantAdapter)
+export const {
+  useState: useRouteParams,
+  provideOptions: provideRouteParamsOptions,
+} = defineKvantState(useRouteParamsKvantAdapter)

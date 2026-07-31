@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { InjectionKey, Ref } from 'vue'
 import type { KvantAdapter } from '../../types/adapter'
 import type {
   KvantGenericSchema,
@@ -8,6 +8,7 @@ import type {
   KvantSchemaOutput,
 } from '../../types/schema'
 import type { KvantVueAdapter, KvantVueAdapterOptions, KvantVueAdapterValue } from '../types/adapter'
+import { inject, provide } from 'vue'
 import { useKvantState } from '../composables/useKvantState'
 
 export interface UseKvantState<A extends KvantVueAdapter | KvantAdapter> {
@@ -30,22 +31,33 @@ export interface UseKvantState<A extends KvantVueAdapter | KvantAdapter> {
   ): Ref<KvantKeyMapOutput<M>>
 }
 
+export type KvantOptionsProvider<A extends KvantVueAdapter | KvantAdapter>
+  = (defaultOptions: Partial<KvantVueAdapterOptions<A>>) => void
+
 export function defineKvantState<
   A extends KvantVueAdapter | KvantAdapter,
 >(
   adapter: A,
   defaultOptions?: Partial<KvantVueAdapterOptions<A>>,
-): UseKvantState<A> {
-  return ((
+): {
+  useState: UseKvantState<A>
+  provideOptions: KvantOptionsProvider<A>
+} {
+  const optionsContextSymbol = Symbol('defineKvantState.optionsContext') as InjectionKey<Partial<KvantVueAdapterOptions<A>>>
+
+  const useState = ((
     keyOrMap: string | KvantKeyMap<KvantVueAdapterValue<A>>,
     schemaOrOptions?: KvantGenericSchema<KvantVueAdapterValue<A>> | Partial<KvantVueAdapterOptions<A>>,
     options?: Partial<KvantVueAdapterOptions<A>>,
   ) => {
+    const contextOptions = inject(optionsContextSymbol, {})
+    const resolvedOptions: Partial<KvantVueAdapterOptions<A>> = { ...defaultOptions, ...contextOptions }
+
     if (typeof keyOrMap === 'object') {
       return useKvantState(
         adapter,
         keyOrMap,
-        { ...defaultOptions, ...schemaOrOptions } as Partial<KvantVueAdapterOptions<A>>,
+        { ...resolvedOptions, ...schemaOrOptions } as Partial<KvantVueAdapterOptions<A>>,
       )
     }
 
@@ -53,7 +65,13 @@ export function defineKvantState<
       adapter,
       keyOrMap,
       schemaOrOptions as KvantGenericSchema<KvantVueAdapterValue<A>>,
-      { ...defaultOptions, ...options } as Partial<KvantVueAdapterOptions<A>>,
+      { ...resolvedOptions, ...options } as Partial<KvantVueAdapterOptions<A>>,
     )
   }) as UseKvantState<A>
+
+  const provideOptions: KvantOptionsProvider<A> = (defaultOptions) => {
+    provide(optionsContextSymbol, defaultOptions)
+  }
+
+  return { useState, provideOptions }
 }

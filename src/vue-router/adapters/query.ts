@@ -62,4 +62,7 @@ export const useRouteQueryKvantAdapter: RouteQueryKvantAdapter = (keys, options)
   }
 }
 
-export const useRouteQuery = defineKvantState(useRouteQueryKvantAdapter)
+export const {
+  useState: useRouteQuery,
+  provideOptions: provideRouteQueryOptions,
+} = defineKvantState(useRouteQueryKvantAdapter)
