@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import type { KvantAdapter } from '../../types/adapter'
 import type {
   KvantGenericSchema,
@@ -8,6 +8,11 @@ import type {
   KvantSchemaOutput,
 } from '../../types/schema'
 import type { KvantReactAdapter, KvantReactAdapterOptions, KvantReactAdapterValue } from '../types/adapter'
+import {
+  createContext,
+  createElement,
+  useContext,
+} from 'react'
 import { useKvantState } from '../hooks/useKvantState'
 
 export interface UseKvantState<A extends KvantReactAdapter | KvantAdapter> {
@@ -36,22 +41,37 @@ export interface UseKvantState<A extends KvantReactAdapter | KvantAdapter> {
   ]
 }
 
+export interface KvantOptionsProviderProps<A extends KvantReactAdapter | KvantAdapter> {
+  defaultOptions: Partial<KvantReactAdapterOptions<A>>
+  children?: ReactNode
+}
+
+export type KvantOptionsProvider<A extends KvantReactAdapter | KvantAdapter> = (props: KvantOptionsProviderProps<A>) => ReactNode
+
 export function defineKvantState<
   A extends KvantReactAdapter | KvantAdapter,
 >(
   adapter: A,
   defaultOptions?: Partial<KvantReactAdapterOptions<A>>,
-): UseKvantState<A> {
-  return ((
+): {
+  useState: UseKvantState<A>
+  OptionsProvider: KvantOptionsProvider<A>
+} {
+  const OptionsContext = createContext<Partial<KvantReactAdapterOptions<A>>>({})
+
+  const useState = ((
     keyOrMap: string | KvantKeyMap<KvantReactAdapterValue<A>>,
     schemaOrOptions?: KvantGenericSchema<KvantReactAdapterValue<A>> | Partial<KvantReactAdapterOptions<A>>,
     options?: Partial<KvantReactAdapterOptions<A>>,
   ) => {
+    const contextOptions = useContext(OptionsContext)
+    const resolvedOptions: Partial<KvantReactAdapterOptions<A>> = { ...defaultOptions, ...contextOptions }
+
     if (typeof keyOrMap === 'object') {
       return useKvantState(
         adapter,
         keyOrMap,
-        { ...defaultOptions, ...schemaOrOptions } as Partial<KvantReactAdapterOptions<A>>,
+        { ...resolvedOptions, ...schemaOrOptions } as Partial<KvantReactAdapterOptions<A>>,
       )
     }
 
@@ -59,7 +79,13 @@ export function defineKvantState<
       adapter,
       keyOrMap,
       schemaOrOptions as KvantGenericSchema<KvantReactAdapterValue<A>>,
-      { ...defaultOptions, ...options } as Partial<KvantReactAdapterOptions<A>>,
+      { ...resolvedOptions, ...options } as Partial<KvantReactAdapterOptions<A>>,
     )
   }) as UseKvantState<A>
+
+  const OptionsProvider: KvantOptionsProvider<A> = ({ defaultOptions, children }) => {
+    return createElement(OptionsContext.Provider, { value: defaultOptions }, children)
+  }
+
+  return { useState, OptionsProvider }
 }

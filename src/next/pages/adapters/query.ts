@@ -94,4 +94,7 @@ export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys, option
   }
 }
 
-export const useRouterQuery = defineKvantState(useRouterQueryKvantAdapter)
+export const {
+  useState: useRouterQuery,
+  OptionsProvider: RouterQueryOptionsProvider,
+} = defineKvantState(useRouterQueryKvantAdapter)

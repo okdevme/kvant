@@ -1,4 +1,7 @@
 import { useSearchParamsKvantAdapter } from '../../adapters/searchParams'
 import { defineKvantState } from '../utils/defineKvantState'
 
-export const useSearchParams = defineKvantState(useSearchParamsKvantAdapter)
+export const {
+  useState: useSearchParams,
+  OptionsProvider: SearchParamsOptionsProvider,
+} = defineKvantState(useSearchParamsKvantAdapter)

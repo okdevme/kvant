@@ -1,3 +1,4 @@
+'use client'
 export * from './adapters/cookies'
 export * from './adapters/searchParams'
 export * from './adapters/storage'

@@ -54,4 +54,7 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
   }
 }
 
-export const useSearchParams = defineKvantState(useSearchParamsKvantAdapter)
+export const {
+  useState: useSearchParams,
+  OptionsProvider: SearchParamsOptionsProvider,
+} = defineKvantState(useSearchParamsKvantAdapter)
