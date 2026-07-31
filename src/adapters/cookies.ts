@@ -1,14 +1,16 @@
 import type { KvantAdapter, KvantAdapterUpdateFn } from '../types/adapter'
 import type { SyncEvent, Update } from '../types/sync'
 import type { SetCookie } from '../utils/cookie'
+import type { SnapshotRaw } from '../utils/snapshot'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
 import { defaultWindow, isClient } from '../globals'
 import { decodeCookieValue, parseCookie, stringifySetCookie } from '../utils/cookie'
+import { normalizeSnapshot } from '../utils/snapshot'
 
-import { pick } from '../utils/object'
-
-export interface CookiesKvantAdapterOptions extends Omit<SetCookie, 'name' | 'value'> {}
+export interface CookiesKvantAdapterOptions extends Omit<SetCookie, 'name' | 'value'> {
+  fallback?: string | SnapshotRaw<string | undefined>
+}
 
 export type CookiesKvantAdapter = KvantAdapter<
   string,
@@ -16,8 +18,16 @@ export type CookiesKvantAdapter = KvantAdapter<
 >
 
 export const useCookiesKvantAdapter: CookiesKvantAdapter = (keys, options) => {
-  let snapshot = pick(
-    parseCookie(defaultWindow?.document.cookie ?? ''),
+  const {
+    fallback = {},
+  } = options
+
+  let snapshot = normalizeSnapshot(
+    defaultWindow
+      ? parseCookie(defaultWindow.document.cookie)
+      : typeof fallback === 'string'
+        ? parseCookie(fallback)
+        : fallback,
     keys,
   )
 

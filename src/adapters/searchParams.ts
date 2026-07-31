@@ -1,12 +1,15 @@
 import type { KvantAdapter, KvantAdapterUpdateFn } from '../types/adapter'
+import type { SnapshotRaw } from '../utils/snapshot'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
 import { defaultWindow, isClient } from '../globals'
 import { applySearchValues, searchToObject, withSearch } from '../utils/search'
+import { normalizeSnapshot } from '../utils/snapshot'
 
 export interface SearchParamsKvantAdapterOptions {
   history?: 'push' | 'replace'
   scroll?: boolean
+  fallback?: string | URLSearchParams | SnapshotRaw<string | string[] | undefined>
 }
 
 export type SearchParamsKvantAdapter = KvantAdapter<
@@ -18,10 +21,18 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
   const {
     history: mode = 'replace',
     scroll = false,
+    fallback = {},
   } = options
 
   let search = defaultWindow?.location.search ?? ''
-  let snapshot = searchToObject(search, keys)
+  let snapshot = normalizeSnapshot(
+    defaultWindow
+      ? searchToObject(defaultWindow.location.search, keys)
+      : typeof fallback === 'string' || fallback instanceof URLSearchParams
+        ? searchToObject(fallback, keys)
+        : fallback,
+    keys,
+  )
 
   const adapterKey = 'search-params'
   const bus = useEventBus<'sync'>(`adapter:${adapterKey}`)
@@ -47,7 +58,10 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
   }
 
   const update: KvantAdapterUpdateFn = (values) => {
-    defaultWindow?.history[`${mode}State`](
+    if (!defaultWindow)
+      return
+
+    defaultWindow.history[`${mode}State`](
       defaultWindow.history.state,
       '',
       withSearch(

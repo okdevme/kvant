@@ -1,16 +1,32 @@
 import type { KvantAdapter, KvantAdapterInterface, KvantAdapterUpdateFn } from '../types/adapter'
 import type { SyncEvent, Update } from '../types/sync'
+import type { SnapshotRaw } from '../utils/snapshot'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
 import { defaultWindow, isClient } from '../globals'
+import { mapValues } from '../utils/object'
+import { normalizeSnapshot } from '../utils/snapshot'
+
+export interface StorageKvantAdapterOptions {
+  fallback?: SnapshotRaw<string | null | undefined>
+}
 
 export function useStorageKvantAdapter(
   storage: Storage | undefined,
   storageKey: string,
   keys: string[],
+  options: StorageKvantAdapterOptions,
 ): KvantAdapterInterface<string> {
-  let snapshot: Record<string, string | undefined> = Object.fromEntries(
-    keys.map(key => [key, storage?.getItem(key) ?? undefined]),
+  const {
+    fallback = {},
+  } = options
+
+  let snapshot: Record<string, string | undefined> = mapValues(
+    normalizeSnapshot(
+      storage?.getItem ?? fallback,
+      keys,
+    ),
+    value => value ?? undefined,
   )
 
   const adapterKey = `storage:${storageKey}`
@@ -64,14 +80,17 @@ export function useStorageKvantAdapter(
   }
 
   const update: KvantAdapterUpdateFn = (values) => {
+    if (!storage)
+      return
+
     const updates: Update[] = []
     for (const key in values) {
       const value = values[key] !== undefined ? String(values[key]) : undefined
 
       if (value !== undefined)
-        storage?.setItem(key, value)
+        storage.setItem(key, value)
       else
-        storage?.removeItem(key)
+        storage.removeItem(key)
 
       updates.push({ key, value })
     }
@@ -92,7 +111,7 @@ export function useStorageKvantAdapter(
 export type StorageKvantAdapter = KvantAdapter<string>
 
 export const useLocalStorageKvantAdapter: StorageKvantAdapter
-  = keys => useStorageKvantAdapter(defaultWindow?.localStorage, 'local', keys)
+  = (keys, options) => useStorageKvantAdapter(defaultWindow?.localStorage, 'local', keys, options)
 
 export const useSessionStorageKvantAdapter: StorageKvantAdapter
-  = keys => useStorageKvantAdapter(defaultWindow?.sessionStorage, 'session', keys)
+  = (keys, options) => useStorageKvantAdapter(defaultWindow?.sessionStorage, 'session', keys, options)
