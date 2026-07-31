@@ -42,7 +42,7 @@ export function watchSyncIgnorable<
 /**
  * Extended watch that exposes an `ignoreUpdates(updater)` function that allows to update the source without triggering effects
  *
- * Ported from [VueUse](https://github.com/vueuse/vueuse/blob/e6c1d8ed08c14726af9b17020e96f5a3bdcf8d74/packages/shared/utils/types.ts)
+ * Ported from [VueUse](https://github.com/vueuse/vueuse/blob/e6c1d8ed08c14726af9b17020e96f5a3bdcf8d74/packages/shared/watchIgnorable/index.ts)
  * and stripped to support only `flush: 'sync'`
  *
  * @param source
