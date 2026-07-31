@@ -9,7 +9,7 @@ export function useStorageKvantAdapter(
   storageKey: string,
   keys: string[],
 ): KvantAdapterInterface<string> {
-  let cache: Record<string, string | undefined> = Object.fromEntries(
+  let snapshot: Record<string, string | undefined> = Object.fromEntries(
     keys.map(key => [key, storage?.getItem(key) ?? undefined]),
   )
 
@@ -22,12 +22,12 @@ export function useStorageKvantAdapter(
     for (const item of event.updates) {
       if (
         !keys.includes(item.key)
-        || item.value === cache[item.key]
+        || item.value === snapshot[item.key]
       ) {
         continue
       }
 
-      cache = { ...cache, [item.key]: item.value }
+      snapshot = { ...snapshot, [item.key]: item.value }
       hasChanged = true
     }
 
@@ -67,8 +67,6 @@ export function useStorageKvantAdapter(
     const updates: Update[] = []
     for (const key in values) {
       const value = values[key] !== undefined ? String(values[key]) : undefined
-      if (value === cache[key])
-        continue
 
       if (value !== undefined)
         storage?.setItem(key, value)
@@ -85,7 +83,7 @@ export function useStorageKvantAdapter(
   return {
     key: adapterKey,
     subscribe: hook.on,
-    getSnapshot: () => cache,
+    getSnapshot: () => snapshot,
     update,
     dispose,
   }
