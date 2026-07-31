@@ -19,7 +19,7 @@ export type SearchParamsKvantAdapter = KvantReactAdapter<
 
 export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, options) => {
   const {
-    history: historyMethod = 'replace',
+    history: mode = 'replace',
     shallow = true,
     scroll = false,
   } = options
@@ -44,7 +44,7 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
         setOptimisticSearchParams(search)
       }
       const url = withSearch(location, search).toString()
-      history[`${historyMethod}State`](
+      history[`${mode}State`](
         null,
         '',
         url,

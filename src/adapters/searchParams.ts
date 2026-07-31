@@ -16,7 +16,7 @@ export type SearchParamsKvantAdapter = KvantAdapter<
 
 export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, options) => {
   const {
-    history: historyMethod = 'replace',
+    history: mode = 'replace',
     scroll = false,
   } = options
 
@@ -47,7 +47,7 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
   }
 
   const update: KvantAdapterUpdateFn = (values) => {
-    defaultWindow?.history[`${historyMethod}State`](
+    defaultWindow?.history[`${mode}State`](
       defaultWindow.history.state,
       '',
       withSearch(

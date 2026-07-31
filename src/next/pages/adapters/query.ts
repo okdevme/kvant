@@ -53,7 +53,7 @@ function normalizeValue(
 
 export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys, options) => {
   const {
-    history: historyMethod = 'replace',
+    history: mode = 'replace',
     shallow = true,
     scroll = false,
   } = options
@@ -73,7 +73,7 @@ export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys, option
     if (!router)
       return
 
-    router[historyMethod](
+    router[mode](
       {
         pathname: router.pathname,
         query: {
