@@ -19,6 +19,7 @@
     "./next/pages": "./dist/next/pages.mjs",
     "./nuxt": "./dist/nuxt.mjs",
     "./react": "./dist/react.mjs",
+    "./react-router": "./dist/react-router.mjs",
     "./schema": "./dist/schema.mjs",
     "./vue": "./dist/vue.mjs",
     "./vue-router": "./dist/vue-router.mjs",
@@ -40,6 +41,7 @@
     "next": ">=14.2.0",
     "nuxt": ">=3.0.0",
     "react": ">=18.0.0",
+    "react-router": ">=7.0.0",
     "vue": ">=3.0.0",
     "vue-router": ">=4.0.0"
   },
@@ -51,6 +53,9 @@
       "optional": true
     },
     "react": {
+      "optional": true
+    },
+    "react-router": {
       "optional": true
     },
     "vue": {
@@ -70,6 +75,7 @@
     "nuxt": "catalog:",
     "publint": "catalog:",
     "react": "catalog:",
+    "react-router": "catalog:",
     "simple-git-hooks": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
