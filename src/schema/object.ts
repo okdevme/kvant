@@ -1,10 +1,12 @@
 import type { KvantGenericSchema } from '../types/schema'
-import type { Extend, Flatten, InferOptionality, Mask, Writeable } from '../utils/types'
+import type { Extend, Flatten, InferOptionality, Mask, ToEnum, Writeable } from '../utils/types'
 import type { KvantUnknown } from './any'
 import type { input, KvantType, output } from './core'
+import type { KvantEnum } from './enum'
 import type { KvantOptional } from './optional'
 import { unknown } from './any'
 import { generics } from './core'
+import { _enum } from './enum'
 import { optional } from './optional'
 
 type ObjectShape<K extends PropertyKey = string> = Readonly<Record<K, KvantGenericSchema>>
@@ -45,6 +47,8 @@ export interface KvantObject<
   readonly type: 'object'
   readonly shape: Shape
 
+  readonly keyof: () => KvantEnum<ToEnum<keyof Shape & string>>
+
   readonly catchall: <T extends KvantGenericSchema>(schema: T) => KvantObject<Shape, T>
 
   readonly extend: <T extends ObjectShape>(shape: T) => KvantObject<Extend<Shape, Writeable<T>>, Catchall>
@@ -81,7 +85,6 @@ export interface KvantObject<
   }
 }
 
-// TODO: keyof() method (after KvantEnum implementation)
 export function object<
   Shape extends ObjectShape,
   Catchall extends KvantGenericSchema | undefined = undefined,
@@ -129,6 +132,10 @@ export function object<
     // @ts-expect-error complex dynamic type
     encode(value) {
       return produce('encode', value)
+    },
+    // @ts-expect-error complex dynamic type
+    keyof() {
+      return _enum(Object.keys(shape))
     },
     catchall(schema) {
       return object(shape, schema)

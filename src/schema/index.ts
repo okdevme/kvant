@@ -5,6 +5,7 @@ export type { output as infer, input, KvantType, output, rawInput } from './core
 export * from './custom'
 export * from './date'
 export * from './default'
+export * from './enum'
 export * from './json'
 export * from './nullable'
 export * from './number'

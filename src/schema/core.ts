@@ -124,6 +124,7 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     | 'date'
     | 'object'
     | 'array'
+    | 'enum'
 }
 
 export const generics: KvantTypeGenerics = {
