@@ -35,7 +35,7 @@ export interface UseEventBusReturn<T, P> {
   reset: () => void
 }
 
-export const events = new Map<EventBusIdentifier<any>, EventBusEvents<any>>()
+const events = new Map<EventBusIdentifier<any>, EventBusEvents<any>>()
 
 /* @__NO_SIDE_EFFECTS__ */
 export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): UseEventBusReturn<T, P> {
