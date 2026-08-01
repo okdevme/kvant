@@ -37,6 +37,11 @@ export type rawInput<S extends KvantGenericSchema>
   = KvantSchemaRawInput<S>
 
 export interface KvantTypeGenerics {
+  readonly decode: <S extends KvantGenericSchema>(
+    this: S,
+    value: rawInput<S>,
+  ) => output<S>
+
   readonly optional: <S extends KvantGenericSchema>(this: S) => KvantOptional<S>
   readonly nullable: <S extends KvantGenericSchema>(this: S) => KvantNullable<S>
   readonly array: <S extends KvantGenericSchema>(this: S) => KvantArray<S>
@@ -120,6 +125,10 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
 }
 
 export const generics: KvantTypeGenerics = {
+  decode(value) {
+    return this.parse(value)
+  },
+
   optional() {
     return optional(this)
   },
