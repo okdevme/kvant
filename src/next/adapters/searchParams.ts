@@ -1,10 +1,10 @@
-import type { KvantReactAdapter } from '../../../react'
-import type { KvantAdapterUpdateFn } from '../../../types/adapter'
+import type { KvantReactAdapter } from '../../react'
+import type { KvantAdapterUpdateFn } from '../../types/adapter'
 import { useSearchParams as _useSearchParams, useRouter } from 'next/navigation'
 import { startTransition, useCallback, useMemo, useOptimistic } from 'react'
-import { defaultWindow } from '../../../globals'
-import { defineKvantState } from '../../../react'
-import { applySearchValues, searchToObject, withSearch } from '../../../utils/search'
+import { defaultWindow } from '../../globals'
+import { defineKvantState } from '../../react'
+import { applySearchValues, searchToObject, withSearch } from '../../utils/search'
 
 export interface SearchParamsKvantAdapterOptions {
   history?: 'push' | 'replace'

@@ -5,7 +5,7 @@ export default defineConfig({
     'index': 'src/index.ts',
     'schema': 'src/schema/index.ts',
     'react': 'src/react/index.ts',
-    'next/app': 'src/next/app/index.ts',
+    'next': 'src/next/index.ts',
     'next/pages': 'src/next/pages/index.ts',
     'react-router': 'src/react-router/index.ts',
     'vue': 'src/vue/index.ts',

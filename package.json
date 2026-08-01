@@ -15,7 +15,7 @@
   },
   "exports": {
     ".": "./dist/index.mjs",
-    "./next/app": "./dist/next/app.mjs",
+    "./next": "./dist/next.mjs",
     "./next/pages": "./dist/next/pages.mjs",
     "./nuxt": "./dist/nuxt.mjs",
     "./react": "./dist/react.mjs",
