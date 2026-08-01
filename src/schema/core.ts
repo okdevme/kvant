@@ -44,6 +44,8 @@ export interface KvantTypeGenerics {
 
   readonly optional: <S extends KvantGenericSchema>(this: S) => KvantOptional<S>
   readonly nullable: <S extends KvantGenericSchema>(this: S) => KvantNullable<S>
+  readonly nullish: <S extends KvantGenericSchema>(this: S) => KvantOptional<KvantNullable<S>>
+
   readonly array: <S extends KvantGenericSchema>(this: S) => KvantArray<S>
 
   readonly default: <
@@ -135,6 +137,10 @@ export const generics: KvantTypeGenerics = {
   nullable() {
     return nullable(this)
   },
+  nullish() {
+    return optional(nullable(this))
+  },
+
   array() {
     return array(this)
   },
