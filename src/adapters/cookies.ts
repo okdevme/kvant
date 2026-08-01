@@ -96,7 +96,7 @@ export const useCookiesKvantAdapter: CookiesKvantAdapter = (keys, options) => {
         ...options,
         name: key,
         value,
-        expires: value === undefined ? new Date(0) : options.expires,
+        maxAge: value === undefined ? 0 : options.maxAge,
       })
 
       updates.push({ key, value })

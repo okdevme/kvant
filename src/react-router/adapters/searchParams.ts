@@ -6,6 +6,7 @@ import { defaultWindow } from '../../globals'
 import { defineKvantState } from '../../react'
 import { applySearchValues, searchToObject, withSearch } from '../../utils/search'
 
+// TODO: shallow routing
 export interface SearchParamsKvantAdapterOptions {
   history?: 'push' | 'replace'
   scroll?: boolean

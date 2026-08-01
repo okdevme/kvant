@@ -31,8 +31,12 @@ export interface UseKvantState<A extends KvantVueAdapter | KvantAdapter> {
   ): Ref<KvantKeyMapOutput<M>>
 }
 
+export interface KvantOptionsProviderOptions {
+  extend?: boolean
+}
+
 export type KvantOptionsProvider<A extends KvantVueAdapter | KvantAdapter>
-  = (defaultOptions: Partial<KvantVueAdapterOptions<A>>) => void
+  = (defaultOptions: Partial<KvantVueAdapterOptions<A>>, options?: KvantOptionsProviderOptions) => void
 
 export function defineKvantState<
   A extends KvantVueAdapter | KvantAdapter,
@@ -69,8 +73,14 @@ export function defineKvantState<
     )
   }) as UseKvantState<A>
 
-  const provideOptions: KvantOptionsProvider<A> = (defaultOptions) => {
-    provide(optionsContextSymbol, defaultOptions)
+  const provideOptions: KvantOptionsProvider<A> = (defaultOptions, options = {}) => {
+    const { extend = true } = options
+    provide(
+      optionsContextSymbol,
+      extend
+        ? { ...inject(optionsContextSymbol, {}), ...defaultOptions }
+        : defaultOptions,
+    )
   }
 
   return { useState, provideOptions }

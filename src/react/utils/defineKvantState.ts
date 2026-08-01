@@ -43,6 +43,7 @@ export interface UseKvantState<A extends KvantReactAdapter | KvantAdapter> {
 
 export interface KvantOptionsProviderProps<A extends KvantReactAdapter | KvantAdapter> {
   defaultOptions: Partial<KvantReactAdapterOptions<A>>
+  extend?: boolean
   children?: ReactNode
 }
 
@@ -83,8 +84,13 @@ export function defineKvantState<
     )
   }) as UseKvantState<A>
 
-  const OptionsProvider: KvantOptionsProvider<A> = ({ defaultOptions, children }) => {
-    return createElement(OptionsContext.Provider, { value: defaultOptions }, children)
+  const OptionsProvider: KvantOptionsProvider<A> = ({ defaultOptions, extend = true, children }) => {
+    const contextOptions = useContext(OptionsContext)
+    return createElement(OptionsContext.Provider, {
+      value: extend
+        ? { ...contextOptions, ...defaultOptions }
+        : defaultOptions,
+    }, children)
   }
 
   return { useState, OptionsProvider }
