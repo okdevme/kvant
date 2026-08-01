@@ -7,7 +7,7 @@ export interface KvantJSONOptions {
   space?: string | number
 }
 
-export interface KvantJSON extends KvantType<unknown, string | undefined> {
+export interface KvantJSON extends KvantType<unknown, string> {
   readonly type: 'json'
 }
 
@@ -29,13 +29,7 @@ export function json(
       }
     },
     encode(value) {
-      try {
-        return JSON.stringify(value, options?.replacer, options?.space)
-      }
-      catch (error) {
-        console.error('[kvant] Failed to stringify value', value, 'to JSON:', error)
-        return undefined
-      }
+      return JSON.stringify(value, options?.replacer, options?.space)
     },
   }
 }

@@ -7,6 +7,8 @@ import { defineKvantState } from '../../react'
 import { applySearchValues, searchToObject, withSearch } from '../../utils/search'
 
 // TODO: shallow routing
+// react-router doesn't have first-party support for it,
+// so we will have to set up custom useSearchParams hook and patch native history API
 export interface SearchParamsKvantAdapterOptions {
   history?: 'push' | 'replace'
   scroll?: boolean

@@ -14,6 +14,7 @@ import type { KvantOptional } from './optional'
 import type { KvantPipe } from './pipe'
 import type { KvantSingular } from './singular'
 import type { KvantTransform, KvantTransformDef } from './transform'
+import type { KvantLaxUriComponent } from './uriComponent'
 import { array } from './array'
 import { _default, prefault } from './default'
 import { json } from './json'
@@ -23,6 +24,7 @@ import { overwrite } from './overwrite'
 import { pipe } from './pipe'
 import { singular } from './singular'
 import { transform } from './transform'
+import { laxUriComponent } from './uriComponent'
 
 export type output<S extends KvantGenericSchema>
   = KvantSchemaOutput<S>
@@ -87,6 +89,10 @@ export interface KvantTypeGenerics {
     this: S,
     options?: KvantJSONOptions,
   ) => KvantPipe<KvantJSON, S>
+
+  readonly uriComponent: <S extends KvantGenericSchema>(
+    this: S,
+  ) => KvantPipe<KvantLaxUriComponent, S>
 }
 
 export interface KvantType<Output, Input = Output, RawInput = unknown>
@@ -105,6 +111,7 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     | 'pipe'
     | 'transform'
     | 'json'
+    | 'uriComponent'
     | 'custom'
     | 'date'
     | 'object'
@@ -147,5 +154,8 @@ export const generics: KvantTypeGenerics = {
 
   json(options) {
     return pipe(json(options), this)
+  },
+  uriComponent() {
+    return pipe(laxUriComponent(), this)
   },
 }
