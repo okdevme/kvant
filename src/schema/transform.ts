@@ -6,7 +6,7 @@ export interface KvantTransform<Input, Output> extends KvantType<Output, Input, 
 }
 
 export interface KvantTransformDef<Input, Output> {
-  parse: (value: Input) => Output
+  decode: (value: Input) => Output
   encode: (value: Output) => Input
 }
 
@@ -16,7 +16,7 @@ export function transform<Input, Output>(
   return {
     ...generics,
     type: 'transform',
-    parse: def.parse,
+    parse: def.decode,
     encode: def.encode,
   }
 }

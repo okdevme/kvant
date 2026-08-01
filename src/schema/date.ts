@@ -82,7 +82,7 @@ export function date(): KvantDate {
     timestamp(factor = 1) {
       return pipe(
         number().floor().transform({
-          parse: (value) => {
+          decode: (value) => {
             if (value === undefined)
               return undefined
 

@@ -11,6 +11,7 @@ import type { KvantDefault, KvantDefaultOptions, KvantPrefault, KvantPrefaultOpt
 import type { KvantJSON, KvantJSONOptions } from './json'
 import type { KvantNullable } from './nullable'
 import type { KvantOptional } from './optional'
+import type { KvantOverwriteDef, KvantOverwriteFn } from './overwrite'
 import type { KvantPipe } from './pipe'
 import type { KvantSingular } from './singular'
 import type { KvantTransform, KvantTransformDef } from './transform'
@@ -66,7 +67,7 @@ export interface KvantTypeGenerics {
 
   readonly overwrite: <S extends KvantGenericSchema>(
     this: S,
-    fn: (value: output<S>) => output<S>,
+    def: KvantOverwriteFn<S> | KvantOverwriteDef<S>,
   ) => S
 
   readonly pipe: <
@@ -140,8 +141,8 @@ export const generics: KvantTypeGenerics = {
     return singular(this, index)
   },
 
-  overwrite(fn) {
-    return overwrite(this, fn)
+  overwrite(def) {
+    return overwrite(this, def)
   },
 
   pipe(schema) {
