@@ -21,7 +21,7 @@ export interface KvantDefault<
 > extends KvantType<
     NoUndefined<output<S>>,
     Options['clearOnDefault'] extends false
-      ? input<S>
+      ? NoUndefined<input<S>>
       : input<S> | undefined,
     rawInput<S> | undefined
   > {
@@ -62,8 +62,12 @@ export function _default<
       return output
     },
     encode(value) {
-      if (!clearOnDefault)
-        return schema.encode(value)
+      if (!clearOnDefault) {
+        const input = schema.encode(value)
+        return input === undefined
+          ? getDefaultValue()
+          : input
+      }
 
       const defaultValue = getDefaultValue()
       if (isDefault(value, defaultValue))
