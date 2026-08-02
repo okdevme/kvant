@@ -7,6 +7,7 @@ export interface KvantNumber extends KvantType<number | undefined> {
   readonly floor: () => KvantNumber
   readonly ceil: () => KvantNumber
   readonly round: () => KvantNumber
+  readonly trunc: () => KvantNumber
 }
 
 export function number(): KvantNumber {
@@ -35,6 +36,9 @@ export function number(): KvantNumber {
     },
     round() {
       return this.overwrite(value => value !== undefined ? Math.round(value) : undefined)
+    },
+    trunc() {
+      return this.overwrite(value => value !== undefined ? Math.trunc(value) : undefined)
     },
   }
 }

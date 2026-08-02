@@ -21,8 +21,9 @@ export function hex(): KvantHex {
       if (value === undefined || !Number.isFinite(value))
         return undefined
 
-      const hex = Math.round(value).toString(16)
-      return (hex.length & 1 ? '0' : '') + hex
+      value = Math.trunc(value)
+      const hex = Math.abs(value).toString(16)
+      return (value < 0 ? '-' : '') + (hex.length & 1 ? '0' : '') + hex
     },
   }
 }
