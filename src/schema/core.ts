@@ -120,6 +120,7 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     | 'transform'
     | 'json'
     | 'uriComponent'
+    | 'hex'
     | 'custom'
     | 'date'
     | 'object'

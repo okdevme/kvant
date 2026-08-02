@@ -22,12 +22,10 @@ export function number(): KvantNumber {
         : undefined
     },
     encode(value) {
-      if (value === undefined)
+      if (value === undefined || !Number.isFinite(value))
         return undefined
 
-      return Number.isFinite(value)
-        ? value
-        : undefined
+      return value
     },
     floor() {
       return this.overwrite(value => value !== undefined ? Math.floor(value) : undefined)
