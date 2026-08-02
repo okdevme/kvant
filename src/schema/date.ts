@@ -1,11 +1,12 @@
 import type { KvantType } from './core'
-import type { KvantNumber } from './number'
+import type { KvantInt } from './number'
 import type { KvantOptional } from './optional'
 import type { KvantPipe } from './pipe'
 import type { KvantString } from './string'
 import type { KvantTransform } from './transform'
+import { optionally } from '../utils/transform'
 import { generics } from './core'
-import { number } from './number'
+import { int } from './number'
 import { pipe } from './pipe'
 import { string } from './string'
 
@@ -32,7 +33,7 @@ export interface KvantISODate extends KvantISO {}
 
 export interface KvantTimestamp extends KvantPipe<
   KvantPipe<
-    KvantNumber,
+    KvantInt,
     KvantTransform<number | undefined, string | undefined>
   >,
   KvantDate
@@ -81,20 +82,15 @@ export function date(): KvantDate {
 
     timestamp(factor = 1) {
       return pipe(
-        number().floor().transform({
-          decode: (value) => {
-            if (value === undefined)
-              return undefined
-
+        int().transform({
+          decode: optionally((value) => {
             const date = new Date(value * factor)
             if (Number.isNaN(date.getTime()))
               return undefined
 
             return date.toISOString()
-          },
-          encode: value => value !== undefined
-            ? new Date(value).getTime() / factor
-            : undefined,
+          }),
+          encode: optionally((value: string) => new Date(value).getTime() / factor),
         }),
         this,
       )

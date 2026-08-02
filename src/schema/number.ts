@@ -1,4 +1,5 @@
 import type { KvantType } from './core'
+import { optionally } from '../utils/transform'
 import { generics } from './core'
 import { overwrite } from './overwrite'
 
@@ -31,16 +32,16 @@ export function number(): KvantNumber {
       return value
     },
     floor() {
-      return overwrite(this, value => value !== undefined ? Math.floor(value) : undefined)
+      return overwrite(this, optionally(Math.floor))
     },
     ceil() {
-      return overwrite(this, value => value !== undefined ? Math.ceil(value) : undefined)
+      return overwrite(this, optionally(Math.ceil))
     },
     round() {
-      return overwrite(this, value => value !== undefined ? Math.round(value) : undefined)
+      return overwrite(this, optionally(Math.round))
     },
     trunc() {
-      return overwrite(this, value => value !== undefined ? Math.trunc(value) : undefined)
+      return overwrite(this, optionally(Math.trunc))
     },
   }
 }
@@ -50,15 +51,15 @@ export interface KvantInt extends KvantNumber {}
 export function int(): KvantInt {
   return overwrite(
     number(),
-    value => value !== undefined
-      ? Math.max(
-          Number.MIN_SAFE_INTEGER,
-          Math.min(
-            Number.MAX_SAFE_INTEGER,
-            Math.trunc(value),
-          ),
-        )
-      : undefined,
+    optionally(
+      v => Math.max(
+        Number.MIN_SAFE_INTEGER,
+        Math.min(
+          Number.MAX_SAFE_INTEGER,
+          Math.trunc(v),
+        ),
+      ),
+    ),
   )
 }
 
@@ -68,12 +69,8 @@ export function index(): KvantIndex {
   return overwrite(
     int(),
     {
-      decode: value => value !== undefined
-        ? Math.max(0, value - 1)
-        : undefined,
-      encode: value => value !== undefined
-        ? Math.max(0, value) + 1
-        : undefined,
+      decode: optionally(v => Math.max(0, v - 1)),
+      encode: optionally(v => Math.max(0, v) + 1),
     },
   )
 }
