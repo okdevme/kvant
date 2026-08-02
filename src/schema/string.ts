@@ -1,5 +1,6 @@
 import type { KvantType } from './core'
 import { generics } from './core'
+import { overwrite } from './overwrite'
 
 export interface KvantString extends KvantType<string> {
   readonly type: 'string'
@@ -21,13 +22,13 @@ export function string(): KvantString {
     },
 
     trim() {
-      return this.overwrite(value => value.trim())
+      return overwrite(this, value => value.trim())
     },
     toLowerCase() {
-      return this.overwrite(value => value.toLowerCase())
+      return overwrite(this, value => value.toLowerCase())
     },
     toUpperCase() {
-      return this.overwrite(value => value.toUpperCase())
+      return overwrite(this, value => value.toUpperCase())
     },
   }
 }

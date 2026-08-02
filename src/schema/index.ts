@@ -1,4 +1,3 @@
-export * from './_index'
 export * from './any'
 export * from './array'
 export * from './boolean'

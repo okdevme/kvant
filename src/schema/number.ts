@@ -1,5 +1,6 @@
 import type { KvantType } from './core'
 import { generics } from './core'
+import { overwrite } from './overwrite'
 
 export interface KvantNumber extends KvantType<number | undefined> {
   readonly type: 'number'
@@ -15,9 +16,10 @@ export function number(): KvantNumber {
     ...generics,
     type: 'number',
     parse(value) {
-      value = typeof value === 'string'
-        ? Number.parseFloat(value)
-        : Number(value)
+      value = typeof value !== 'number'
+        ? Number.parseFloat(String(value))
+        : value
+
       return Number.isFinite(value)
         ? value as number
         : undefined
@@ -29,16 +31,49 @@ export function number(): KvantNumber {
       return value
     },
     floor() {
-      return this.overwrite(value => value !== undefined ? Math.floor(value) : undefined)
+      return overwrite(this, value => value !== undefined ? Math.floor(value) : undefined)
     },
     ceil() {
-      return this.overwrite(value => value !== undefined ? Math.ceil(value) : undefined)
+      return overwrite(this, value => value !== undefined ? Math.ceil(value) : undefined)
     },
     round() {
-      return this.overwrite(value => value !== undefined ? Math.round(value) : undefined)
+      return overwrite(this, value => value !== undefined ? Math.round(value) : undefined)
     },
     trunc() {
-      return this.overwrite(value => value !== undefined ? Math.trunc(value) : undefined)
+      return overwrite(this, value => value !== undefined ? Math.trunc(value) : undefined)
     },
   }
+}
+
+export interface KvantInt extends KvantNumber {}
+
+export function int(): KvantInt {
+  return overwrite(
+    number(),
+    value => value !== undefined
+      ? Math.max(
+          Number.MIN_SAFE_INTEGER,
+          Math.min(
+            Number.MAX_SAFE_INTEGER,
+            Math.trunc(value),
+          ),
+        )
+      : undefined,
+  )
+}
+
+export interface KvantIndex extends KvantInt {}
+
+export function index(): KvantIndex {
+  return overwrite(
+    int(),
+    {
+      decode: value => value !== undefined
+        ? Math.max(0, value - 1)
+        : undefined,
+      encode: value => value !== undefined
+        ? Math.max(0, value) + 1
+        : undefined,
+    },
+  )
 }
