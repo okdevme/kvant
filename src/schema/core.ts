@@ -123,6 +123,7 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     | 'hex'
     | 'custom'
     | 'date'
+    | 'timestamp'
     | 'object'
     | 'array'
     | 'enum'
