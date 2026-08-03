@@ -109,6 +109,7 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     | 'string'
     | 'number'
     | 'boolean'
+    | 'stringbool'
     | 'any'
     | 'unknown'
     | 'optional'
