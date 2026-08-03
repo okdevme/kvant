@@ -2,17 +2,34 @@ import type { KvantType } from './core'
 import { generics } from './core'
 import { overwrite } from './overwrite'
 
-export interface KvantString extends KvantType<string> {
-  readonly type: 'string'
+type KvantStringGenericSchema = KvantType<string, any, any>
 
-  readonly trim: () => KvantString
-  readonly toLowerCase: () => KvantString
-  readonly toUpperCase: () => KvantString
+interface KvantStringGenerics {
+  readonly trim: <S extends KvantStringGenericSchema>(this: S) => S
+  readonly toLowerCase: <S extends KvantStringGenericSchema>(this: S) => S
+  readonly toUpperCase: <S extends KvantStringGenericSchema>(this: S) => S
+}
+
+const stringGenerics = {
+  trim(this: KvantStringGenericSchema) {
+    return overwrite(this, value => value.trim())
+  },
+  toLowerCase(this: KvantStringGenericSchema) {
+    return overwrite(this, value => value.toLowerCase())
+  },
+  toUpperCase(this: KvantStringGenericSchema) {
+    return overwrite(this, value => value.toUpperCase())
+  },
+} as KvantStringGenerics
+
+export interface KvantString extends KvantType<string>, KvantStringGenerics {
+  readonly type: 'string'
 }
 
 export function string(): KvantString {
   return {
     ...generics,
+    ...stringGenerics,
     type: 'string',
     parse(value) {
       return String(value)
@@ -20,15 +37,21 @@ export function string(): KvantString {
     encode(value) {
       return value
     },
-
-    trim() {
-      return overwrite(this, value => value.trim())
-    },
-    toLowerCase() {
-      return overwrite(this, value => value.toLowerCase())
-    },
-    toUpperCase() {
-      return overwrite(this, value => value.toUpperCase())
-    },
   }
+}
+
+export interface KvantUriComponent extends KvantString {}
+
+export function uriComponent(): KvantUriComponent {
+  return overwrite(string(), {
+    decode: (value) => {
+      try {
+        return decodeURIComponent(value)
+      }
+      catch {
+        return value
+      }
+    },
+    encode: encodeURIComponent,
+  })
 }

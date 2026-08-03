@@ -2,13 +2,13 @@ import type { KvantType } from './core'
 import { generics } from './core'
 
 export interface KvantLaxUriComponent extends KvantType<unknown, string> {
-  readonly type: 'uriComponent'
+  readonly type: 'laxUriComponent'
 }
 
 export function laxUriComponent(): KvantLaxUriComponent {
   return {
     ...generics,
-    type: 'uriComponent',
+    type: 'laxUriComponent',
     parse(value): string {
       const str = String(value)
 
@@ -24,9 +24,3 @@ export function laxUriComponent(): KvantLaxUriComponent {
     },
   }
 }
-
-export interface KvantUriComponent extends KvantType<string, string> {
-  readonly type: 'uriComponent'
-}
-
-export const uriComponent = laxUriComponent as () => KvantUriComponent
