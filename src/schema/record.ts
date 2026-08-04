@@ -1,4 +1,5 @@
 import type { KvantGenericSchema } from '../types/schema'
+import type { RecordKey } from '../utils/types'
 import type { input, KvantGenericType, KvantType, output } from './core'
 import type { KvantEnum } from './enum'
 import { isPlainObject } from '../utils/object'
@@ -11,13 +12,13 @@ export interface KvantRecord<
 > extends KvantType<
   (
     IsPartial extends true
-      ? Partial<Record<output<Key> & PropertyKey, output<Value>>>
-      : Record<output<Key> & PropertyKey, output<Value>>
+      ? Partial<Record<RecordKey<output<Key>>, output<Value>>>
+      : Record<RecordKey<output<Key>>, output<Value>>
   ) | undefined,
   (
     IsPartial extends true
-      ? Partial<Record<input<Key> & PropertyKey, input<Value>>>
-      : Record<input<Key> & PropertyKey, input<Value>>
+      ? Partial<Record<RecordKey<input<Key>>, input<Value>>>
+      : Record<RecordKey<input<Key>>, input<Value>>
   ) | undefined
   > {
   readonly type: 'record'

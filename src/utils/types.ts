@@ -42,3 +42,5 @@ export type Extend<A extends SomeObject, B extends SomeObject> = Flatten<
 export type EnumValue = string | number
 export type EnumLike = Readonly<Record<string, EnumValue>>
 export type ToEnum<T extends EnumValue> = Flatten<{ [K in T]: K }>
+
+export type RecordKey<T> = T extends PropertyKey ? T : never
