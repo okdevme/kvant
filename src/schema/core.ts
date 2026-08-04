@@ -129,6 +129,7 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     | 'array'
     | 'enum'
     | 'tuple'
+    | 'record'
 }
 
 export const generics: KvantTypeGenerics = {
@@ -180,3 +181,5 @@ export const generics: KvantTypeGenerics = {
     return pipe(laxUriComponent(), this)
   },
 }
+
+export type KvantGenericType = KvantType<any, any, any>

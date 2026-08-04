@@ -11,9 +11,10 @@ function getEnumValues(entries: EnumLike): EnumValue[] {
     .map(([_, v]) => v)
 }
 
-export interface KvantEnum<T extends EnumLike> extends KvantType<InferEnum<T> | undefined> {
+export interface KvantEnum<T extends EnumLike = EnumLike> extends KvantType<InferEnum<T> | undefined> {
   readonly type: 'enum'
   readonly enum: T
+  readonly values: Set<EnumValue>
 
   readonly extract: <const U extends readonly (keyof T)[]>(
     values: U,
@@ -37,6 +38,7 @@ export function _enum(def: string[] | EnumLike): KvantEnum<EnumLike> {
     ...generics,
     type: 'enum',
     enum: entries,
+    values,
     parse(value: any) {
       return values.has(value)
         ? value

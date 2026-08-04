@@ -4,6 +4,7 @@ import type { KvantUnknown } from './any'
 import type { input, KvantType, output } from './core'
 import type { KvantEnum } from './enum'
 import type { KvantOptional } from './optional'
+import { isObject } from '../utils/object'
 import { unknown } from './any'
 import { generics } from './core'
 import { _enum } from './enum'
@@ -85,7 +86,7 @@ export interface KvantObject<
   }
 }
 
-export function object<
+function _object<
   Shape extends ObjectShape,
   Catchall extends KvantGenericSchema | undefined = undefined,
 >(
@@ -93,7 +94,7 @@ export function object<
   catchall?: Catchall,
 ): KvantObject<Shape, Catchall> {
   function produce(mode: 'parse' | 'encode', value: any): Record<string, any> | undefined {
-    if (typeof value !== 'object' || value === null)
+    if (!isObject(value))
       return undefined
 
     const obj: Record<string, any> = {}
@@ -138,15 +139,15 @@ export function object<
       return _enum(Object.keys(shape))
     },
     catchall(schema) {
-      return object(shape, schema)
+      return _object(shape, schema)
     },
     // @ts-expect-error complex dynamic type
     extend(source) {
-      return object({ ...shape, ...source }, catchall)
+      return _object({ ...shape, ...source }, catchall)
     },
     // @ts-expect-error complex dynamic type
     safeExtend(source) {
-      return object({ ...shape, ...source }, catchall)
+      return _object({ ...shape, ...source }, catchall)
     },
     // @ts-expect-error complex dynamic type
     pick(mask) {
@@ -159,7 +160,7 @@ export function object<
           continue
         newShape[key] = shape[key]!
       }
-      return object(newShape, catchall)
+      return _object(newShape, catchall)
     },
     // @ts-expect-error complex dynamic type
     omit(mask) {
@@ -172,7 +173,7 @@ export function object<
           continue
         delete newShape[key]
       }
-      return object(newShape, catchall)
+      return _object(newShape, catchall)
     },
     // @ts-expect-error complex dynamic type
     partial(mask) {
@@ -194,13 +195,19 @@ export function object<
         }
       }
 
-      return object(newShape, catchall)
+      return _object(newShape, catchall)
     },
   }
+}
+
+export function object<Shape extends ObjectShape>(
+  shape: Shape,
+): KvantObject<Shape> {
+  return _object(shape)
 }
 
 export function looseObject<Shape extends ObjectShape>(
   shape: Shape,
 ): KvantObject<Shape, KvantUnknown> {
-  return object(shape, unknown())
+  return _object(shape, unknown())
 }
