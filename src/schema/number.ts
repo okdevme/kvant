@@ -14,7 +14,7 @@ interface KvantNumberGenerics {
 
 const numberGenerics = {
   floor(this: KvantNumberGenericSchema) {
-    return overwrite(this, optionally(Math.ceil))
+    return overwrite(this, optionally(Math.floor))
   },
   ceil(this: KvantNumberGenericSchema) {
     return overwrite(this, optionally(Math.ceil))
