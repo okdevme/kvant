@@ -17,16 +17,11 @@ export function array<S extends KvantGenericSchema>(schema: S): KvantArray<S> {
     ...generics,
     type: 'array',
     parse(value) {
-      if (value === undefined)
-        return []
+      const arr: unknown[] = value !== undefined
+        ? (Array.isArray(value) ? value : [value])
+        : []
 
-      return (
-        (
-          Array.isArray(value)
-            ? value
-            : [value]
-        ) as unknown[]
-      ).map(item => schema.parse(item))
+      return arr.map(item => schema.parse(item))
     },
     encode(value) {
       return value.map(item => schema.encode(item))

@@ -131,6 +131,7 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     | 'tuple'
     | 'record'
     | 'map'
+    | 'set'
 }
 
 export const generics: KvantTypeGenerics = {
