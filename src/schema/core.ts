@@ -101,6 +101,11 @@ export interface KvantTypeGenerics {
   readonly uriComponent: <S extends KvantGenericSchema>(
     this: S,
   ) => KvantPipe<KvantLaxUriComponent, S>
+
+  readonly apply: <S extends KvantGenericSchema, T>(
+    this: S,
+    fn: (schema: S) => T,
+  ) => T
 }
 
 export interface KvantType<Output, Input = Output, RawInput = unknown>
@@ -179,8 +184,13 @@ export const generics: KvantTypeGenerics = {
   json(options) {
     return pipe(json(options), this)
   },
+
   uriComponent() {
     return pipe(laxUriComponent(), this)
+  },
+
+  apply(fn) {
+    return fn(this)
   },
 }
 
