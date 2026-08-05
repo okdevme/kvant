@@ -1,6 +1,8 @@
+export type SearchParamsValue = string | string[]
+
 export function parseSearch(
   search: string,
-): Record<string, string | string[]> {
+): Record<string, SearchParamsValue> {
   const searchParams = new URLSearchParams(search)
 
   return Object.fromEntries(

@@ -1,4 +1,5 @@
-import type { KvantAdapterInterface, KvantAdapterUpdateFn } from '../types/adapter'
+import type { KvantAdapter, KvantAdapterInterface, KvantAdapterUpdateFn } from '../types/adapter'
+import type { SearchParamsValue } from '../utils/search'
 import type { SnapshotRaw } from '../utils/snapshot'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
@@ -13,6 +14,11 @@ export interface SearchParamsKvantAdapterOptions<T> {
   scroll?: boolean
   fallback?: string | SnapshotRaw<T | undefined>
 }
+
+export type SearchParamsKvantAdapter = KvantAdapter<
+  SearchParamsValue,
+  SearchParamsKvantAdapterOptions<SearchParamsValue>
+>
 
 export function useSearchParamsKvantAdapter<T>(
   keys: string[],

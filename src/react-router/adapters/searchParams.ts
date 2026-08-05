@@ -1,5 +1,6 @@
-import type { KvantReactAdapterInterface } from '../../react'
+import type { KvantReactAdapter, KvantReactAdapterInterface } from '../../react'
 import type { KvantAdapterUpdateFn } from '../../types/adapter'
+import type { SearchParamsValue } from '../../utils/search'
 import { useCallback, useMemo } from 'react'
 import { useSearchParams as _useSearchParams, useNavigate } from 'react-router'
 import { defaultWindow } from '../../globals'
@@ -16,6 +17,11 @@ export interface SearchParamsKvantAdapterOptions<T> {
   history?: 'push' | 'replace'
   scroll?: boolean
 }
+
+export type SearchParamsKvantAdapter = KvantReactAdapter<
+  SearchParamsValue,
+  SearchParamsKvantAdapterOptions<SearchParamsValue>
+>
 
 export function useSearchParamsKvantAdapter<T>(
   keys: string[],
@@ -70,7 +76,7 @@ export function useSearchParamsKvantAdapter<T>(
 export const {
   useState: useSearchParams,
   OptionsProvider: SearchParamsOptionsProvider,
-} = defineKvantState(
+} = defineKvantState<SearchParamsKvantAdapter>(
   (keys, options) => useSearchParamsKvantAdapter(keys, {
     parseSearch,
     stringifySearch,
