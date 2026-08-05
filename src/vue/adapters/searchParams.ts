@@ -7,8 +7,8 @@ export const {
   provideOptions: provideSearchParamsOptions,
 } = defineKvantState(
   (keys, options) => useSearchParamsKvantAdapter(keys, {
-    ...options,
     parseSearch,
     stringifySearch,
+    ...options,
   }),
 )
