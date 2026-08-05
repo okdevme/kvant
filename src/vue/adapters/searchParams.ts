@@ -1,7 +1,14 @@
 import { useSearchParamsKvantAdapter } from '../../adapters/searchParams'
+import { parseSearch, stringifySearch } from '../../utils/search'
 import { defineKvantState } from '../utils/defineKvantState'
 
 export const {
   useState: useSearchParams,
   provideOptions: provideSearchParamsOptions,
-} = defineKvantState(useSearchParamsKvantAdapter)
+} = defineKvantState(
+  (keys, options) => useSearchParamsKvantAdapter(keys, {
+    ...options,
+    parseSearch,
+    stringifySearch,
+  }),
+)

@@ -1,38 +1,46 @@
-import type { KvantAdapter, KvantAdapterUpdateFn } from '../types/adapter'
+import type { KvantAdapterInterface, KvantAdapterUpdateFn } from '../types/adapter'
 import type { SnapshotRaw } from '../utils/snapshot'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
 import { defaultWindow, isClient } from '../globals'
-import { applySearchValues, searchToObject, withSearch } from '../utils/search'
+import { withSearch } from '../utils/search'
 import { normalizeSnapshot } from '../utils/snapshot'
 
-export interface SearchParamsKvantAdapterOptions {
+export interface SearchParamsKvantAdapterOptions<T> {
+  parseSearch: (search: string) => Record<string, T | undefined>
+  stringifySearch: (values: Record<string, unknown>) => string
   history?: 'push' | 'replace'
   scroll?: boolean
-  fallback?: string | URLSearchParams | SnapshotRaw<string | string[] | undefined>
+  fallback?: string | SnapshotRaw<T | undefined>
 }
 
-export type SearchParamsKvantAdapter = KvantAdapter<
-  string | string[],
-  SearchParamsKvantAdapterOptions
->
-
-export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, options) => {
+export function useSearchParamsKvantAdapter<T>(
+  keys: string[],
+  options: SearchParamsKvantAdapterOptions<T>,
+): KvantAdapterInterface<T> {
   const {
+    parseSearch,
+    stringifySearch,
     history: mode = 'replace',
     scroll = false,
     fallback = {},
   } = options
 
-  let search = defaultWindow?.location.search ?? ''
-  let snapshot = normalizeSnapshot(
-    defaultWindow
-      ? searchToObject(defaultWindow.location.search, keys)
-      : typeof fallback === 'string' || fallback instanceof URLSearchParams
-        ? searchToObject(fallback, keys)
-        : fallback,
-    keys,
-  )
+  let search: string
+  let snapshot: Record<string, T | undefined>
+
+  function reconcile(): void {
+    search = defaultWindow?.location.search ?? ''
+    snapshot = normalizeSnapshot(
+      defaultWindow
+        ? parseSearch(defaultWindow.location.search)
+        : typeof fallback === 'string'
+          ? parseSearch(fallback)
+          : fallback,
+      keys,
+    )
+  }
+  reconcile()
 
   const adapterKey = 'search-params'
   const bus = useEventBus<'sync'>(`adapter:${adapterKey}`)
@@ -42,8 +50,7 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
     if (defaultWindow?.location.search === search)
       return
 
-    search = defaultWindow?.location.search ?? ''
-    snapshot = searchToObject(search, keys)
+    reconcile()
     hook.trigger()
   }
 
@@ -66,7 +73,10 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
       '',
       withSearch(
         defaultWindow.location,
-        applySearchValues(defaultWindow.location.search, values),
+        stringifySearch({
+          ...parseSearch(defaultWindow.location.search),
+          ...values,
+        }),
       ),
     )
     bus.emit('sync')

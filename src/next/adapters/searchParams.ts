@@ -1,24 +1,27 @@
-import type { KvantReactAdapter } from '../../react'
+import type { KvantReactAdapterInterface } from '../../react'
 import type { KvantAdapterUpdateFn } from '../../types/adapter'
 import { useSearchParams as _useSearchParams, useRouter } from 'next/navigation'
 import { startTransition, useCallback, useMemo, useOptimistic } from 'react'
 import { defaultWindow } from '../../globals'
 import { defineKvantState } from '../../react'
-import { applySearchValues, searchToObject, withSearch } from '../../utils/search'
+import { parseSearch, stringifySearch, withSearch } from '../../utils/search'
+import { normalizeSnapshot } from '../../utils/snapshot'
 
-export interface SearchParamsKvantAdapterOptions {
+export interface SearchParamsKvantAdapterOptions<T> {
+  parseSearch: (search: string) => Record<string, T | undefined>
+  stringifySearch: (values: Record<string, unknown>) => string
   history?: 'push' | 'replace'
   shallow?: boolean
   scroll?: boolean
 }
 
-export type SearchParamsKvantAdapter = KvantReactAdapter<
-  string | string[],
-  SearchParamsKvantAdapterOptions
->
-
-export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, options) => {
+export function useSearchParamsKvantAdapter<T>(
+  keys: string[],
+  options: SearchParamsKvantAdapterOptions<T>,
+): KvantReactAdapterInterface<T> {
   const {
+    parseSearch,
+    stringifySearch,
     history: mode = 'replace',
     shallow = true,
     scroll = false,
@@ -26,11 +29,15 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
 
   const router = useRouter()
   const searchParams = _useSearchParams()
-  const [optimisticSearchParams, setOptimisticSearchParams]
-    = useOptimistic<URLSearchParams>(searchParams)
+  const [optimisticSearch, setOptimisticSearch]
+    = useOptimistic<string>(searchParams.toString())
+
   const snapshot = useMemo(
-    () => searchToObject(optimisticSearchParams, keys),
-    [optimisticSearchParams],
+    () => normalizeSnapshot(
+      parseSearch(optimisticSearch),
+      keys,
+    ),
+    [optimisticSearch],
   )
 
   const update: KvantAdapterUpdateFn = useCallback((values) => {
@@ -39,9 +46,12 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
       return
 
     startTransition(() => {
-      const search = applySearchValues(location.search, values)
+      const search = stringifySearch({
+        ...parseSearch(location.search),
+        ...values,
+      })
       if (!shallow) {
-        setOptimisticSearchParams(search)
+        setOptimisticSearch(search)
       }
       const url = withSearch(location, search).toString()
       history[`${mode}State`](
@@ -70,4 +80,10 @@ export const useSearchParamsKvantAdapter: SearchParamsKvantAdapter = (keys, opti
 export const {
   useState: useSearchParams,
   OptionsProvider: SearchParamsOptionsProvider,
-} = defineKvantState(useSearchParamsKvantAdapter)
+} = defineKvantState(
+  (keys, options) => useSearchParamsKvantAdapter(keys, {
+    ...options,
+    parseSearch,
+    stringifySearch,
+  }),
+)

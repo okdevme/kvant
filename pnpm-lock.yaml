@@ -155,7 +155,7 @@ importers:
         version: 2.13.1
       tsdown:
         specifier: 'catalog:'
-        version: 0.22.9(@arethetypeswrong/core@0.18.5)(@volar/typescript@2.4.28)(publint@0.3.21)(typescript@6.0.3)(vue-tsc@3.3.8(typescript@6.0.3))
+        version: 0.22.9(@arethetypeswrong/core@0.18.5)(@volar/typescript@2.4.28(typescript@6.0.3))(publint@0.3.21)(typescript@6.0.3)(vue-tsc@3.3.8(typescript@6.0.3))
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -177,6 +177,9 @@ importers:
       next:
         specifier: 'catalog:'
         version: 16.2.10(@babel/core@7.29.7(supports-color@10.2.2))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      qs:
+        specifier: ^6.15.3
+        version: 6.15.3
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -196,6 +199,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.1.1
+      '@types/qs':
+        specifier: ^6.15.1
+        version: 6.15.1
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
@@ -2712,6 +2718,9 @@ packages:
   '@types/node@26.1.1':
     resolution: {integrity: sha512-nxAkRSVkN1Y0JC1W8ky/fTfkGsMmcrRsbx+3XoZE+rMOX71kLYTV7fLXpqud1GpbpP5TuffXFqfX7fH2GgZREw==}
 
+  '@types/qs@6.15.1':
+    resolution: {integrity: sha512-GZHUBZR9hckSUhrxmp1nG6NwdpM9fCunJwyThLW1X3AyHgd9IlHb6VANpQQqDr2o/qQp6McZ3y/IA2rVzKzSbw==}
+
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
     peerDependencies:
@@ -3078,6 +3087,11 @@ packages:
 
   '@volar/typescript@2.4.28':
     resolution: {integrity: sha512-Ja6yvWrbis2QtN4ClAKreeUZPVYMARDYZl9LMEv1iQ1QdepB6wn0jTRxA9MftYmYa4DQ4k/DaSZpFPUfxl8giw==}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@vue-macros/common@3.1.4':
     resolution: {integrity: sha512-/5Fv+6DgIcM9ajY05ZmKBv+LMX1M9A0X+IUwDRVdt67ciw8OV9bvG2r34p3RiEadlsQybjhKPRKNXDC8Bp23cw==}
@@ -9871,6 +9885,8 @@ snapshots:
     dependencies:
       undici-types: 8.3.0
 
+  '@types/qs@6.15.1': {}
+
   '@types/react-dom@19.2.3(@types/react@19.2.17)':
     dependencies:
       '@types/react': 19.2.17
@@ -10347,11 +10363,13 @@ snapshots:
 
   '@volar/source-map@2.4.28': {}
 
-  '@volar/typescript@2.4.28':
+  '@volar/typescript@2.4.28(typescript@6.0.3)':
     dependencies:
       '@volar/language-core': 2.4.28
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
+    optionalDependencies:
+      typescript: 6.0.3
 
   '@vue-macros/common@3.1.4(vue@3.5.40(typescript@6.0.3))':
     dependencies:
@@ -14122,7 +14140,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-dts@0.27.11(@volar/typescript@2.4.28)(rolldown@1.2.0)(typescript@6.0.3)(vue-tsc@3.3.8(typescript@6.0.3)):
+  rolldown-plugin-dts@0.27.11(@volar/typescript@2.4.28(typescript@6.0.3))(rolldown@1.2.0)(typescript@6.0.3)(vue-tsc@3.3.8(typescript@6.0.3)):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.5
@@ -14132,7 +14150,7 @@ snapshots:
       yuku-codegen: 0.6.12
       yuku-parser: 0.6.12
     optionalDependencies:
-      '@volar/typescript': 2.4.28
+      '@volar/typescript': 2.4.28(typescript@6.0.3)
       typescript: 6.0.3
       vue-tsc: 3.3.8(typescript@6.0.3)
     transitivePeerDependencies:
@@ -14633,7 +14651,7 @@ snapshots:
 
   ts-pattern@5.9.0: {}
 
-  tsdown@0.22.9(@arethetypeswrong/core@0.18.5)(@volar/typescript@2.4.28)(publint@0.3.21)(typescript@6.0.3)(vue-tsc@3.3.8(typescript@6.0.3)):
+  tsdown@0.22.9(@arethetypeswrong/core@0.18.5)(@volar/typescript@2.4.28(typescript@6.0.3))(publint@0.3.21)(typescript@6.0.3)(vue-tsc@3.3.8(typescript@6.0.3)):
     dependencies:
       ansis: 4.3.1
       cac: 7.0.0
@@ -14644,7 +14662,7 @@ snapshots:
       obug: 2.1.4
       picomatch: 4.0.5
       rolldown: 1.2.0
-      rolldown-plugin-dts: 0.27.11(@volar/typescript@2.4.28)(rolldown@1.2.0)(typescript@6.0.3)(vue-tsc@3.3.8(typescript@6.0.3))
+      rolldown-plugin-dts: 0.27.11(@volar/typescript@2.4.28(typescript@6.0.3))(rolldown@1.2.0)(typescript@6.0.3)(vue-tsc@3.3.8(typescript@6.0.3))
       semver: 7.8.5
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
@@ -15159,7 +15177,7 @@ snapshots:
 
   vue-tsc@3.3.8(typescript@6.0.3):
     dependencies:
-      '@volar/typescript': 2.4.28
+      '@volar/typescript': 2.4.28(typescript@6.0.3)
       '@vue/language-core': 3.3.8
       typescript: 6.0.3
 
