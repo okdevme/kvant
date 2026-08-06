@@ -33,35 +33,31 @@ export function useKvantState<
   keyMap: M,
   options?: Partial<KvantVueAdapterOptions<A>>,
 ): Ref<KvantKeyMapOutput<M>>
-export function useKvantState<
-  A extends KvantVueAdapter | KvantAdapter,
-  S extends KvantGenericSchema<KvantVueAdapterValue<A>>,
-  M extends KvantKeyMap<KvantVueAdapterValue<A>>,
->(
+export function useKvantState(
   adapter: KvantVueAdapter | KvantAdapter,
-  keyOrMap: string | M,
-  schemaOrOptions?: S | Partial<KvantVueAdapterOptions<A>>,
-  options?: Partial<KvantVueAdapterOptions<A>>,
-): Ref<KvantSchemaOutput<S>> | Ref<KvantKeyMapOutput<M>> {
+  keyOrMap: string | KvantKeyMap,
+  schemaOrOptions?: KvantGenericSchema | Partial<Record<string, unknown>>,
+  options?: Partial<Record<string, unknown>>,
+): Ref<any> {
   if (typeof keyOrMap === 'object') {
     return useKvantStates(
       adapter,
       keyOrMap,
-      schemaOrOptions as Partial<KvantVueAdapterOptions<A>> | undefined,
+      schemaOrOptions as Partial<Record<string, unknown>> | undefined,
     )
   }
 
   const states = useKvantStates(
     adapter,
     {
-      [keyOrMap]: (schemaOrOptions as S)
-        ?? noopSchema<KvantVueAdapterValue<A>>(),
+      [keyOrMap]: (schemaOrOptions as KvantGenericSchema)
+        ?? noopSchema(),
     },
     options,
   )
 
-  return computed<KvantSchemaOutput<S>>({
-    get: () => states.value[keyOrMap]!,
+  return computed({
+    get: () => states.value[keyOrMap],
     set: value => states.value[keyOrMap] = value,
   })
 }

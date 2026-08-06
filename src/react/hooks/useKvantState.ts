@@ -39,48 +39,41 @@ export function useKvantState<
   KvantKeyMapOutput<M>,
   Dispatch<SetStateAction<KvantKeyMapOutput<M>>>,
 ]
-export function useKvantState<
-  A extends KvantReactAdapter | KvantAdapter,
-  S extends KvantGenericSchema<KvantReactAdapterValue<A>>,
-  M extends KvantKeyMap<KvantReactAdapterValue<A>>,
->(
+export function useKvantState(
   adapter: KvantReactAdapter | KvantAdapter,
-  keyOrMap: string | M,
-  schemaOrOptions?: S | Partial<KvantReactAdapterOptions<A>>,
-  options?: Partial<KvantReactAdapterOptions<A>>,
+  keyOrMap: string | KvantKeyMap,
+  schemaOrOptions?: KvantGenericSchema | Partial<Record<string, unknown>>,
+  options?: Partial<Record<string, unknown>>,
 ): [
-  KvantSchemaOutput<S>,
-  Dispatch<SetStateAction<KvantSchemaOutput<S>>>,
-] | [
-  KvantKeyMapOutput<M>,
-  Dispatch<SetStateAction<KvantKeyMapOutput<M>>>,
+  any,
+  Dispatch<SetStateAction<any>>,
 ] {
   if (typeof keyOrMap === 'object') {
     return useKvantStates(
       adapter,
       keyOrMap,
-      schemaOrOptions as Partial<KvantReactAdapterOptions<A>> | undefined,
+      schemaOrOptions as Partial<Record<string, unknown>> | undefined,
     )
   }
 
   const [states, setStates] = useKvantStates(
     adapter,
     {
-      [keyOrMap]: (schemaOrOptions as S)
-        ?? noopSchema<KvantReactAdapterValue<A>>(),
+      [keyOrMap]: (schemaOrOptions as KvantGenericSchema)
+        ?? noopSchema(),
     },
     options,
   )
-  const setState: Dispatch<SetStateAction<KvantSchemaOutput<S>>> = useCallback((newState) => {
+  const setState: Dispatch<SetStateAction<any>> = useCallback((newState) => {
     return setStates(state => ({
       [keyOrMap]: typeof newState === 'function'
-        ? (newState as (value: KvantSchemaOutput<S>) => KvantSchemaOutput<S>)(state[keyOrMap]!)
+        ? newState(state[keyOrMap])
         : newState,
     }))
-  }, [keyOrMap, setStates])
+  }, [setStates])
 
   return [
-    states[keyOrMap]!,
+    states[keyOrMap],
     setState,
   ]
 }

@@ -1,15 +1,15 @@
 import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput } from '../types/schema'
 import type { Update } from '../types/sync'
 
-export interface KeyMapCache<M extends KvantKeyMap> {
-  snapshot: Record<string, KvantKeyMapRawInput<M> | undefined>
-  state: KvantKeyMapOutput<M>
+export interface KeyMapCache {
+  snapshot: Record<string, any>
+  state: Record<string, any>
 }
 
 export function parseMap<M extends KvantKeyMap>(
   keyMap: M,
   snapshot: Record<string, KvantKeyMapRawInput<M> | undefined>,
-  cache?: KeyMapCache<M>,
+  cache?: KeyMapCache,
 ): KvantKeyMapOutput<M> {
   let hasChanged = false
   const state = Object.entries(keyMap).reduce((output, [key, schema]) => {
@@ -21,16 +21,16 @@ export function parseMap<M extends KvantKeyMap>(
       && cache.snapshot[key] === value
     ) {
       // Cache hit
-      output[key as keyof M] = cache.state[key]!
+      output[key] = cache.state[key]!
       return output
     }
     // Cache miss
     hasChanged = true
-    output[key as keyof M] = schema.parse(value)
+    output[key] = schema.parse(value)
     if (cache)
       cache.snapshot[key] = value
     return output
-  }, {} as KvantKeyMapOutput<M>)
+  }, {} as Record<string, any>)
 
   if (!hasChanged && cache) {
     // Check that keyMap keys have not changed
@@ -40,14 +40,14 @@ export function parseMap<M extends KvantKeyMap>(
       || keyMapKeys.some(key => !cachedStateKeys.includes(key))
   }
 
-  return hasChanged || !cache ? state : cache.state
+  return (hasChanged || !cache ? state : cache.state) as KvantKeyMapOutput<M>
 }
 
 export function syncMap<M extends KvantKeyMap>(
   keyMap: M,
-  state: KvantKeyMapOutput<M>,
+  state: Record<string, any>,
   updates: Update[],
-  cache?: KeyMapCache<M>,
+  cache?: KeyMapCache,
 ): KvantKeyMapOutput<M> {
   let newState = state
   updates.forEach((item) => {
@@ -68,5 +68,5 @@ export function syncMap<M extends KvantKeyMap>(
 
     newState = { ...newState, [item.key]: state }
   })
-  return newState
+  return newState as KvantKeyMapOutput<M>
 }

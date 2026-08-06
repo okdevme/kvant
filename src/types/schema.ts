@@ -1,4 +1,4 @@
-import type { Prettify } from '../utils/types'
+import type { InferOptionality } from '../utils/types'
 
 export interface KvantSchema<Output, Input = Output, RawInput = unknown> {
   readonly parse: (value: RawInput) => Output
@@ -21,5 +21,5 @@ export type KvantSchemaRawInput<S extends KvantGenericSchema>
 
 export type KvantKeyMap<RawInput = any> = Record<string, KvantGenericSchema<RawInput>>
 export type KvantKeyMapRawInput<M extends KvantKeyMap> = M extends KvantKeyMap<infer RawInput> ? RawInput : never
-export type KvantKeyMapInput<M extends KvantKeyMap> = Prettify<{ [K in keyof M]: KvantSchemaInput<M[K]> }>
-export type KvantKeyMapOutput<M extends KvantKeyMap> = Prettify<{ [K in keyof M]: KvantSchemaOutput<M[K]> }>
+export type KvantKeyMapInput<M extends KvantKeyMap> = InferOptionality<{ [K in keyof M]: KvantSchemaInput<M[K]> }>
+export type KvantKeyMapOutput<M extends KvantKeyMap> = InferOptionality<{ [K in keyof M]: KvantSchemaOutput<M[K]> }>

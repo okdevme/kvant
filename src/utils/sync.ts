@@ -1,18 +1,19 @@
-import type { KvantKeyMap, KvantKeyMapOutput } from '../types/schema'
+import type { KvantKeyMap } from '../types/schema'
 import type { Update } from '../types/sync'
 
-export function stateToUpdates<M extends KvantKeyMap>(
-  keyMap: M,
-  state: KvantKeyMapOutput<M>,
+export function stateToUpdates(
+  keyMap: KvantKeyMap,
+  state: Record<string, any>,
 ): Update[] {
-  return Object.entries(state).map(([key, state]) => {
+  return Object.keys(keyMap).map((key) => {
     const schema = keyMap[key]!
-    const value = schema.encode(state)
+    const stateValue = state[key]
+    const value = schema.encode(stateValue)
     return {
       key,
       value,
       schema,
-      state,
+      state: stateValue,
     }
   })
 }
