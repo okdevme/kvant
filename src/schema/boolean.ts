@@ -1,7 +1,7 @@
 import type { KvantType } from './core'
 import { generics } from './core'
 
-export interface KvantBoolean extends KvantType<boolean> {
+export interface KvantBoolean extends KvantType<boolean | undefined> {
   readonly type: 'boolean'
 }
 
@@ -10,6 +10,9 @@ export function boolean(): KvantBoolean {
     ...generics,
     type: 'boolean',
     parse(value) {
+      if (value === undefined)
+        return undefined
+
       return Boolean(value)
     },
     encode(value) {

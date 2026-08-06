@@ -1,7 +1,8 @@
 import type { KvantGenericSchema } from '../types/schema'
+import type { NoUndefined } from '../utils/types'
 import type { output } from './core'
 
-export type KvantOverwriteFn<S extends KvantGenericSchema> = (value: output<S>) => output<S>
+export type KvantOverwriteFn<S extends KvantGenericSchema> = (value: NoUndefined<output<S>>) => output<S>
 
 export interface KvantOverwriteDef<S extends KvantGenericSchema> {
   decode?: KvantOverwriteFn<S>
@@ -25,14 +26,16 @@ export function overwrite<S extends KvantGenericSchema>(
   return {
     ...schema,
     parse(value) {
-      return decode(
-        schema.parse(value),
-      )
+      const output = schema.parse(value)
+      return output !== undefined
+        ? decode(output)
+        : output
     },
     encode(value) {
-      return schema.encode(
-        encode(value),
-      )
+      const output = schema.encode(value)
+      return output !== undefined
+        ? encode(output)
+        : output
     },
   }
 }

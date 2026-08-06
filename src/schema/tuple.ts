@@ -44,8 +44,8 @@ export interface KvantTuple<
   S extends readonly KvantGenericSchema[],
   Rest extends KvantGenericSchema | undefined = undefined,
 > extends KvantType<
-    InferTupleOutputType<S, Rest>,
-    InferTupleInputType<S, Rest>
+    InferTupleOutputType<S, Rest> | undefined,
+    InferTupleInputType<S, Rest> | undefined
   > {
   readonly type: 'tuple'
 }
@@ -80,7 +80,7 @@ export function tuple<
     type: 'tuple',
     parse(value) {
       if (value === undefined)
-        value = []
+        return undefined
 
       return produce(
         'parse',
@@ -88,6 +88,9 @@ export function tuple<
       ) as InferTupleOutputType<S, Rest>
     },
     encode(value) {
+      if (value === undefined)
+        return undefined
+
       return produce(
         'encode',
         value,

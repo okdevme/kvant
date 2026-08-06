@@ -24,6 +24,7 @@ import { nullable } from './nullable'
 import { optional } from './optional'
 import { overwrite } from './overwrite'
 import { pipe } from './pipe'
+import { refine } from './refine'
 import { singular } from './singular'
 import { transform } from './transform'
 
@@ -75,6 +76,14 @@ export interface KvantTypeGenerics {
   readonly overwrite: <S extends KvantGenericSchema>(
     this: S,
     def: KvantOverwriteFn<S> | KvantOverwriteDef<S>,
+  ) => S
+
+  readonly refine: <S extends KvantGenericSchema>(
+    this: S,
+    check: (value: NoUndefined<output<S>>) => boolean,
+    ...[fallback]: undefined extends output<S>
+      ? [fallback?: output<S> | (() => output<S>)]
+      : [fallback: output<S> | (() => output<S>)]
   ) => S
 
   readonly pipe: <
@@ -171,6 +180,11 @@ export const generics: KvantTypeGenerics = {
 
   overwrite(def) {
     return overwrite(this, def)
+  },
+
+  // @ts-expect-error dynamic type unresolvable by TS
+  refine(...args) {
+    return refine(this, ...args)
   },
 
   pipe(schema) {

@@ -1,30 +1,80 @@
 import type { KvantType } from './core'
 import { generics } from './core'
 import { overwrite } from './overwrite'
+import { refine } from './refine'
 
-type KvantStringGenericSchema = KvantType<string, any, any>
+type KvantStringGenericSchema = KvantType<string | undefined, any, any>
 
 interface KvantStringGenerics {
+  readonly max: <S extends KvantStringGenericSchema>(this: S, maxLength: number) => S
+  readonly min: <S extends KvantStringGenericSchema>(this: S, minLength: number) => S
+  readonly length: <S extends KvantStringGenericSchema>(this: S, length: number) => S
+  readonly regex: <S extends KvantStringGenericSchema>(this: S, regex: RegExp) => S
+  readonly startsWith: <S extends KvantStringGenericSchema>(this: S, value: string) => S
+  readonly endsWith: <S extends KvantStringGenericSchema>(this: S, value: string) => S
+  readonly includes: <S extends KvantStringGenericSchema>(this: S, value: string) => S
+  readonly uppercase: <S extends KvantStringGenericSchema>(this: S) => S
+  readonly lowercase: <S extends KvantStringGenericSchema>(this: S) => S
   readonly trim: <S extends KvantStringGenericSchema>(this: S) => S
   readonly toLowerCase: <S extends KvantStringGenericSchema>(this: S) => S
   readonly toUpperCase: <S extends KvantStringGenericSchema>(this: S) => S
+  readonly normalize: <S extends KvantStringGenericSchema>(this: S) => S
+  readonly slice: <S extends KvantStringGenericSchema>(this: S, start: number, end?: number) => S
 }
 
+const uppercaseRegex = /^[^a-z]*$/
+const lowercaseRegex = /^[^A-Z]*$/
+
 const stringGenerics = {
+  max(this: KvantStringGenericSchema, maxLength) {
+    return refine(this, v => v.length <= maxLength)
+  },
+  min(this: KvantStringGenericSchema, minLength) {
+    return refine(this, v => v.length >= minLength)
+  },
+  length(this: KvantStringGenericSchema, length) {
+    return refine(this, v => v.length === length)
+  },
+  regex(this: KvantStringGenericSchema, regex) {
+    return refine(this, regex.test)
+  },
+  startsWith(this: KvantStringGenericSchema, value) {
+    return refine(this, v => v.startsWith(value))
+  },
+  endsWith(this: KvantStringGenericSchema, value) {
+    return refine(this, v => v.endsWith(value))
+  },
+  includes(this: KvantStringGenericSchema, value) {
+    return refine(this, v => v.includes(value))
+  },
+  uppercase(this: KvantStringGenericSchema) {
+    return refine(this, uppercaseRegex.test)
+  },
+  lowercase(this: KvantStringGenericSchema) {
+    return refine(this, lowercaseRegex.test)
+  },
   trim(this: KvantStringGenericSchema) {
-    return overwrite(this, value => value.trim())
+    return overwrite(this, v => v.trim())
   },
   toLowerCase(this: KvantStringGenericSchema) {
-    return overwrite(this, value => value.toLowerCase())
+    return overwrite(this, v => v.toLowerCase())
   },
   toUpperCase(this: KvantStringGenericSchema) {
-    return overwrite(this, value => value.toUpperCase())
+    return overwrite(this, v => v.toUpperCase())
+  },
+  normalize(this: KvantStringGenericSchema) {
+    return overwrite(this, v => v.normalize())
+  },
+  slice(this: KvantStringGenericSchema, start, end) {
+    return overwrite(this, v => v.slice(start, end))
   },
 } as KvantStringGenerics
 
-export interface KvantString extends KvantType<string>, KvantStringGenerics {
+export interface KvantString extends KvantType<string | undefined>, KvantStringGenerics {
   readonly type: 'string'
 }
+
+const objStringTag = {}.toString()
 
 export function string(): KvantString {
   return {
@@ -32,7 +82,15 @@ export function string(): KvantString {
     ...stringGenerics,
     type: 'string',
     parse(value) {
-      return String(value)
+      if (value == null || Array.isArray(value))
+        return undefined
+
+      const str = String(value)
+
+      if (str === objStringTag)
+        return undefined
+
+      return str
     },
     encode(value) {
       return value

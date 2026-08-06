@@ -1,11 +1,27 @@
 import type { KvantType } from './core'
-import { optionally } from '../utils/transform'
 import { generics } from './core'
 import { overwrite } from './overwrite'
+import { refine } from './refine'
 
 type KvantNumberGenericSchema = KvantType<number | undefined, any, any>
 
 interface KvantNumberGenerics {
+  readonly gt: <S extends KvantNumberGenericSchema>(this: S, value: number) => S
+  readonly gte: <S extends KvantNumberGenericSchema>(this: S, value: number) => S
+  readonly min: <S extends KvantNumberGenericSchema>(this: S, value: number) => S
+  readonly lt: <S extends KvantNumberGenericSchema>(this: S, value: number) => S
+  readonly lte: <S extends KvantNumberGenericSchema>(this: S, value: number) => S
+  readonly max: <S extends KvantNumberGenericSchema>(this: S, value: number) => S
+  readonly positive: <S extends KvantNumberGenericSchema>(this: S) => S
+  readonly nonnegative: <S extends KvantNumberGenericSchema>(this: S) => S
+  readonly negative: <S extends KvantNumberGenericSchema>(this: S) => S
+  readonly nonpositive: <S extends KvantNumberGenericSchema>(this: S) => S
+  readonly multipleOf: <S extends KvantNumberGenericSchema>(this: S, value: number) => S
+  readonly step: <S extends KvantNumberGenericSchema>(this: S, value: number) => S
+  readonly clamp: {
+    <S extends KvantNumberGenericSchema>(this: S, max: number): S
+    <S extends KvantNumberGenericSchema>(this: S, min: number, max: number): S
+  }
   readonly floor: <S extends KvantNumberGenericSchema>(this: S) => S
   readonly ceil: <S extends KvantNumberGenericSchema>(this: S) => S
   readonly round: <S extends KvantNumberGenericSchema>(this: S) => S
@@ -13,17 +29,61 @@ interface KvantNumberGenerics {
 }
 
 const numberGenerics = {
+  gt(this: KvantNumberGenericSchema, value) {
+    return refine(this, v => v > value)
+  },
+  gte(this: KvantNumberGenericSchema, value) {
+    return refine(this, v => v >= value)
+  },
+  min(this: KvantNumberGenericSchema, value) {
+    return refine(this, v => v >= value)
+  },
+  lt(this: KvantNumberGenericSchema, value) {
+    return refine(this, v => v < value)
+  },
+  lte(this: KvantNumberGenericSchema, value) {
+    return refine(this, v => v <= value)
+  },
+  max(this: KvantNumberGenericSchema, value) {
+    return refine(this, v => v <= value)
+  },
+  positive(this: KvantNumberGenericSchema) {
+    return refine(this, v => v > 0)
+  },
+  nonnegative(this: KvantNumberGenericSchema) {
+    return refine(this, v => v >= 0)
+  },
+  negative(this: KvantNumberGenericSchema) {
+    return refine(this, v => v < 0)
+  },
+  nonpositive(this: KvantNumberGenericSchema) {
+    return refine(this, v => v <= 0)
+  },
+  multipleOf(this: KvantNumberGenericSchema, value) {
+    return refine(this, v => v % value === 0)
+  },
+  step(this: KvantNumberGenericSchema, value) {
+    return refine(this, v => v % value === 0)
+  },
+  clamp(this: KvantNumberGenericSchema, a: number, b?: number) {
+    return overwrite(
+      this,
+      v => b == null
+        ? Math.min(a, v)
+        : Math.max(a, Math.min(b, v)),
+    )
+  },
   floor(this: KvantNumberGenericSchema) {
-    return overwrite(this, optionally(Math.floor))
+    return overwrite(this, Math.floor)
   },
   ceil(this: KvantNumberGenericSchema) {
-    return overwrite(this, optionally(Math.ceil))
+    return overwrite(this, Math.ceil)
   },
   round(this: KvantNumberGenericSchema) {
-    return overwrite(this, optionally(Math.round))
+    return overwrite(this, Math.round)
   },
   trunc(this: KvantNumberGenericSchema) {
-    return overwrite(this, optionally(Math.trunc))
+    return overwrite(this, Math.trunc)
   },
 } as KvantNumberGenerics
 
@@ -57,7 +117,8 @@ export function number(): KvantNumber {
 export interface KvantInt extends KvantNumber {}
 
 export function int(): KvantInt {
-  return overwrite(number(), optionally(
+  return overwrite(
+    number(),
     v => Math.max(
       Number.MIN_SAFE_INTEGER,
       Math.min(
@@ -65,15 +126,15 @@ export function int(): KvantInt {
         Math.trunc(v),
       ),
     ),
-  ))
+  )
 }
 
 export interface KvantIndex extends KvantInt {}
 
 export function index(): KvantIndex {
   return overwrite(int(), {
-    decode: optionally(v => Math.max(0, v - 1)),
-    encode: optionally(v => Math.max(0, v) + 1),
+    decode: v => Math.max(0, v - 1),
+    encode: v => Math.max(0, v) + 1,
   })
 }
 
