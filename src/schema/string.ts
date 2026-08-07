@@ -107,9 +107,44 @@ export function uriComponent(): KvantUriComponent {
         return decodeURIComponent(value)
       }
       catch {
-        return value
+        return undefined
       }
     },
     encode: encodeURIComponent,
+  })
+}
+
+export interface KvantBase64 extends KvantString {}
+
+export function base64(): KvantBase64 {
+  return overwrite(string(), {
+    decode: (value) => {
+      try {
+        return atob(value)
+      }
+      catch {
+        return undefined
+      }
+    },
+    encode: btoa,
+  })
+}
+
+export function base64url(): KvantBase64 {
+  return overwrite(string(), {
+    decode: (value) => {
+      try {
+        const base64 = value.replace(/-/g, '+').replace(/_/g, '/')
+        const padding = '='.repeat((4 - (base64.length % 4)) % 4)
+        return atob(base64 + padding)
+      }
+      catch {
+        return undefined
+      }
+    },
+    encode: value => btoa(value)
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, ''),
   })
 }

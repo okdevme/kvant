@@ -121,7 +121,7 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     | 'pipe'
     | 'transform'
     | 'json'
-    | 'hexToInt'
+    | 'hex'
     | 'custom'
     | 'isoToDate'
     | 'epochToDate'
