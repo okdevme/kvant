@@ -33,166 +33,127 @@ export type input<S extends KvantGenericSchema>
 export type rawInput<S extends KvantGenericSchema>
   = KvantSchemaRawInput<S>
 
-export interface KvantTypeGenerics {
-  readonly decode: <S extends KvantGenericSchema>(
-    this: S,
-    value: rawInput<S>,
-  ) => output<S>
+export interface KvantType<Output, Input = Output, RawInput = unknown>
+  extends KvantSchema<Output, Input, RawInput> {
+  readonly decode: (
+    value: rawInput<this>,
+  ) => output<this>
 
-  readonly optional: <S extends KvantGenericSchema>(this: S) => KvantOptional<S>
-  readonly nullable: <S extends KvantGenericSchema>(this: S) => KvantNullable<S>
-  readonly nullish: <S extends KvantGenericSchema>(this: S) => KvantOptional<KvantNullable<S>>
+  readonly optional: () => KvantOptional<this>
+  readonly nullable: () => KvantNullable<this>
+  readonly nullish: () => KvantOptional<KvantNullable<this>>
 
-  readonly array: <S extends KvantGenericSchema>(this: S) => KvantArray<S>
+  readonly array: () => KvantArray<this>
 
   readonly default: <
-    S extends KvantGenericSchema,
-    T extends NoUndefined<output<S>>,
-    Options extends KvantDefaultOptions<S, T> = KvantDefaultOptions<S, T>,
+    T extends NoUndefined<output<this>>,
+    Options extends KvantDefaultOptions<this, T> = KvantDefaultOptions<this, T>,
   >(
-    this: S,
     defaultValue: T | (() => T),
     options?: Options,
-  ) => KvantDefault<S, T, Options>
+  ) => KvantDefault<this, T, Options>
   readonly prefault: <
-    S extends KvantGenericSchema,
-    T extends input<S>,
-    Options extends KvantPrefaultOptions<S, T> = KvantPrefaultOptions<S, T>,
+    T extends input<this>,
+    Options extends KvantPrefaultOptions<this, T> = KvantPrefaultOptions<this, T>,
   >(
-    this: S,
     defaultValue: T | (() => T),
     options?: Options,
-  ) => KvantPrefault<S, T, Options>
+  ) => KvantPrefault<this, T, Options>
 
-  readonly singular: <S extends KvantGenericSchema>(
-    this: S,
+  readonly singular: (
     index?: number | ((value: unknown[]) => number),
-  ) => KvantSingular<S>
+  ) => KvantSingular<this>
 
-  readonly overwrite: <S extends KvantGenericSchema>(
-    this: S,
-    def: KvantOverwriteFn<S> | KvantOverwriteDef<S>,
-  ) => S
+  readonly overwrite: (
+    def: KvantOverwriteFn<this> | KvantOverwriteDef<this>,
+  ) => this
 
-  readonly refine: <S extends KvantGenericSchema>(
-    this: S,
-    check: (value: NoUndefined<output<S>>) => boolean,
-    ...[fallback]: undefined extends output<S>
-      ? [fallback?: output<S> | (() => output<S>)]
-      : [fallback: output<S> | (() => output<S>)]
-  ) => S
+  readonly refine: (
+    check: (value: NoUndefined<output<this>>) => boolean,
+    ...[fallback]: undefined extends output<this>
+      ? [fallback?: output<this> | (() => output<this>)]
+      : [fallback: output<this> | (() => output<this>)]
+  ) => this
 
   readonly pipe: <
-    A extends KvantGenericSchema,
-    B extends KvantSchema<any, output<A>, output<A>>,
+    B extends KvantSchema<any, output<this>, output<this>>,
   >(
-    this: A,
     schema: B,
-  ) => KvantPipe<A, B>
+  ) => KvantPipe<this, B>
 
-  readonly transform: {
-    <
-      S extends KvantGenericSchema,
-      Output extends output<S>,
-    >(
-      this: S,
-      def: ((value: output<S>) => Output)
-    ): KvantPipe<S, KvantTransform<output<S>, Output>>
-    <
-      S extends KvantGenericSchema,
-      Output,
-    >(
-      this: S,
-      def: KvantTransformDef<output<S>, Output>
-    ): KvantPipe<S, KvantTransform<output<S>, Output>>
-  }
+  // eslint-disable-next-line ts/method-signature-style
+  transform<
+    T extends output<this>,
+  >(
+    def: ((value: output<this>) => T)
+  ): KvantPipe<this, KvantTransform<output<this>, T>>
+  // eslint-disable-next-line ts/method-signature-style
+  transform<
+    T,
+  >(
+    def: KvantTransformDef<output<this>, T>
+  ): KvantPipe<this, KvantTransform<output<this>, T>>
 
-  readonly apply: <S extends KvantGenericSchema, T>(
-    this: S,
-    fn: (schema: S) => T,
+  readonly apply: <T>(
+    fn: (schema: this) => T,
   ) => T
 }
 
-export interface KvantType<Output, Input = Output, RawInput = unknown>
-  extends KvantSchema<Output, Input, RawInput>, KvantTypeGenerics {
-  readonly type:
-    | 'string'
-    | 'number'
-    | 'boolean'
-    | 'stringbool'
-    | 'any'
-    | 'unknown'
-    | 'optional'
-    | 'nullable'
-    | 'default'
-    | 'prefault'
-    | 'singular'
-    | 'pipe'
-    | 'transform'
-    | 'json'
-    | 'hex'
-    | 'custom'
-    | 'isoToDate'
-    | 'epochToDate'
-    | 'object'
-    | 'array'
-    | 'enum'
-    | 'tuple'
-    | 'record'
-    | 'map'
-    | 'set'
-}
-
-export const generics: KvantTypeGenerics = {
-  decode(value) {
+export const generics = {
+  decode<S extends KvantGenericSchema>(this: S, value: any) {
     return this.parse(value)
   },
 
-  optional() {
+  optional<S extends KvantGenericSchema>(this: S) {
     return optional(this)
   },
-  nullable() {
+  nullable<S extends KvantGenericSchema>(this: S) {
     return nullable(this)
   },
-  nullish() {
+  nullish<S extends KvantGenericSchema>(this: S) {
     return optional(nullable(this))
   },
 
-  array() {
+  array<S extends KvantGenericSchema>(this: S) {
     return array(this)
   },
 
-  default(defaultValue, options) {
+  default<S extends KvantGenericSchema>(
+    this: S,
+    defaultValue: any,
+    options: any,
+  ) {
     return _default(this, defaultValue, options)
   },
-  prefault(defaultValue, options) {
+  prefault<S extends KvantGenericSchema>(
+    this: S,
+    defaultValue: any,
+    options: any,
+  ) {
     return prefault(this, defaultValue, options)
   },
 
-  singular(index) {
+  singular<S extends KvantGenericSchema>(this: S, index: any) {
     return singular(this, index)
   },
 
-  overwrite(def) {
+  overwrite<S extends KvantGenericSchema>(this: S, def: any) {
     return overwrite(this, def)
   },
 
-  // @ts-expect-error dynamic type unresolvable by TS
-  refine(...args) {
-    return refine(this, ...args)
+  refine<S extends KvantGenericSchema>(this: S, check: any, fallback?: any) {
+    return refine(this, check, fallback)
   },
 
-  pipe(schema) {
+  pipe<S extends KvantGenericSchema>(this: S, schema: any) {
     return pipe(this, schema)
   },
 
-  transform(this: KvantGenericSchema, def: any) {
-    return pipe(this, transform(def))
+  transform<S extends KvantGenericSchema>(this: S, def: any) {
+    return pipe(this, transform<any, any>(def))
   },
 
-  apply(fn) {
+  apply<S extends KvantGenericSchema>(this: S, fn: any) {
     return fn(this)
   },
-}
-
-export type KvantGenericType = KvantType<any, any, any>
+} satisfies Omit<KvantType<any, any, any>, keyof KvantGenericSchema>

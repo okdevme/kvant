@@ -145,7 +145,8 @@ export interface KvantHex extends KvantType<number | undefined, string | undefin
 export function hex(): KvantHex {
   const schema = int()
   return {
-    ...schema,
+    ...generics,
+    ...numberGenerics,
     type: 'hex',
     parse(value) {
       return schema.parse(

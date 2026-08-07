@@ -1,12 +1,12 @@
 import type { KvantGenericSchema } from '../types/schema'
 import type { RecordKey } from '../utils/types'
-import type { input, KvantGenericType, KvantType, output } from './core'
+import type { input, KvantType, output } from './core'
 import type { KvantEnum } from './enum'
 import { isPlainObject } from '../utils/object'
 import { generics } from './core'
 
 export interface KvantRecord<
-  Key extends KvantGenericType = KvantGenericType,
+  Key extends KvantGenericSchema = KvantGenericSchema,
   Value extends KvantGenericSchema = KvantGenericSchema,
   IsPartial extends boolean = false,
 > extends KvantType<
@@ -25,7 +25,7 @@ export interface KvantRecord<
 }
 
 function _record<
-  Key extends KvantGenericType | KvantEnum,
+  Key extends KvantGenericSchema | KvantEnum,
   Value extends KvantGenericSchema,
   IsPartial extends boolean = false,
 >(
@@ -39,8 +39,8 @@ function _record<
 
     const obj: Record<string | number, any> = {}
 
-    const keys = !partial && keyType.type === 'enum'
-      ? (keyType as KvantEnum).values
+    const keys = !partial && 'type' in keyType && keyType.type === 'enum'
+      ? keyType.values
       : Object.keys(input)
 
     for (const rawKey of keys) {
@@ -67,7 +67,7 @@ function _record<
 }
 
 export function record<
-  Key extends KvantGenericType | KvantEnum,
+  Key extends KvantGenericSchema | KvantEnum,
   Value extends KvantGenericSchema,
 >(
   keyType: Key,
@@ -77,7 +77,7 @@ export function record<
 }
 
 export function partialRecord<
-  Key extends KvantGenericType | KvantEnum,
+  Key extends KvantGenericSchema | KvantEnum,
   Value extends KvantGenericSchema,
 >(
   keyType: Key,
