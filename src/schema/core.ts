@@ -90,13 +90,22 @@ export interface KvantTypeGenerics {
     schema: B,
   ) => KvantPipe<A, B>
 
-  readonly transform: <
-    S extends KvantGenericSchema,
-    Output,
-  >(
-    this: S,
-    def: KvantTransformDef<output<S>, Output>,
-  ) => KvantPipe<S, KvantTransform<output<S>, Output>>
+  readonly transform: {
+    <
+      S extends KvantGenericSchema,
+      Output extends output<S>,
+    >(
+      this: S,
+      def: ((value: output<S>) => Output)
+    ): KvantPipe<S, KvantTransform<output<S>, Output>>
+    <
+      S extends KvantGenericSchema,
+      Output,
+    >(
+      this: S,
+      def: KvantTransformDef<output<S>, Output>
+    ): KvantPipe<S, KvantTransform<output<S>, Output>>
+  }
 
   readonly apply: <S extends KvantGenericSchema, T>(
     this: S,
@@ -177,7 +186,7 @@ export const generics: KvantTypeGenerics = {
     return pipe(this, schema)
   },
 
-  transform(def) {
+  transform(this: KvantGenericSchema, def: any) {
     return pipe(this, transform(def))
   },
 
