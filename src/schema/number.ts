@@ -138,15 +138,15 @@ export function index(): KvantIndex {
   })
 }
 
-export interface KvantHex extends KvantType<number | undefined, string | undefined>, KvantNumberGenerics {
-  readonly type: 'hex'
+export interface KvantHexToInt extends KvantType<number | undefined, string | undefined>, KvantNumberGenerics {
+  readonly type: 'hexToInt'
 }
 
-export function hex(): KvantHex {
+export function hexToInt(): KvantHexToInt {
   const schema = int()
   return {
     ...schema,
-    type: 'hex',
+    type: 'hexToInt',
     parse(value) {
       return schema.parse(
         typeof value === 'string'

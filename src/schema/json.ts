@@ -1,4 +1,5 @@
-import type { KvantType } from './core'
+import type { KvantGenericSchema } from '../types/schema'
+import type { KvantType, output } from './core'
 import { generics } from './core'
 
 export interface KvantJSONOptions {
@@ -7,29 +8,36 @@ export interface KvantJSONOptions {
   space?: string | number
 }
 
-export interface KvantJSON extends KvantType<unknown, string> {
+export interface KvantJSON<S extends KvantGenericSchema> extends KvantType<output<S> | undefined, string> {
   readonly type: 'json'
 }
 
-export function json(
+export function json<S extends KvantGenericSchema>(
+  schema: S,
   options?: KvantJSONOptions,
-): KvantJSON {
+): KvantJSON<S> {
   return {
     ...generics,
     type: 'json',
     parse(value) {
       if (typeof value !== 'string')
-        return value
+        return undefined
 
       try {
-        return JSON.parse(value, options?.reviver)
+        return schema.parse(
+          JSON.parse(value, options?.reviver),
+        )
       }
       catch {
-        return value
+        return undefined
       }
     },
     encode(value) {
-      return JSON.stringify(value, options?.replacer, options?.space)
+      return JSON.stringify(
+        schema.encode(value),
+        options?.replacer,
+        options?.space,
+      )
     },
   }
 }

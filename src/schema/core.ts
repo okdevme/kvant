@@ -8,8 +8,6 @@ import type {
 import type { NoUndefined } from '../utils/types'
 import type { KvantArray } from './array'
 import type { KvantDefault, KvantDefaultOptions, KvantPrefault, KvantPrefaultOptions } from './default'
-import type { KvantJSON, KvantJSONOptions } from './json'
-import type { KvantLaxUriComponent } from './laxUriComponent'
 import type { KvantNullable } from './nullable'
 import type { KvantOptional } from './optional'
 import type { KvantOverwriteDef, KvantOverwriteFn } from './overwrite'
@@ -18,8 +16,6 @@ import type { KvantSingular } from './singular'
 import type { KvantTransform, KvantTransformDef } from './transform'
 import { array } from './array'
 import { _default, prefault } from './default'
-import { json } from './json'
-import { laxUriComponent } from './laxUriComponent'
 import { nullable } from './nullable'
 import { optional } from './optional'
 import { overwrite } from './overwrite'
@@ -102,15 +98,6 @@ export interface KvantTypeGenerics {
     def: KvantTransformDef<output<S>, Output>,
   ) => KvantPipe<S, KvantTransform<output<S>, Output>>
 
-  readonly json: <S extends KvantGenericSchema>(
-    this: S,
-    options?: KvantJSONOptions,
-  ) => KvantPipe<KvantJSON, S>
-
-  readonly uriComponent: <S extends KvantGenericSchema>(
-    this: S,
-  ) => KvantPipe<KvantLaxUriComponent, S>
-
   readonly apply: <S extends KvantGenericSchema, T>(
     this: S,
     fn: (schema: S) => T,
@@ -134,11 +121,10 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     | 'pipe'
     | 'transform'
     | 'json'
-    | 'laxUriComponent'
-    | 'hex'
+    | 'hexToInt'
     | 'custom'
-    | 'date'
-    | 'timestamp'
+    | 'isoToDate'
+    | 'epochToDate'
     | 'object'
     | 'array'
     | 'enum'
@@ -193,14 +179,6 @@ export const generics: KvantTypeGenerics = {
 
   transform(def) {
     return pipe(this, transform(def))
-  },
-
-  json(options) {
-    return pipe(json(options), this)
-  },
-
-  uriComponent() {
-    return pipe(laxUriComponent(), this)
   },
 
   apply(fn) {
