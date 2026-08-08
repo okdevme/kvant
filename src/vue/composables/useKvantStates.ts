@@ -35,6 +35,8 @@ function useNormalizedAdapter<A extends KvantVueAdapter | KvantAdapter>(
     )
   }
 
+  onScopeDispose(() => api.dispose?.())
+
   return {
     key: api.key,
     snapshot,
