@@ -68,23 +68,14 @@ export function _default<
       return output
     },
     encode(value) {
-      if (!clearOnDefault) {
-        const input = schema.encode(value)
-        return input === undefined
-          ? getDefaultValue()
-          : input
-      }
+      if (!clearOnDefault)
+        return schema.encode(value)
 
       const defaultValue = getDefaultValue()
       if (isDefault(value, defaultValue))
         return undefined
 
-      const input = schema.encode(value)
-
-      if (isDefault(input, defaultValue))
-        return undefined
-
-      return input
+      return schema.encode(value)
     },
     unwrap() {
       return schema
