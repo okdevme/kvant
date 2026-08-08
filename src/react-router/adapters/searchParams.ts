@@ -11,10 +11,23 @@ import { normalizeSnapshot } from '../../utils/snapshot'
 // TODO: shallow routing
 // react-router doesn't have first-party support for it,
 // so we will have to set up custom useSearchParams hook and patch native history API
+
 export interface SearchParamsKvantAdapterOptions<T> {
+  /** Parses the location search string into raw values. */
   parseSearch: (search: string) => Record<string, T | undefined>
+  /** Serializes raw values back into a search string. */
   stringifySearch: (values: Record<string, unknown>) => string
+  /**
+   * History mode used when writing the URL.
+   *
+   * @default 'replace'
+   */
   history?: 'push' | 'replace'
+  /**
+   * Scrolls to the top after writing the URL.
+   *
+   * @default false
+   */
   scroll?: boolean
 }
 

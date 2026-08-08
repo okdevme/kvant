@@ -16,9 +16,11 @@ export interface KvantEnum<T extends EnumLike = EnumLike> extends KvantType<Infe
   readonly enum: T
   readonly values: Set<EnumValue>
 
+  /** Narrows the schema to a subset of keys. */
   readonly extract: <const U extends readonly (keyof T)[]>(
     values: U,
   ) => KvantEnum<Flatten<Pick<T, U[number]>>>
+  /** Removes keys from the schema. */
   readonly exclude: <const U extends readonly (keyof T)[]>(
     values: U,
   ) => KvantEnum<Flatten<Omit<T, U[number]>>>

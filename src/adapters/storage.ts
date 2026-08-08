@@ -8,9 +8,16 @@ import { mapValues } from '../utils/object'
 import { normalizeSnapshot } from '../utils/snapshot'
 
 export interface StorageKvantAdapterOptions {
+  /** Values used when the storage is unavailable (SSR). */
   fallback?: SnapshotRaw<string | null | undefined>
 }
 
+/**
+ * Creates an adapter factory for a given Web Storage instance.
+ *
+ * @param storage - storage instance, may be `undefined` during SSR
+ * @param storageKey - unique identifier for the storage instance
+ */
 export function useStorageKvantAdapter(
   storage: Storage | undefined,
   storageKey: string,

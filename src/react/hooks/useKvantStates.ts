@@ -46,6 +46,12 @@ function useNormalizedAdapter<A extends KvantReactAdapter | KvantAdapter>(
   }
 }
 
+/**
+ * Binds a map of keys to React state, parsed through the given schemas.
+ * Writes go through the adapter and sync across hooks sharing the same adapter.
+ *
+ * @returns `[states, setStates]` tuple
+ */
 export function useKvantStates<
   A extends KvantReactAdapter | KvantAdapter,
   M extends KvantKeyMap<KvantReactAdapterValue<A>>,

@@ -9,6 +9,10 @@ import { decodeCookieValue, parseCookie, stringifySetCookie } from '../utils/coo
 import { normalizeSnapshot } from '../utils/snapshot'
 
 export interface CookiesKvantAdapterOptions extends Omit<SetCookie, 'name' | 'value'> {
+  /**
+   * Cookie source used when `document.cookie` is unavailable (SSR):
+   * a raw cookie header string or per-key values/getter.
+   */
   fallback?: string | SnapshotRaw<string | undefined>
 }
 

@@ -100,6 +100,7 @@ export function string(): KvantString {
 
 export interface KvantUriComponent extends KvantString {}
 
+/** String with URI component encoding. */
 export function uriComponent(): KvantUriComponent {
   return overwrite(string(), {
     decode: (value) => {
@@ -116,6 +117,7 @@ export function uriComponent(): KvantUriComponent {
 
 export interface KvantBase64 extends KvantString {}
 
+/** Base64-encoded string. */
 export function base64(): KvantBase64 {
   return overwrite(string(), {
     decode: (value) => {
@@ -130,6 +132,7 @@ export function base64(): KvantBase64 {
   })
 }
 
+/** URL-safe Base64-encoded string. */
 export function base64url(): KvantBase64 {
   return overwrite(string(), {
     decode: (value) => {

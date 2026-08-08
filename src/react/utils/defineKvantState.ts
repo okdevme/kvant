@@ -15,6 +15,7 @@ import {
 } from 'react'
 import { useKvantState } from '../hooks/useKvantState'
 
+/** Adapter-bound {@link useKvantState}. */
 export interface UseKvantState<A extends KvantReactAdapter | KvantAdapter> {
   <
     S extends KvantGenericSchema<KvantReactAdapterValue<A>> = KvantSchema<
@@ -42,13 +43,23 @@ export interface UseKvantState<A extends KvantReactAdapter | KvantAdapter> {
 }
 
 export interface KvantOptionsProviderProps<A extends KvantReactAdapter | KvantAdapter> {
+  /** Adapter options applied to hooks in the subtree. */
   defaultOptions: Partial<KvantReactAdapterOptions<A>>
+  /**
+   * Merges with parent provider options instead of replacing them.
+   *
+   * @default true
+   */
   extend?: boolean
   children?: ReactNode
 }
 
+/** Component overriding the adapter options for its subtree. */
 export type KvantOptionsProvider<A extends KvantReactAdapter | KvantAdapter> = (props: KvantOptionsProviderProps<A>) => ReactNode
 
+/**
+ * Creates state hooks bound to an adapter.
+ */
 /* @__NO_SIDE_EFFECTS__ */
 export function defineKvantState<
   A extends KvantReactAdapter | KvantAdapter,

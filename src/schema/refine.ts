@@ -3,6 +3,10 @@ import type { NoUndefined } from '../utils/types'
 import type { output } from './core'
 import { overwrite } from './overwrite'
 
+/**
+ * Keeps values passing the check; rejected values fall back.
+ * The fallback is required when the output cannot be `undefined`.
+ */
 export function refine<S extends KvantGenericSchema>(
   schema: S,
   check: (value: NoUndefined<output<S>>) => boolean,

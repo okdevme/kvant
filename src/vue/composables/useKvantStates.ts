@@ -42,6 +42,10 @@ function useNormalizedAdapter<A extends KvantVueAdapter | KvantAdapter>(
   }
 }
 
+/**
+ * Binds a map of keys to a writable ref, parsed through the given schemas.
+ * Writes go through the adapter and sync across composables sharing the same adapter.
+ */
 export function useKvantStates<
   A extends KvantVueAdapter | KvantAdapter,
   M extends KvantKeyMap<KvantVueAdapterValue<A>>,

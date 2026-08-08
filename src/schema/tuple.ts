@@ -50,6 +50,10 @@ export interface KvantTuple<
   readonly type: 'tuple'
 }
 
+/**
+ * Fixed-length array with per-position schemas.
+ * Trailing optional schemas may be omitted; `rest` covers extra items.
+ */
 export function tuple<
   S extends readonly [KvantGenericSchema, ...KvantGenericSchema[]],
   Rest extends KvantGenericSchema | undefined = undefined,

@@ -50,10 +50,12 @@ export interface KvantObject<
 
   readonly keyof: () => KvantEnum<ToEnum<keyof Shape & string>>
 
+  /** Parses keys not present in the shape through the given schema. */
   readonly catchall: <T extends KvantGenericSchema>(schema: T) => KvantObject<Shape, T>
 
   readonly extend: <T extends ObjectShape>(shape: T) => KvantObject<Extend<Shape, Writeable<T>>, Catchall>
 
+  /** Like `extend`, but restricts overriding keys to schemas with compatible types. */
   readonly safeExtend: <T extends ObjectShape>(
     shape: SafeExtendShape<Shape, T> & Partial<ObjectShape<keyof Shape>>,
   ) => KvantObject<Extend<Shape, Writeable<T>>, Catchall>
@@ -206,6 +208,7 @@ export function object<Shape extends ObjectShape>(
   return _object(shape)
 }
 
+/** Like {@link object}, but keeps unknown keys, passed through as-is. */
 export function looseObject<Shape extends ObjectShape>(
   shape: Shape,
 ): KvantObject<Shape, KvantUnknown> {

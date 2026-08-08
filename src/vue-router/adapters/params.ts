@@ -10,6 +10,11 @@ import { mapValues, pick } from '../../utils/object'
 import { defineKvantState } from '../../vue'
 
 export interface RouteParamsKvantAdapterOptions {
+  /**
+   * History mode used when writing the URL.
+   *
+   * @default 'replace'
+   */
   history?: 'push' | 'replace'
 }
 

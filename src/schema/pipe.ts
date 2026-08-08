@@ -13,6 +13,7 @@ export interface KvantPipe<
   readonly type: 'pipe'
 }
 
+/** Chains two schemas: `b` parses `a`'s output, encoding runs in reverse order. */
 export function pipe<
   A extends KvantGenericSchema,
   B extends KvantSchema<any, output<A>, output<A>>,

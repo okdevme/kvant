@@ -13,6 +13,7 @@ export interface KvantPreprocess<
     S
   > {}
 
+/** Transforms the raw input before the schema parses it. */
 export function preprocess<
   S extends KvantGenericSchema,
   Input = unknown,

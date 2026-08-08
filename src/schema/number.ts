@@ -116,6 +116,7 @@ export function number(): KvantNumber {
 
 export interface KvantInt extends KvantNumber {}
 
+/** Truncates to a safe integer. */
 export function int(): KvantInt {
   return overwrite(
     number(),
@@ -131,6 +132,7 @@ export function int(): KvantInt {
 
 export interface KvantIndex extends KvantInt {}
 
+/** Zero-based state mapped to a one-based stored value (e.g. page numbers). */
 export function index(): KvantIndex {
   return overwrite(int(), {
     decode: v => Math.max(0, v - 1),
@@ -142,6 +144,7 @@ export interface KvantHex extends KvantType<number | undefined, string | undefin
   readonly type: 'hex'
 }
 
+/** Hex string to integer. Encodes with an even digit count. */
 export function hex(): KvantHex {
   const schema = int()
   return {

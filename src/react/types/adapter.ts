@@ -7,8 +7,11 @@ import type {
 } from '../../types/adapter'
 
 export interface KvantReactAdapterInterface<T = any> {
+  /** Unique adapter identifier, used to namespace sync channels. */
   readonly key: string
+  /** Current raw values for the adapter's keys. Must be referentially stable between changes. */
   readonly snapshot: Readonly<Record<string, T | undefined>>
+  /** Writes raw values to the underlying storage. */
   readonly update: KvantAdapterUpdateFn
 }
 

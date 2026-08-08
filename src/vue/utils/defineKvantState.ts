@@ -11,6 +11,7 @@ import type { KvantVueAdapter, KvantVueAdapterOptions, KvantVueAdapterValue } fr
 import { inject, provide } from 'vue'
 import { useKvantState } from '../composables/useKvantState'
 
+/** Adapter-bound {@link useKvantState}. */
 export interface UseKvantState<A extends KvantVueAdapter | KvantAdapter> {
   <
     S extends KvantGenericSchema<KvantVueAdapterValue<A>> = KvantSchema<
@@ -32,12 +33,21 @@ export interface UseKvantState<A extends KvantVueAdapter | KvantAdapter> {
 }
 
 export interface KvantOptionsProviderOptions {
+  /**
+   * Merges with parent-provided options instead of replacing them.
+   *
+   * @default true
+   */
   extend?: boolean
 }
 
+/** Provides default adapter options to composables in the component subtree. */
 export type KvantOptionsProvider<A extends KvantVueAdapter | KvantAdapter>
   = (defaultOptions: Partial<KvantVueAdapterOptions<A>>, options?: KvantOptionsProviderOptions) => void
 
+/**
+ * Creates composables bound to an adapter.
+ */
 /* @__NO_SIDE_EFFECTS__ */
 export function defineKvantState<
   A extends KvantVueAdapter | KvantAdapter,

@@ -12,6 +12,10 @@ export interface KvantSingular<S extends KvantGenericSchema> extends KvantType<
   readonly unwrap: () => S
 }
 
+/**
+ * Picks one element when the raw value is an array
+ * (e.g. a repeated search param). Defaults to the first element.
+ */
 export function singular<S extends KvantGenericSchema>(
   schema: S,
   index: number | ((value: Extract<MaybeMultiple<rawInput<S>>, any[]>) => number) = 0,

@@ -37,6 +37,10 @@ export interface UseEventBusReturn<T, P> {
 
 const events = new Map<EventBusIdentifier<any>, EventBusEvents<any>>()
 
+/**
+ * Returns a shared event bus for the given key.
+ * Listeners are shared across all callers using the same key.
+ */
 /* @__NO_SIDE_EFFECTS__ */
 export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): UseEventBusReturn<T, P> {
   function on(listener: EventBusListener<T, P>) {

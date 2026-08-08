@@ -66,6 +66,12 @@ function _record<
   }
 }
 
+/**
+ * Object schema with keys and values (de)serialized through schemas.
+ *
+ * With an enum key schema, all enum keys are required to be present;
+ * use {@link partialRecord} to allow missing keys.
+ */
 export function record<
   Key extends KvantGenericSchema | KvantEnum,
   Value extends KvantGenericSchema,
@@ -76,6 +82,7 @@ export function record<
   return _record(keyType, valueSchema)
 }
 
+/** Like {@link record}, but enum keys may be missing from the value. */
 export function partialRecord<
   Key extends KvantGenericSchema | KvantEnum,
   Value extends KvantGenericSchema,

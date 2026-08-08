@@ -24,27 +24,43 @@ import { refine } from './refine'
 import { singular } from './singular'
 import { transform } from './transform'
 
+/** Infers the state output type of a schema. */
 export type output<S extends KvantGenericSchema>
   = KvantSchemaOutput<S>
 
+/** Infers the stored input type of a schema. */
 export type input<S extends KvantGenericSchema>
   = KvantSchemaInput<S>
 
+/** Infers the raw storage type a schema parses from. */
 export type rawInput<S extends KvantGenericSchema>
   = KvantSchemaRawInput<S>
 
+/**
+ * Fluent schema interface. All kvant schemas extend it,
+ * exposing chainable wrappers and combinators.
+ */
 export interface KvantType<Output, Input = Output, RawInput = unknown>
   extends KvantSchema<Output, Input, RawInput> {
+  /** Parses a raw storage value into typed state. Alias of `parse`. */
   readonly decode: (
     value: rawInput<this>,
   ) => output<this>
 
+  /** Wraps the schema, allowing `undefined` to pass through. */
   readonly optional: () => KvantOptional<this>
+  /** Wraps the schema, allowing `null` to pass through. */
   readonly nullable: () => KvantNullable<this>
+  /** Wraps the schema, allowing both `null` and `undefined` to pass through. */
   readonly nullish: () => KvantOptional<KvantNullable<this>>
 
+  /** Wraps the schema into an array of itself. */
   readonly array: () => KvantArray<this>
 
+  /**
+   * Falls back to the default when parsing yields `undefined`,
+   * and clears the stored value when it equals the default.
+   */
   readonly default: <
     T extends NoUndefined<output<this>>,
     Options extends KvantDefaultOptions<this, T> = KvantDefaultOptions<this, T>,
@@ -52,6 +68,10 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     defaultValue: T | (() => T),
     options?: Options,
   ) => KvantDefault<this, T, Options>
+  /**
+   * Like {@link KvantType.default | default}, but the fallback is given as
+   * stored input and parsed first, before reaching the wrapped schema.
+   */
   readonly prefault: <
     T extends input<this>,
     Options extends KvantPrefaultOptions<this, T> = KvantPrefaultOptions<this, T>,
@@ -60,14 +80,23 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     options?: Options,
   ) => KvantPrefault<this, T, Options>
 
+  /**
+   * Picks one element when the raw value is an array
+   * (e.g. a repeated search param). Defaults to the first element.
+   */
   readonly singular: (
     index?: number | ((value: unknown[]) => number),
   ) => KvantSingular<this>
 
+  /** Transforms the parsed/encoded value, keeping the schema's types. */
   readonly overwrite: (
     def: KvantOverwriteFn<this> | KvantOverwriteDef<this>,
   ) => this
 
+  /**
+   * Keeps values passing the check; rejected values fall back.
+   * The fallback is required when the output cannot be `undefined`.
+   */
   readonly refine: (
     check: (value: NoUndefined<output<this>>) => boolean,
     ...[fallback]: undefined extends output<this>
@@ -75,12 +104,17 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
       : [fallback: output<this> | (() => output<this>)]
   ) => this
 
+  /** Chains another schema after this one: its parse consumes this schema's output. */
   readonly pipe: <
     B extends KvantSchema<any, output<this>, output<this>>,
   >(
     schema: B,
   ) => KvantPipe<this, B>
 
+  /**
+   * Pipes into a transformation of the output value.
+   * A bare function applies to both parse and encode.
+   */
   // eslint-disable-next-line ts/method-signature-style
   transform<
     T extends output<this>,
@@ -94,6 +128,7 @@ export interface KvantType<Output, Input = Output, RawInput = unknown>
     def: KvantTransformDef<output<this>, T>
   ): KvantPipe<this, KvantTransform<output<this>, T>>
 
+  /** Passes the schema to a function and returns its result. Useful for custom combinators. */
   readonly apply: <T>(
     fn: (schema: this) => T,
   ) => T

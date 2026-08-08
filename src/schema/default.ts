@@ -10,7 +10,13 @@ export interface KvantDefaultOptions<
   S extends KvantGenericSchema,
   T extends NoUndefined<output<S>>,
 > {
+  /**
+   * Omits the stored value when it equals the default.
+   *
+   * @default true
+   */
   clearOnDefault?: boolean
+  /** Custom equality check against the default value. */
   isDefault?: (value: NoUndefined<output<S>> | input<S>, defaultValue: T) => boolean
 }
 
@@ -90,7 +96,13 @@ export interface KvantPrefaultOptions<
   S extends KvantGenericSchema,
   T extends input<S>,
 > {
+  /**
+   * Omits the stored value when it equals the default.
+   *
+   * @default true
+   */
   clearOnDefault?: boolean
+  /** Custom equality check against the default value. */
   isDefault?: (value: input<S>, defaultValue: T) => boolean
 }
 
@@ -109,6 +121,7 @@ export interface KvantPrefault<
   readonly unwrap: () => S
 }
 
+/** Standalone form of {@link KvantType.prefault}. */
 export function prefault<
   S extends KvantGenericSchema,
   T extends input<S>,

@@ -5,10 +5,16 @@ import type { output } from './core'
 export type KvantOverwriteFn<S extends KvantGenericSchema> = (value: NoUndefined<output<S>>) => output<S>
 
 export interface KvantOverwriteDef<S extends KvantGenericSchema> {
+  /** Applied after parsing. */
   decode?: KvantOverwriteFn<S>
+  /** Applied after encoding. */
   encode?: KvantOverwriteFn<S>
 }
 
+/**
+ * Wraps a schema, transforming its output after parse and before encode,
+ * without changing its types. A bare function applies to both directions.
+ */
 export function overwrite<S extends KvantGenericSchema>(
   schema: S,
   def: KvantOverwriteFn<S> | KvantOverwriteDef<S>,
@@ -32,10 +38,11 @@ export function overwrite<S extends KvantGenericSchema>(
         : output
     },
     encode(value) {
-      const output = schema.encode(value)
-      return output !== undefined
-        ? encode(output)
-        : output
+      return schema.encode(
+        value !== undefined
+          ? encode(value)
+          : value,
+      )
     },
   }
 }

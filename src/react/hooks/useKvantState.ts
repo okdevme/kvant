@@ -12,6 +12,14 @@ import { useCallback } from 'react'
 import { noopSchema } from '../../utils/schema'
 import { useKvantStates } from './useKvantStates'
 
+/**
+ * Binds a single storage key to React state, `useState`-style.
+ *
+ * @param adapter - adapter factory
+ * @param key - storage key
+ * @param schema - parse/encode schema for the value
+ * @returns `[state, setState]` tuple
+ */
 export function useKvantState<
   A extends KvantReactAdapter | KvantAdapter,
   S extends KvantGenericSchema<KvantReactAdapterValue<A>> = KvantSchema<
@@ -28,6 +36,11 @@ export function useKvantState<
   KvantSchemaOutput<S>,
   Dispatch<SetStateAction<KvantSchemaOutput<S>>>,
 ]
+/**
+ * Binds multiple keys described by a key map of schemas.
+ *
+ * @returns `[states, setStates]` tuple
+ */
 export function useKvantState<
   A extends KvantReactAdapter | KvantAdapter,
   M extends KvantKeyMap<KvantReactAdapterValue<A>>,

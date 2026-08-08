@@ -17,8 +17,24 @@ declare global {
 }
 
 export interface RouterQueryKvantAdapterOptions {
+  /**
+   * History mode used when writing the URL.
+   *
+   * @default 'replace'
+   */
   history?: 'push' | 'replace'
+  /**
+   * Navigates without re-running data fetching methods
+   * (`getServerSideProps`, `getStaticProps`).
+   *
+   * @default true
+   */
   shallow?: boolean
+  /**
+   * Scrolls to the top after writing the URL.
+   *
+   * @default false
+   */
   scroll?: boolean
 }
 

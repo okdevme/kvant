@@ -1,5 +1,6 @@
 export type SearchParamsValue = string | string[]
 
+/** Parses a search string into a record, keeping repeated keys as arrays. */
 export function parseSearch(
   search: string,
 ): Record<string, SearchParamsValue> {
@@ -18,6 +19,7 @@ export function parseSearch(
   )
 }
 
+/** Serializes values into a search string. Arrays become repeated keys, `undefined` is skipped. */
 export function stringifySearch(
   values: Record<string, unknown>,
 ): string {
@@ -34,6 +36,7 @@ export function stringifySearch(
   return searchParams.toString()
 }
 
+/** Returns a copy of the URL with its search string replaced. */
 export function withSearch(
   url: string | URL | Location,
   search: string | URLSearchParams,

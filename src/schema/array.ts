@@ -19,6 +19,10 @@ export interface KvantArray<S extends KvantGenericSchema> extends KvantType<
   readonly slice: (start: number, end?: number) => this
 }
 
+/**
+ * Wraps a schema into an array of itself.
+ * A single raw value is wrapped into a one-item array.
+ */
 export function array<S extends KvantGenericSchema>(schema: S): KvantArray<S> {
   return {
     ...generics,

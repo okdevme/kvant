@@ -5,6 +5,11 @@ export interface KvantBoolean extends KvantType<boolean | undefined> {
   readonly type: 'boolean'
 }
 
+/**
+ * Parses truthiness via `Boolean(value)`.
+ *
+ * For string representations like `'true'`/`'false'`, use {@link stringbool}.
+ */
 export function boolean(): KvantBoolean {
   return {
     ...generics,
@@ -22,8 +27,15 @@ export function boolean(): KvantBoolean {
 }
 
 export interface KvantStringboolOptions {
+  /** Raw strings parsed as `true`. The first entry is used when encoding. */
   truthy?: string[]
+  /** Raw strings parsed as `false`. The first entry is used when encoding. */
   falsy?: string[]
+  /**
+   * Case sensitivity when matching `truthy`/`falsy` entries.
+   *
+   * @default 'insensitive'
+   */
   case?: 'sensitive' | 'insensitive'
 }
 
@@ -31,6 +43,7 @@ export interface KvantStringbool extends KvantType<boolean | undefined, string |
   readonly type: 'stringbool'
 }
 
+/** Parses string representations of booleans (`'true'`, `'1'`, `'yes'`, ...). */
 export function stringbool(options: KvantStringboolOptions = {}): KvantStringbool {
   const {
     truthy: _truthy = ['true', '1', 'yes', 'on', 'y', 'enabled'],

@@ -12,6 +12,13 @@ import { computed } from 'vue'
 import { noopSchema } from '../../utils/schema'
 import { useKvantStates } from './useKvantStates'
 
+/**
+ * Binds a single storage key to a writable ref.
+ *
+ * @param adapter - adapter factory
+ * @param key - storage key
+ * @param schema - parse/encode schema for the value
+ */
 export function useKvantState<
   A extends KvantVueAdapter | KvantAdapter,
   S extends KvantGenericSchema<KvantVueAdapterValue<A>> = KvantSchema<
@@ -25,6 +32,9 @@ export function useKvantState<
   schema?: S,
   options?: Partial<KvantVueAdapterOptions<A>>,
 ): Ref<KvantSchemaOutput<S>>
+/**
+ * Binds multiple keys described by a key map of schemas to a writable ref.
+ */
 export function useKvantState<
   A extends KvantVueAdapter | KvantAdapter,
   M extends KvantKeyMap<KvantVueAdapterValue<A>>,
