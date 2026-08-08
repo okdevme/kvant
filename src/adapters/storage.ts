@@ -30,7 +30,7 @@ export function useStorageKvantAdapter(
 
   let snapshot: Record<string, string | undefined> = mapValues(
     normalizeSnapshot(
-      storage?.getItem ?? fallback,
+      storage?.getItem.bind(storage) ?? fallback,
       keys,
     ),
     value => value ?? undefined,
