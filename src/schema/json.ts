@@ -8,7 +8,7 @@ export interface KvantJSONOptions {
   space?: string | number
 }
 
-export interface KvantJSON<S extends KvantGenericSchema> extends KvantType<output<S> | undefined, string> {
+export interface KvantJSON<S extends KvantGenericSchema> extends KvantType<output<S> | undefined, string | undefined> {
   readonly type: 'json'
 }
 
@@ -33,6 +33,9 @@ export function json<S extends KvantGenericSchema>(
       }
     },
     encode(value) {
+      if (value === undefined)
+        return undefined
+
       return JSON.stringify(
         schema.encode(value),
         options?.replacer,
