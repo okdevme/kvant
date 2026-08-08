@@ -12,6 +12,7 @@ import {
   createContext,
   createElement,
   useContext,
+  useMemo,
 } from 'react'
 import { useKvantState } from '../hooks/useKvantState'
 
@@ -98,11 +99,13 @@ export function defineKvantState<
 
   const OptionsProvider: KvantOptionsProvider<A> = ({ defaultOptions, extend = true, children }) => {
     const contextOptions = useContext(OptionsContext)
-    return createElement(OptionsContext.Provider, {
-      value: extend
+    const value = useMemo(
+      () => extend
         ? { ...contextOptions, ...defaultOptions }
         : defaultOptions,
-    }, children)
+      [extend, contextOptions, defaultOptions],
+    )
+    return createElement(OptionsContext.Provider, { value }, children)
   }
 
   return { useState, OptionsProvider }
