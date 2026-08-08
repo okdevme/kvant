@@ -78,7 +78,7 @@ export function useSearchParamsKvantAdapter<T>(
         setOptimisticSearch(search)
       }
       const url = withSearch(location, search).toString()
-      history[`${mode}State`](
+      defaultWindow?.history[`${mode}State`](
         null,
         '',
         url,

@@ -96,7 +96,7 @@ export const useRouterQueryKvantAdapter: RouterQueryKvantAdapter = (keys, option
           ...router.query,
           ...mapValues(values, normalizeValue),
         },
-        hash: location.hash,
+        hash: defaultWindow?.location.hash,
       },
       undefined,
       { shallow, scroll },
