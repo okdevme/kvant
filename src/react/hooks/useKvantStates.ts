@@ -93,7 +93,7 @@ export function useKvantStates<
 
     // TODO: Throttle, debounce
     update(updatesToObject(updates))
-  }, [])
+  }, [update])
 
   useEffect(() => {
     const state = parseMap(
