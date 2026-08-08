@@ -49,6 +49,7 @@ export interface KvantOptionsProviderProps<A extends KvantReactAdapter | KvantAd
 
 export type KvantOptionsProvider<A extends KvantReactAdapter | KvantAdapter> = (props: KvantOptionsProviderProps<A>) => ReactNode
 
+/* @__NO_SIDE_EFFECTS__ */
 export function defineKvantState<
   A extends KvantReactAdapter | KvantAdapter,
 >(

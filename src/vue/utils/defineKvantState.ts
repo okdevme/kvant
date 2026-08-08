@@ -38,6 +38,7 @@ export interface KvantOptionsProviderOptions {
 export type KvantOptionsProvider<A extends KvantVueAdapter | KvantAdapter>
   = (defaultOptions: Partial<KvantVueAdapterOptions<A>>, options?: KvantOptionsProviderOptions) => void
 
+/* @__NO_SIDE_EFFECTS__ */
 export function defineKvantState<
   A extends KvantVueAdapter | KvantAdapter,
 >(
