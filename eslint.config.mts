@@ -1,8 +1,15 @@
 import antfu from '@antfu/eslint-config'
 
-export default antfu({
-  type: 'lib',
-  pnpm: {
-    catalogs: true,
+export default antfu(
+  {
+    type: 'lib',
+    pnpm: {
+      catalogs: true,
+    },
   },
-})
+  {
+    rules: {
+      'node/prefer-global/process': 'off',
+    },
+  },
+)

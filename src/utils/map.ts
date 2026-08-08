@@ -1,5 +1,6 @@
 import type { KvantKeyMap, KvantKeyMapOutput, KvantKeyMapRawInput } from '../types/schema'
 import type { Update } from '../types/sync'
+import { safeParse } from './schema'
 
 export interface KeyMapCache {
   snapshot: Record<string, any>
@@ -26,7 +27,7 @@ export function parseMap<M extends KvantKeyMap>(
     }
     // Cache miss
     hasChanged = true
-    output[key] = schema.parse(value)
+    output[key] = safeParse(schema, value)
     if (cache)
       cache.snapshot[key] = value
     return output
@@ -59,7 +60,7 @@ export function syncMap<M extends KvantKeyMap>(
     }
 
     const schema = keyMap[item.key]!
-    const state = item.schema !== schema ? schema.parse(item.value) : item.state
+    const state = item.schema !== schema ? safeParse(schema, item.value) : item.state
     if (state === newState[item.key])
       return
 

@@ -1,5 +1,6 @@
 import type { KvantKeyMap } from '../types/schema'
 import type { Update } from '../types/sync'
+import { safeEncode } from './schema'
 
 export function stateToUpdates(
   keyMap: KvantKeyMap,
@@ -8,7 +9,7 @@ export function stateToUpdates(
   return Object.keys(keyMap).map((key) => {
     const schema = keyMap[key]!
     const stateValue = state[key]
-    const value = schema.encode(stateValue)
+    const value = safeEncode(schema, stateValue)
     return {
       key,
       value,
