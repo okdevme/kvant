@@ -35,6 +35,10 @@ export interface KvantDefault<
   readonly unwrap: () => S
 }
 
+/**
+ * Falls back to the default when parsing yields `undefined`,
+ * and clears the stored value when it equals the default.
+ */
 export function _default<
   S extends KvantGenericSchema,
   T extends NoUndefined<output<S>>,
@@ -112,7 +116,10 @@ export interface KvantPrefault<
   readonly unwrap: () => S
 }
 
-/** Standalone form of {@link KvantType.prefault}. */
+/**
+ * Like {@link _default | default}, but the fallback is given as
+ * stored input and parsed first, before reaching the wrapped schema.
+ */
 export function prefault<
   S extends KvantGenericSchema,
   T extends input<S>,
