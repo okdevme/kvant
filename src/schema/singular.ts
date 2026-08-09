@@ -18,7 +18,7 @@ export interface KvantSingular<S extends KvantGenericSchema> extends KvantType<
  */
 export function singular<S extends KvantGenericSchema>(
   schema: S,
-  index: number | ((value: Extract<MaybeMultiple<rawInput<S>>, any[]>) => number) = 0,
+  index: number | ((value: unknown[]) => number) = 0,
 ): KvantSingular<S> {
   return {
     ...generics,

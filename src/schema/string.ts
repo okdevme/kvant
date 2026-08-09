@@ -36,7 +36,7 @@ const stringGenerics = {
     return refine(this, v => v.length === length)
   },
   regex(this: KvantStringGenericSchema, regex) {
-    return refine(this, regex.test)
+    return refine(this, v => regex.test(v))
   },
   startsWith(this: KvantStringGenericSchema, value) {
     return refine(this, v => v.startsWith(value))
@@ -48,10 +48,10 @@ const stringGenerics = {
     return refine(this, v => v.includes(value))
   },
   uppercase(this: KvantStringGenericSchema) {
-    return refine(this, uppercaseRegex.test)
+    return refine(this, v => uppercaseRegex.test(v))
   },
   lowercase(this: KvantStringGenericSchema) {
-    return refine(this, lowercaseRegex.test)
+    return refine(this, v => lowercaseRegex.test(v))
   },
   trim(this: KvantStringGenericSchema) {
     return overwrite(this, v => v.trim())
