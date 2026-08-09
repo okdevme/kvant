@@ -1,6 +1,7 @@
 import type { KvantGenericSchema } from '../types/schema'
 import type { NoUndefined } from '../utils/types'
 import type { output } from './core'
+import { shallowClone } from '../utils/object'
 import { overwrite } from './overwrite'
 
 /**
@@ -14,14 +15,16 @@ export function refine<S extends KvantGenericSchema>(
     ? [fallback?: output<S> | (() => output<S>)]
     : [fallback: output<S> | (() => output<S>)]
 ): S {
+  const getFallback = (): any => typeof fallback === 'function'
+    ? (fallback as () => output<S>)()
+    : shallowClone(fallback)
+
   return overwrite(
     schema,
     value => (
       check(value)
         ? value
-        : typeof fallback === 'function'
-          ? (fallback as () => output<S>)()
-          : fallback
+        : getFallback()
     ) as output<S>,
   )
 }
