@@ -3,7 +3,7 @@ import type { SearchParamsValue } from '../utils/search'
 import type { SnapshotRaw } from '../utils/snapshot'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
-import { defaultWindow, isClient } from '../globals'
+import { defaultWindow } from '../globals'
 import { withSearch } from '../utils/search'
 import { normalizeSnapshot } from '../utils/snapshot'
 
@@ -76,14 +76,14 @@ export function useSearchParamsKvantAdapter<T>(
     hook.trigger()
   }
 
-  if (isClient) {
+  const effects = (): (() => void) => {
     bus.on(onSync)
     defaultWindow?.addEventListener('popstate', onSync)
-  }
-  const dispose = (): void => {
-    hook.clear()
-    bus.off(onSync)
-    defaultWindow?.removeEventListener('popstate', onSync)
+    return () => {
+      hook.clear()
+      bus.off(onSync)
+      defaultWindow?.removeEventListener('popstate', onSync)
+    }
   }
 
   const update: KvantAdapterUpdateFn = (values) => {
@@ -113,6 +113,6 @@ export function useSearchParamsKvantAdapter<T>(
     subscribe: hook.on,
     getSnapshot: () => snapshot,
     update,
-    dispose,
+    effects,
   }
 }

@@ -4,7 +4,7 @@ import type { SetCookie } from '../utils/cookie'
 import type { SnapshotRaw } from '../utils/snapshot'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
-import { defaultWindow, isClient } from '../globals'
+import { defaultWindow } from '../globals'
 import { decodeCookieValue, parseCookie, stringifySetCookie } from '../utils/cookie'
 import { normalizeSnapshot } from '../utils/snapshot'
 
@@ -78,14 +78,14 @@ export const useCookiesKvantAdapter: CookiesKvantAdapter = (keys, options) => {
     ? defaultWindow.cookieStore
     : undefined
 
-  if (isClient) {
+  const effects = (): (() => void) => {
     bus.on(onSync)
     store?.addEventListener('change', onCookieChange)
-  }
-  const dispose = (): void => {
-    hook.clear()
-    bus.off(onSync)
-    store?.removeEventListener('change', onCookieChange)
+    return () => {
+      hook.clear()
+      bus.off(onSync)
+      store?.removeEventListener('change', onCookieChange)
+    }
   }
 
   const update: KvantAdapterUpdateFn = (values) => {
@@ -115,6 +115,6 @@ export const useCookiesKvantAdapter: CookiesKvantAdapter = (keys, options) => {
     subscribe: hook.on,
     getSnapshot: () => snapshot,
     update,
-    dispose,
+    effects,
   }
 }

@@ -18,8 +18,11 @@ export interface KvantAdapterInterface<T = any> {
   readonly getSnapshot: () => Record<string, T | undefined>
   /** Writes raw values to the underlying storage. */
   readonly update: KvantAdapterUpdateFn
-  /** Releases listeners and subscriptions. */
-  readonly dispose?: () => void
+  /**
+   * Register necessary effects (listeners, subscriptions, etc.)
+   * @returns A cleanup function to dispose of the effects.
+   */
+  readonly effects?: () => (() => void) | void
 }
 
 export type KvantAdapter<

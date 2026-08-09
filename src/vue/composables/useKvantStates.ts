@@ -8,7 +8,7 @@ import type {
   KvantVueAdapterOptions,
   KvantVueAdapterValue,
 } from '../types/adapter'
-import { onScopeDispose, ref, shallowRef, watch } from 'vue'
+import { onMounted, onScopeDispose, ref, shallowRef, watch } from 'vue'
 import { useEventBus } from '../../events/bus'
 import { isClient } from '../../globals'
 import { parseMap, syncMap } from '../../utils/map'
@@ -27,15 +27,17 @@ function useNormalizedAdapter<A extends KvantVueAdapter | KvantAdapter>(
     return api
 
   const snapshot = shallowRef(api.getSnapshot())
-  if (isClient) {
-    onScopeDispose(
-      api.subscribe(() => {
-        snapshot.value = api.getSnapshot()
-      }),
-    )
-  }
 
-  onScopeDispose(() => api.dispose?.())
+  onMounted(() => {
+    const unsubscribe = api.subscribe(() => {
+      snapshot.value = api.getSnapshot()
+    })
+    const dispose = api.effects?.()
+    onScopeDispose(() => {
+      unsubscribe()
+      dispose?.()
+    })
+  })
 
   return {
     key: api.key,

@@ -3,7 +3,7 @@ import type { SyncEvent, Update } from '../types/sync'
 import type { SnapshotRaw } from '../utils/snapshot'
 import { useEventBus } from '../events/bus'
 import { createEventHook } from '../events/hook'
-import { defaultWindow, isClient } from '../globals'
+import { defaultWindow } from '../globals'
 import { mapValues } from '../utils/object'
 import { normalizeSnapshot } from '../utils/snapshot'
 
@@ -76,14 +76,14 @@ export function useStorageKvantAdapter(
     }
   }
 
-  if (isClient) {
+  const effects = (): (() => void) => {
     bus.on(onSync)
     defaultWindow?.addEventListener('storage', onStorageEvent)
-  }
-  const dispose = (): void => {
-    hook.clear()
-    bus.off(onSync)
-    defaultWindow?.removeEventListener('storage', onStorageEvent)
+    return () => {
+      hook.clear()
+      bus.off(onSync)
+      defaultWindow?.removeEventListener('storage', onStorageEvent)
+    }
   }
 
   const update: KvantAdapterUpdateFn = (values) => {
@@ -111,7 +111,7 @@ export function useStorageKvantAdapter(
     subscribe: hook.on,
     getSnapshot: () => snapshot,
     update,
-    dispose,
+    effects,
   }
 }
 

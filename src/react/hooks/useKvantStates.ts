@@ -37,7 +37,7 @@ function useNormalizedAdapter<A extends KvantReactAdapter | KvantAdapter>(
     api.getSnapshot,
   )
 
-  useEffect(() => () => api.dispose?.(), [])
+  useEffect(() => api.effects?.(), [])
 
   return {
     key: api.key,
