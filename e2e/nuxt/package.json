@@ -1,0 +1,24 @@
+{
+  "name": "@kvant/e2e-nuxt",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev --port 3106",
+    "build": "nuxt build",
+    "preview": "nuxt preview --port 3106",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "kvant": "workspace:*",
+    "nuxt": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@kvant/e2e-shared": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}

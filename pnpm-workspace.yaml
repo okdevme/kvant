@@ -6,7 +6,9 @@ trustPolicyExclude:
   - semver
 
 packages:
-  - playground/**
+  - .
+  - playground/*
+  - e2e/*
 
 allowBuilds:
   esbuild: true
@@ -23,6 +25,7 @@ catalog:
   '@next/eslint-plugin-next': ^16.2.10
   '@nuxt/eslint': ^1.16.0
   '@nuxt/ui': ^4.10.0
+  '@playwright/test': ^1.62.1
   '@react-router/dev': ^8
   '@react-router/node': ^8
   '@react-router/serve': ^8
@@ -33,13 +36,18 @@ catalog:
   '@types/node': ^26.1.2
   '@types/react': ^19.2.18
   '@types/react-dom': ^19
+  '@vitejs/plugin-react': ^6.0.1
+  '@vitejs/plugin-vue': ^6.0.5
   eslint: ^10.8.0
   eslint-plugin-react-refresh: ^0.5.3
   happy-dom: ^20.11.2
   isbot: ^5.1.36
   jiti: ^2.7.0
   lint-staged: ^17.3.0
-  next: ^16.2.10
+  # 16.3.0 is having an issue with useRouter() in pages router
+  # (isolated to turbopack, perhaps a next.js regression)
+  # should monitor later patches
+  next: ~16.2.0
   nuxt: ^4.5.2
   publint: ^0.3.23
   react: ^19.2.8
@@ -48,6 +56,7 @@ catalog:
   simple-git-hooks: ^2.13.1
   tailwindcss: ^4.3.3
   tsdown: ^0.22.14
+  turbo: ^2.10.9
   typescript: ^6.0.3
   vite: ^8.0.3
   vitest: ^4.1.10

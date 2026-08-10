@@ -1,0 +1,26 @@
+{
+  "name": "@kvant/e2e-next",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3105",
+    "build": "next build",
+    "start": "next start --port 3105",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "kvant": "workspace:*",
+    "next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@kvant/e2e-shared": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:"
+  }
+}

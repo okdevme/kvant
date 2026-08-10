@@ -1,0 +1,15 @@
+{
+  "name": "@kvant/e2e-shared",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./playwright.config": "./playwright.config.ts",
+    "./navigate": "./navigate.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@kvant/e2e-react-router",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "react-router dev --port 3102",
+    "build": "react-router build",
+    "start": "react-router-serve ./build/server/index.js --port 3102",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@react-router/node": "catalog:",
+    "@react-router/serve": "catalog:",
+    "isbot": "catalog:",
+    "kvant": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:"
+  },
+  "devDependencies": {
+    "@kvant/e2e-shared": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@react-router/dev": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

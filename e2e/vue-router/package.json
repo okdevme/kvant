@@ -1,0 +1,25 @@
+{
+  "name": "@kvant/e2e-vue-router",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --port 3104",
+    "build": "vite build",
+    "preview": "vite preview --port 3104",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "kvant": "workspace:*",
+    "vue": "catalog:",
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@kvant/e2e-shared": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}
