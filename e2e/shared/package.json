@@ -5,7 +5,10 @@
   "private": true,
   "exports": {
     "./playwright.config": "./playwright.config.ts",
-    "./navigate": "./navigate.ts"
+    "./navigate": "./navigate.ts",
+    "./expect-url": "./expect-url.ts",
+    "./log-spy": "./log-spy.ts",
+    "./specs": "./specs.ts"
   },
   "devDependencies": {
     "@playwright/test": "catalog:",

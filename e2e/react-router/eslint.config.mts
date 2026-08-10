@@ -3,7 +3,7 @@ import antfu from '@antfu/eslint-config'
 export default antfu(
   {
     react: true,
-    ignores: ['.react-router/**', 'build/**'],
+    ignores: ['.react-router/**', 'build/**', '.playwright/**'],
   },
   {
     rules: {

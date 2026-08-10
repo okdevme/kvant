@@ -4,6 +4,7 @@ export default antfu(
   {
     react: true,
     nextjs: true,
+    ignores: ['.playwright/**', 'next-env.d.ts'],
   },
   {
     rules: {

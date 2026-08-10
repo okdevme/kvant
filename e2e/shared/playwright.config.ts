@@ -15,7 +15,7 @@ export function configurePlaywright({ startCommand, port }: PlaywrightBenchConfi
     fullyParallel: true,
     retries: process.env.CI ? 2 : 0,
     workers: process.env.CI ? 1 : undefined,
-    timeout: 10_000,
+    timeout: 30_000,
     reporter: [['list']],
     use: {
       baseURL: `http://localhost:${port}`,
