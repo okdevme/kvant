@@ -9,6 +9,7 @@ packages:
   - .
   - playground/*
   - e2e/*
+  - docs
 
 allowBuilds:
   esbuild: true
@@ -29,26 +30,33 @@ catalog:
   '@react-router/dev': ^8
   '@react-router/node': ^8
   '@react-router/serve': ^8
-  '@tailwindcss/postcss': ^4
+  '@tailwindcss/postcss': ^4.3.3
   '@tailwindcss/vite': ^4.2.2
   '@testing-library/react': ^16.3.2
   '@testing-library/vue': ^8.1.0
+  '@types/mdx': ^2.0.14
   '@types/node': ^26.1.2
   '@types/react': ^19.2.18
   '@types/react-dom': ^19
   '@vitejs/plugin-react': ^6.0.1
   '@vitejs/plugin-vue': ^6.0.5
+  cnfast: ^0.1.0
   eslint: ^10.8.0
   eslint-plugin-react-refresh: ^0.5.3
+  fumadocs-core: 16.14.3
+  fumadocs-mdx: 15.2.3
+  fumadocs-ui: npm:@fumadocs/base-ui@16.14.3
   happy-dom: ^20.11.2
   isbot: ^5.1.36
   jiti: ^2.7.0
   lint-staged: ^17.3.0
+  lucide-react: ^1.28.0
   # 16.3.0 is having an issue with useRouter() in pages router
   # (isolated to turbopack, perhaps a next.js regression)
   # should monitor later patches
   next: ~16.2.0
   nuxt: ^4.5.2
+  postcss: ^8.5.25
   publint: ^0.3.23
   react: ^19.2.8
   react-dom: ^19.2.8
@@ -63,3 +71,4 @@ catalog:
   vue: ^3.5.41
   vue-router: ^5.2.0
   vue-tsc: ^3.3.8
+  zod: ^4.4.3
