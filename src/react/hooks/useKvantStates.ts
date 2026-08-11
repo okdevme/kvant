@@ -109,19 +109,19 @@ export function useKvantStates<
   }, [JSON.stringify(snapshot)])
 
   useEffect(() => bus.on((event) => {
-    setInternalState((currentState) => {
-      const newState = syncMap(
-        keyMap,
-        currentState,
-        event.updates,
-        {
-          snapshot: snapshotCacheRef.current,
-          state: stateCacheRef.current,
-        },
-      )
-      stateCacheRef.current = newState
-      return newState
-    })
+    const newState = syncMap(
+      keyMap,
+      stateCacheRef.current,
+      event.updates,
+      {
+        snapshot: snapshotCacheRef.current,
+        state: stateCacheRef.current,
+      },
+    )
+    if (newState === stateCacheRef.current)
+      return
+    stateCacheRef.current = newState
+    setInternalState(newState)
   }), [])
 
   return [internalState, setState]
