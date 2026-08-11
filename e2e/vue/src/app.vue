@@ -7,12 +7,15 @@ import FormPage from './pages/form.vue'
 import HashPreservationPage from './pages/hashPreservation.vue'
 import HomePage from './pages/home.vue'
 import JsonPage from './pages/json.vue'
+import KeyIsolationPage from './pages/keyIsolation.vue'
 import LinkingPage from './pages/linking.vue'
 import LinkingTargetPage from './pages/linkingTarget.vue'
 import LocalStoragePage from './pages/localStorage.vue'
 import MultiHookSyncPage from './pages/multiHookSync.vue'
 import MultiInterfacePage from './pages/multiInterface.vue'
 import OptionsProviderPage from './pages/optionsProvider.vue'
+import RoutingPage from './pages/routing.vue'
+import ScrollPage from './pages/scroll.vue'
 import SearchParamsPage from './pages/searchParams.vue'
 import SessionStoragePage from './pages/sessionStorage.vue'
 import SpecialCharsPage from './pages/specialChars.vue'
@@ -33,6 +36,9 @@ const routes: Record<string, any> = {
   '/special-chars': SpecialCharsPage,
   '/json': JsonPage,
   '/multi-hook-sync': MultiHookSyncPage,
+  '/key-isolation': KeyIsolationPage,
+  '/scroll': ScrollPage,
+  '/routing': RoutingPage,
   '/session-storage': SessionStoragePage,
   '/options-provider': OptionsProviderPage,
   '/multi-interface': MultiInterfacePage,

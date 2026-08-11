@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { expectUrl } from './expect-url'
+import { setupLogSpy } from './log-spy'
 import { navigateTo } from './navigate'
 
 /**
@@ -304,6 +305,157 @@ export function testCookieAttributes(bench: string, path: string) {
       await page.reload()
       await page.waitForLoadState('networkidle')
       await expect(page.locator('#expiring')).toHaveText('alive')
+    })
+  })
+}
+
+/**
+ * Shared specs for key isolation (render counts).
+ * Page contract: two probe components bound to keys 'a' and 'b' on the same
+ * adapter; #trigger-a/#trigger-b write 'pass' to their key, #state-a/#state-b
+ * display the values. Each probe logs `render a` / `render b` to console.log
+ * on every render (React: render body; Vue: onMounted + onUpdated).
+ *
+ * Assertions are baseline-relative so StrictMode double-rendering and
+ * framework-specific mount counts don't leak into the spec.
+ *
+ * Not run on the next / react-router benches: those adapters sit on the
+ * framework router context, which re-renders consumers on any navigation
+ * by design.
+ */
+export function testKeyIsolation(bench: string, path: string) {
+  test.describe(`${bench} / key isolation`, () => {
+    test('updating key a does not re-render hook b', async ({ page }) => {
+      const spy = await setupLogSpy(page)
+      await navigateTo(page, path)
+      await expect(page.locator('#state-a')).toBeAttached()
+
+      const baseA = await spy.count('render a')
+      const baseB = await spy.count('render b')
+      expect(baseA).toBeGreaterThan(0)
+      expect(baseB).toBeGreaterThan(0)
+
+      await page.locator('#trigger-a').click()
+      await expect(page.locator('#state-a')).toHaveText('pass')
+      await expectUrl(page, /[?&]a=pass/)
+
+      expect(await spy.count('render a')).toBeGreaterThan(baseA)
+      expect(await spy.count('render b')).toBe(baseB)
+    })
+
+    test('updating key b does not re-render hook a', async ({ page }) => {
+      const spy = await setupLogSpy(page)
+      await navigateTo(page, path)
+      await expect(page.locator('#state-a')).toBeAttached()
+
+      const baseA = await spy.count('render a')
+      const baseB = await spy.count('render b')
+
+      await page.locator('#trigger-b').click()
+      await expect(page.locator('#state-b')).toHaveText('pass')
+      await expectUrl(page, /[?&]b=pass/)
+
+      expect(await spy.count('render b')).toBeGreaterThan(baseB)
+      expect(await spy.count('render a')).toBe(baseA)
+    })
+
+    test('sequential updates stay isolated', async ({ page }) => {
+      const spy = await setupLogSpy(page)
+      await navigateTo(page, path)
+      await expect(page.locator('#state-a')).toBeAttached()
+
+      await page.locator('#trigger-a').click()
+      await expect(page.locator('#state-a')).toHaveText('pass')
+      await expectUrl(page, /[?&]a=pass/)
+
+      const countA = await spy.count('render a')
+      const countB = await spy.count('render b')
+
+      await page.locator('#trigger-b').click()
+      await expect(page.locator('#state-b')).toHaveText('pass')
+      await expectUrl(page, url =>
+        url.searchParams.get('a') === 'pass'
+        && url.searchParams.get('b') === 'pass')
+
+      expect(await spy.count('render a')).toBe(countA)
+      expect(await spy.count('render b')).toBeGreaterThan(countB)
+    })
+  })
+}
+
+/**
+ * Shared specs for the scroll option on searchParams writes.
+ * Page contract: tall page (content height > viewport), #write-default writes
+ * test=default with default options, #write-scroll writes test=scroll with
+ * `scroll: true`.
+ *
+ * Only run on benches whose adapters support the scroll option
+ * (core searchParams, next, react-router); vue-router / nuxt delegate scroll
+ * behavior to the framework router.
+ */
+export function testScroll(bench: string, path: string) {
+  test.describe(`${bench} / scroll option`, () => {
+    test('default: scroll position is preserved on write', async ({ page }) => {
+      await navigateTo(page, path)
+      await page.evaluate(() => window.scrollTo(0, 500))
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+
+      await page.locator('#write-default').click()
+      await expectUrl(page, /[?&]test=default/)
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+    })
+
+    test('scroll: true resets scroll to the top on write', async ({ page }) => {
+      await navigateTo(page, path)
+      await page.evaluate(() => window.scrollTo(0, 500))
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+
+      await page.locator('#write-scroll').click()
+      await expectUrl(page, /[?&]test=scroll/)
+      await expect
+        .poll(() => page.evaluate(() => window.scrollY), { timeout: 5_000 })
+        .toBe(0)
+    })
+  })
+}
+
+/**
+ * Shared specs for programmatic router navigation.
+ * Page contract: #nav-push / #nav-replace navigate (framework router push /
+ * replace) to `${destPath}?test=routed`. The destination page shows #state
+ * bound to the 'test' key (the linking-target pages satisfy this).
+ */
+export function testRouting(bench: string, path: string, destPath: string) {
+  const isDest = (url: URL) =>
+    url.pathname === destPath && url.searchParams.get('test') === 'routed'
+
+  test.describe(`${bench} / routing`, () => {
+    test('router push to a URL with query picks up state', async ({ page }) => {
+      await navigateTo(page, path)
+      await page.locator('#nav-push').click()
+      await expectUrl(page, isDest)
+      await expect(page.locator('#state')).toHaveText('routed')
+    })
+
+    test('router replace to a URL with query picks up state', async ({ page }) => {
+      await navigateTo(page, path)
+      await page.locator('#nav-replace').click()
+      await expectUrl(page, isDest)
+      await expect(page.locator('#state')).toHaveText('routed')
+    })
+
+    test('state follows back/forward navigation', async ({ page }) => {
+      await navigateTo(page, path)
+      await page.locator('#nav-push').click()
+      await expectUrl(page, isDest)
+      await expect(page.locator('#state')).toHaveText('routed')
+
+      await page.goBack()
+      await expectUrl(page, url => url.pathname === path)
+
+      await page.goForward()
+      await expectUrl(page, isDest)
+      await expect(page.locator('#state')).toHaveText('routed')
     })
   })
 }

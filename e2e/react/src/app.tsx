@@ -5,11 +5,14 @@ import { FormPage } from './pages/form'
 import { HashPreservationPage } from './pages/hashPreservation'
 import { HomePage } from './pages/home'
 import { JsonPage } from './pages/json'
+import { KeyIsolationPage } from './pages/keyIsolation'
 import { LinkingPage, LinkingTargetPage } from './pages/linking'
 import { LocalStoragePage } from './pages/localStorage'
 import { MultiHookSyncPage } from './pages/multiHookSync'
 import { MultiInterfacePage } from './pages/multiInterface'
 import { OptionsProviderPage } from './pages/optionsProvider'
+import { RoutingPage } from './pages/routing'
+import { ScrollPage } from './pages/scroll'
 import { SearchParamsPage } from './pages/searchParams'
 import { SearchParamsPushPage } from './pages/searchParamsPush'
 import { SessionStoragePage } from './pages/sessionStorage'
@@ -47,6 +50,9 @@ export function App() {
         <Route path="/special-chars" component={SpecialCharsPage} />
         <Route path="/json" component={JsonPage} />
         <Route path="/multi-hook-sync" component={MultiHookSyncPage} />
+        <Route path="/key-isolation" component={KeyIsolationPage} />
+        <Route path="/scroll" component={ScrollPage} />
+        <Route path="/routing" component={RoutingPage} />
         <Route path="/session-storage" component={SessionStoragePage} />
         <Route path="/options-provider" component={OptionsProviderPage} />
         <Route path="/multi-interface" component={MultiInterfacePage} />

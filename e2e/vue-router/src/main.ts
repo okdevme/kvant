@@ -6,12 +6,14 @@ import FormPage from './pages/form.vue'
 import HashPreservationPage from './pages/hashPreservation.vue'
 import HomePage from './pages/home.vue'
 import JsonPage from './pages/json.vue'
+import KeyIsolationPage from './pages/keyIsolation.vue'
 import LinkingPage from './pages/linking.vue'
 import LinkingTargetPage from './pages/linkingTarget.vue'
 import MultiHookSyncPage from './pages/multiHookSync.vue'
 import ParamsPage from './pages/params.vue'
 import QueryPage from './pages/query.vue'
 import QueryPushPage from './pages/queryPush.vue'
+import RoutingPage from './pages/routing.vue'
 import SpecialCharsPage from './pages/specialChars.vue'
 
 const router = createRouter({
@@ -29,6 +31,8 @@ const router = createRouter({
     { path: '/special-chars', component: SpecialCharsPage },
     { path: '/json', component: JsonPage },
     { path: '/multi-hook-sync', component: MultiHookSyncPage },
+    { path: '/key-isolation', component: KeyIsolationPage },
+    { path: '/routing', component: RoutingPage },
   ],
 })
 

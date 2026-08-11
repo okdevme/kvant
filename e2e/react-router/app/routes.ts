@@ -14,5 +14,7 @@ export default [
   route('special-chars', 'routes/specialChars.tsx'),
   route('json', 'routes/json.tsx'),
   route('multi-hook-sync', 'routes/multiHookSync.tsx'),
+  route('scroll', 'routes/scroll.tsx'),
+  route('routing', 'routes/routing.tsx'),
   route('cookie-attributes', 'routes/cookieAttributes.tsx'),
 ] satisfies RouteConfig
