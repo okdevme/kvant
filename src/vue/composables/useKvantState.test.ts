@@ -7,7 +7,6 @@ import { defineComponent, h, nextTick } from 'vue'
 import { number } from '../../schema/number'
 import { string } from '../../schema/string'
 import { useKvantState } from './useKvantState'
-import { useKvantStates } from './useKvantStates'
 
 afterEach(cleanup)
 
@@ -87,7 +86,7 @@ describe('useKvantStates (vue)', () => {
   it('updates when the adapter snapshot changes externally', async () => {
     const adapterInstance = memoryAdapter({ page: '1' })
     const adapter = () => adapterInstance
-    renderState(() => useKvantStates(adapter, { page: number() }))
+    renderState(() => useKvantState(adapter, { page: number() }))
     await nextTick()
     expect(screen.getByText('{"page":1}')).toBeTruthy()
     adapterInstance.update({ page: '5' })
@@ -103,7 +102,7 @@ describe('useKvantStates (vue)', () => {
       effects: vi.fn(() => cleanup),
     }
     const adapter = () => adapterInstance
-    const { unmount } = renderState(() => useKvantStates(adapter, { page: number() }))
+    const { unmount } = renderState(() => useKvantState(adapter, { page: number() }))
     await nextTick()
     unmount()
     expect(cleanup).toHaveBeenCalledOnce()

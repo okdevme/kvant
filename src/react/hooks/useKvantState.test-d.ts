@@ -3,7 +3,6 @@ import { describe, expectTypeOf, it } from 'vitest'
 import { useCookiesKvantAdapter } from '../../adapters/cookies'
 import { number, string } from '../../schema'
 import { useKvantState } from '../hooks/useKvantState'
-import { useKvantStates } from '../hooks/useKvantStates'
 
 describe('useKvantState types', () => {
   it('infers state and setter types from the schema', () => {
@@ -23,11 +22,11 @@ describe('useKvantState types', () => {
   })
 
   it('infers key map output', () => {
-    const [states] = useKvantStates(useCookiesKvantAdapter, {
+    const [state] = useKvantState(useCookiesKvantAdapter, {
       q: string(),
       page: number().default(1),
     })
-    expectTypeOf(states).toEqualTypeOf<{
+    expectTypeOf(state).toEqualTypeOf<{
       q?: string | undefined
       page: number
     }>()

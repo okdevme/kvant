@@ -5,7 +5,6 @@ import { describe, expect, it, vi } from 'vitest'
 import { number } from '../../schema/number'
 import { string } from '../../schema/string'
 import { useKvantState } from './useKvantState'
-import { useKvantStates } from './useKvantStates'
 
 function memoryAdapter(
   initial: Record<string, string | undefined> = {},
@@ -92,7 +91,7 @@ describe('useKvantStates', () => {
     const adapterInstance = memoryAdapter({ q: 'a', page: '2' })
     const adapter = () => adapterInstance
     const { result } = renderHook(() =>
-      useKvantStates(adapter, { q: string(), page: number() }),
+      useKvantState(adapter, { q: string(), page: number() }),
     )
     expect(result.current[0]).toEqual({ q: 'a', page: 2 })
   })
@@ -101,7 +100,7 @@ describe('useKvantStates', () => {
     const adapterInstance = memoryAdapter({ q: 'a' })
     const adapter = () => adapterInstance
     const { result } = renderHook(() =>
-      useKvantStates(adapter, { q: string(), page: number() }),
+      useKvantState(adapter, { q: string(), page: number() }),
     )
     act(() => result.current[1](prev => ({ ...prev, q: 'b' })))
     expect(adapterInstance.calls.updates[0]).toEqual({ q: 'b', page: undefined })
@@ -112,7 +111,7 @@ describe('useKvantStates', () => {
     const adapterInstance = memoryAdapter({ page: '1' })
     const adapter = () => adapterInstance
     const { result } = renderHook(() =>
-      useKvantStates(adapter, { page: number() }),
+      useKvantState(adapter, { page: number() }),
     )
     expect(result.current[0].page).toBe(1)
     act(() => adapterInstance.update({ page: '5' }))
@@ -123,8 +122,8 @@ describe('useKvantStates', () => {
     // two hooks over the same underlying adapter key sync via the react bus
     const a = () => memoryAdapter({ page: '1' })
     const b = () => memoryAdapter({ page: '1' })
-    const first = renderHook(() => useKvantStates(a, { page: number() }))
-    const second = renderHook(() => useKvantStates(b, { page: number() }))
+    const first = renderHook(() => useKvantState(a, { page: number() }))
+    const second = renderHook(() => useKvantState(b, { page: number() }))
     act(() => first.result.current[1](prev => ({ ...prev, page: 9 })))
     expect(first.result.current[0].page).toBe(9)
     expect(second.result.current[0].page).toBe(9)
@@ -137,7 +136,7 @@ describe('useKvantStates', () => {
       effects: vi.fn(() => cleanup),
     }
     const adapter = () => adapterInstance
-    const { unmount } = renderHook(() => useKvantStates(adapter, { page: number() }))
+    const { unmount } = renderHook(() => useKvantState(adapter, { page: number() }))
     expect(adapterInstance.effects).toHaveBeenCalledOnce()
     unmount()
     expect(cleanup).toHaveBeenCalledOnce()
