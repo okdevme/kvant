@@ -1,3 +1,4 @@
+import type { KvantNumber } from './number'
 import { describe, expect, it } from 'vitest'
 import { isoDateToDate } from './date'
 import { number } from './number'
@@ -68,13 +69,16 @@ describe('kvantType combinators', () => {
   })
 
   it('apply passes the schema to a function', () => {
-    const double = <S extends ReturnType<typeof number>>(s: S) => s.overwrite(v => v * 2 as never)
+    const double = (s: KvantNumber) => s.overwrite(v => v * 2)
     const schema = number()
     expect(schema.apply(double).parse('2')).toBe(4)
   })
 
   it('chains fluently', () => {
-    const schema = number().default(0).optional().array()
-    expect(schema.parse(['1', undefined, '2'])).toEqual([1, undefined, 2])
+    const schema = number()
+      .default(-1)
+      .array()
+      .transform(arr => arr?.filter(v => v >= 0))
+    expect(schema.parse(['1', '-2', undefined, '2'])).toEqual([1, 2])
   })
 })
