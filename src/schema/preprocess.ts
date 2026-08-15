@@ -1,28 +1,45 @@
-import type { KvantGenericSchema } from '../types/schema'
-import type { rawInput } from './core'
-import type { KvantPipe } from './pipe'
-import type { KvantTransform, KvantTransformDef } from './transform'
-import { pipe } from './pipe'
-import { transform } from './transform'
+import type { KvantGenericSchema, KvantSchema } from '../types/schema'
+import type { input, output, rawInput } from './core'
+import { generics } from './core'
+
+export interface KvantPreprocessDef<A, B, C, D> {
+  decode: (value: A) => B
+  encode: (value: C) => D
+}
 
 export interface KvantPreprocess<
   S extends KvantGenericSchema,
-  Input = unknown,
-> extends KvantPipe<
-    KvantTransform<Input, rawInput<S>>,
-    S
-  > {}
+  RawInput = unknown,
+  Input = RawInput,
+> extends KvantSchema<
+    output<S>,
+    Input,
+    RawInput
+  > {
+  readonly type: 'preprocess'
+}
 
 /** Transforms the raw input before the schema parses it. */
 export function preprocess<
   S extends KvantGenericSchema,
-  Input = unknown,
+  RawInput = unknown,
+  Input = RawInput,
 >(
-  def: KvantTransformDef<Input, rawInput<S>>,
+  def: KvantPreprocessDef<RawInput, rawInput<S>, input<S>, Input>,
   schema: S,
-): KvantPreprocess<S, Input> {
-  return pipe(
-    transform(def),
-    schema,
-  )
+): KvantPreprocess<S, RawInput, Input> {
+  return {
+    ...generics,
+    type: 'preprocess',
+    parse(value) {
+      return schema.parse(
+        def.decode(value),
+      )
+    },
+    encode(value) {
+      return def.encode(
+        schema.encode(value),
+      )
+    },
+  }
 }

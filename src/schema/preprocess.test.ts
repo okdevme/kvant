@@ -5,7 +5,10 @@ import { preprocess } from './preprocess'
 describe('preprocess', () => {
   it('transforms the raw input before parsing', () => {
     const schema = preprocess(
-      { decode: v => (typeof v === 'string' ? v.trim() : v), encode: v => v },
+      {
+        decode: v => typeof v === 'string' ? v.trim() : v,
+        encode: v => v,
+      },
       number(),
     )
     expect(schema.parse('  42 ')).toBe(42)
@@ -17,5 +20,13 @@ describe('preprocess', () => {
       number(),
     )
     expect(schema.encode(5)).toBe(5)
+  })
+
+  it('exposes the schema type tag', () => {
+    const schema = preprocess(
+      { decode: Number, encode: v => v },
+      number(),
+    )
+    expect(schema.type).toBe('preprocess')
   })
 })
