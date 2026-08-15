@@ -1,0 +1,126 @@
+---
+title: Local Storage
+description: Persist React state in localStorage with cross-tab sync.
+---
+
+`useLocalStorage` binds state to a `localStorage` entry. Values persist
+across reloads, and changes **sync across tabs** via the `storage` event.
+
+<Switch>
+  <Case react>
+```tsx
+import { useLocalStorage } from 'kvant/react'
+import * as kv from 'kvant/schema'
+
+export function ThemeToggle() {
+  const [theme, setTheme] = useLocalStorage(
+    'theme',
+    kv.enum(['light', 'dark']).default('light'),
+  )
+
+  return (
+    <button onClick={() => setTheme(t => (t === 'light' ? 'dark' : 'light'))}>
+      Theme: {theme}
+    </button>
+  )
+}
+```
+  </Case>
+  <Case vue>
+```vue
+<script setup lang="ts">
+import { useLocalStorage } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+
+const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+
+function toggle() {
+  theme.value = theme.value === 'light' ? 'dark' : 'light'
+}
+</script>
+
+<template>
+  <button @click="toggle">Theme: {{ theme }}</button>
+</template>
+```
+  </Case>
+</Switch>
+
+Key maps work too:
+
+<Switch>
+  <Case react>
+```tsx
+const [prefs, setPrefs] = useLocalStorage({
+  theme: kv.enum(['light', 'dark']).default('light'),
+  fontSize: kv.number().default(16),
+})
+
+setPrefs(prev => ({ ...prev, fontSize: prev.fontSize + 1 }))
+```
+  </Case>
+  <Case vue>
+```ts
+const prefs = useLocalStorage({
+  theme: kv.enum(['light', 'dark']).default('light'),
+  fontSize: kv.number().default(16),
+})
+
+prefs.value = { ...prefs.value, fontSize: prefs.value.fontSize + 1 }
+prefs.value.fontSize += 1 // deeply reactive!
+```
+  </Case>
+</Switch>
+
+## Session storage
+
+The same API exists for `sessionStorage` via `useSessionStorage` — scoped
+to the current tab, cleared when the tab closes, and not shared across
+tabs:
+
+<Switch>
+  <Case react>
+```tsx
+import { useSessionStorage } from 'kvant/react'
+
+const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
+```
+  </Case>
+  <Case vue>
+```ts
+import { useSessionStorage } from 'kvant/vue'
+
+const draft = useSessionStorage('draft', kv.string().default(''))
+```
+  </Case>
+</Switch>
+
+## Options
+
+<AutoTypeTable
+  path="node_modules/kvant/dist/index.d.mts"
+  name="StorageKvantAdapterOptions"
+/>
+
+<include>../_shared/snippets/options-providers/_header.mdx</include>
+
+<Switch>
+  <Case react>
+```tsx
+import { LocalStorageOptionsProvider } from 'kvant/react'
+
+<LocalStorageOptionsProvider defaultOptions={{ fallback: { theme: 'light' } }}>
+  {children}
+</LocalStorageOptionsProvider>
+```
+  </Case>
+  <Case vue>
+```vue
+<script setup lang="ts">
+import { provideLocalStorageOptions } from 'kvant/vue'
+
+provideLocalStorageOptions({ fallback: { theme: 'light' } })
+</script>
+```
+  </Case>
+</Switch>

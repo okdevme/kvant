@@ -12,10 +12,14 @@ defining your own binding (see [Advanced Usage](./advanced-usage)):
 <Switch>
   <Case react>
 ```ts title="lib/search-params.ts"
-import { defineKvantState, useSearchParamsKvantAdapter } from 'kvant/react'
+import { useSearchParamsKvantAdapter } from 'kvant'
+import { defineKvantState } from 'kvant/react'
 import qs from 'qs'
 
-export const { useState: useSearchParams, OptionsProvider } = defineKvantState(
+export const {
+  useState: useSearchParams,
+  OptionsProvider: SearchParamsOptionsProvider
+} = defineKvantState(
   (keys, options) => useSearchParamsKvantAdapter(keys, {
     parseSearch: search => qs.parse(search, { ignoreQueryPrefix: true }),
     stringifySearch: values => qs.stringify(values, { encodeValuesOnly: true }),
@@ -27,10 +31,14 @@ export const { useState: useSearchParams, OptionsProvider } = defineKvantState(
   <Case next>
 ```ts title="lib/search-params.ts"
 'use client'
-import { defineKvantState, useSearchParamsKvantAdapter } from 'kvant/next'
+import { useSearchParamsKvantAdapter } from 'kvant/next'
+import { defineKvantState } from 'kvant/react'
 import qs from 'qs'
 
-export const { useState: useSearchParams, OptionsProvider } = defineKvantState(
+export const {
+  useState: useSearchParams,
+  OptionsProvider: SearchParamsOptionsProvider
+} = defineKvantState(
   (keys, options) => useSearchParamsKvantAdapter(keys, {
     parseSearch: search => qs.parse(search, { ignoreQueryPrefix: true }),
     stringifySearch: values => qs.stringify(values, { encodeValuesOnly: true }),
@@ -41,10 +49,14 @@ export const { useState: useSearchParams, OptionsProvider } = defineKvantState(
   </Case>
   <Case react-router>
 ```ts title="lib/search-params.ts"
-import { defineKvantState, useSearchParamsKvantAdapter } from 'kvant/react-router'
+import { useSearchParamsKvantAdapter } from 'kvant/react-router'
+import { defineKvantState } from 'kvant/react'
 import qs from 'qs'
 
-export const { useState: useSearchParams, OptionsProvider } = defineKvantState(
+export const {
+  useState: useSearchParams,
+  OptionsProvider: SearchParamsOptionsProvider
+} = defineKvantState(
   (keys, options) => useSearchParamsKvantAdapter(keys, {
     parseSearch: search => qs.parse(search, { ignoreQueryPrefix: true }),
     stringifySearch: values => qs.stringify(values, { encodeValuesOnly: true }),
@@ -55,10 +67,14 @@ export const { useState: useSearchParams, OptionsProvider } = defineKvantState(
   </Case>
   <Case vue>
 ```ts title="lib/search-params.ts"
-import { defineKvantState, useSearchParamsKvantAdapter } from 'kvant/vue'
+import { useSearchParamsKvantAdapter } from 'kvant'
+import { defineKvantState } from 'kvant/vue'
 import qs from 'qs'
 
-export const { useState: useSearchParams, provideOptions } = defineKvantState(
+export const {
+  useState: useSearchParams,
+  provideOptions: provideSearchParamsOptions
+} = defineKvantState(
   (keys, options) => useSearchParamsKvantAdapter(keys, {
     parseSearch: search => qs.parse(search, { ignoreQueryPrefix: true }),
     stringifySearch: values => qs.stringify(values, { encodeValuesOnly: true }),
