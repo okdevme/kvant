@@ -12,7 +12,10 @@ export type KvantAdapterUpdateFn = (values: Record<string, unknown>) => void
 export interface KvantAdapterInterface<T = any> {
   /** Unique adapter identifier, used to namespace sync channels. */
   readonly key: string
-  /** Subscribes to snapshot changes. Returns an unsubscribe function. */
+  /**
+   * Subscribes to snapshot changes.
+   * @returns An unsubscribe function.
+   */
   readonly subscribe: (callback: () => void) => () => void
   /** Returns the current raw values for the adapter's keys. */
   readonly getSnapshot: () => Record<string, T | undefined>

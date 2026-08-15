@@ -289,3 +289,47 @@ Full guides:
 <include>./snippets/options-providers/_header.mdx</include>
 
 <include>./snippets/options-providers/_search-params-example.mdx</include>
+
+<Switch>
+  <Case react>
+Nested providers merge with parent options by default (`extend: true`);
+pass `extend={false}` to replace instead of merge:
+  </Case>
+  <Case vue>
+Nested provides merge with parent options by default (`extend: true`); pass
+`{ extend: false }` to replace instead of merge:
+  </Case>
+</Switch>
+
+<Switch>
+  <Case react>
+```tsx
+<SearchParamsOptionsProvider
+  defaultOptions={{ history: 'push' }}
+  extend={false}
+>
+  {children}
+</SearchParamsOptionsProvider>
+```
+  </Case>
+  <Case next-pages>
+```tsx
+<RouterQueryOptionsProvider
+  defaultOptions={{ history: 'push' }}
+  extend={false}
+>
+  {children}
+</RouterQueryOptionsProvider>
+```
+  </Case>
+  <Case vue>
+```ts
+provideSearchParamsOptions({ history: 'push' }, { extend: false })
+```
+  </Case>
+  <Case vue-router nuxt>
+```ts
+provideRouteQueryOptions({ history: 'push' }, { extend: false })
+```
+  </Case>
+</Switch>

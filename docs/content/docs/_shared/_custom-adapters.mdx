@@ -1,70 +1,111 @@
 ---
-title: custom-adapters
+title: Custom Adapters
 ---
 
-When none of the built-in adapters fit — an external store, `IndexedDB`, a
+When the built-in interfaces aren't enough — an external store, an in-memory map, a
 query-string dialect, a native bridge — you can write your own.
 
 ## The adapter contract
 
-An adapter is a factory receiving the bound keys and resolved options, and
+<Switch>
+  <Case react>
+An adapter is a hook receiving the bound keys and resolved options, and
 returning an interface object:
 
 ```ts
-import type { KvantAdapter } from 'kvant'
-
-interface MyStoreOptions {
-  fallback?: Record<string, string | undefined>
+interface KvantReactAdapterInterface<T> {
+  /** Unique adapter identifier, used to namespace sync channels. */
+  readonly key: string
+  /** Current raw values for the adapter's keys. Must be referentially stable between changes. */
+  readonly snapshot: Readonly<Record<string, T | undefined>>
+  /** Writes raw values to the underlying storage. */
+  readonly update: (values: Record<string, unknown>) => void
 }
 
-const useMyStoreAdapter: KvantAdapter<string, MyStoreOptions> = (
-  keys,
-  options,
-) => {
-  return {
-    // Unique namespace for this adapter instance.
-    key: 'my-store',
+type KvantReactAdapter<T, Options> = (
+  keys: string[],
+  options: Partial<Options>,
+) => KvantReactAdapterInterface<T>
+```
+  </Case>
+  <Case vue>
+An adapter is a composable receiving the bound keys and resolved options, and
+returning an interface object:
 
-    // Subscribe to external changes; returns an unsubscribe function.
-    subscribe: (callback) => {
-      myStore.addEventListener('change', callback)
-      return () => myStore.removeEventListener('change', callback)
-    },
-
-    // Synchronously return current raw values for the bound keys.
-    getSnapshot: () => pick(myStore.readAll(), keys),
-
-    // Write values back to the store.
-    update: (values) => {
-      myStore.writeAll(values)
-    },
-
-    // Optional: register listeners, return a cleanup function.
-    effects: () => {
-      const stop = startListening()
-      return stop
-    },
-  }
+```ts
+export interface KvantVueAdapterInterface<T> {
+  /** Unique adapter identifier, used to namespace sync channels. */
+  readonly key: string
+  /** Current raw values for the adapter's keys. */
+  readonly snapshot: Readonly<Ref<Record<string, T | undefined>>>
+  /** Writes raw values to the underlying storage. */
+  readonly update: KvantAdapterUpdateFn
 }
+
+type KvantVueAdapter<T, Options> = (
+  keys: string[],
+  options: Partial<Options>,
+) => KvantVueAdapterInterface<T>
+```
+  </Case>
+</Switch>
+
+To have a better idea of how to implement an adapter,
+check out the source code of the built-in adapters:
+
+<Switch>
+  <Case react>
+| Interface      | Adapter                              | Source                          |
+| -------------- | ------------------------------------ | ------------------------------ |
+| Next.js (app router) → Search Params | `kvant/next` → `useSearchParamsKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/next/adapters/searchParams.ts) |
+| Next.js (pages router) → Router Query  | `kvant/next/pages` → `useRouterQueryKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/next/pages/adapters/query.ts) |
+| React Router → Search Params  | `kvant/react-router` → `useSearchParamsKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/react-router/adapters/searchParams.ts) |
+  </Case>
+  <Case vue>
+| Interface      | Adapter                              | Source                          |
+| -------------- | ------------------------------------ | ------------------------------ |
+| Vue Router → Route Query | `kvant/vue-router` → `useRouteQueryKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/vue-router/adapters/query.ts) |
+| Vue Router → Route Params  | `kvant/vue-router` → `useRouteParamsKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/vue-router/adapters/params.ts) |
+| Nuxt → Cookies  | `kvant/nuxt` → `useCookiesKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/nuxt/adapters/cookies.ts) |
+  </Case>
+</Switch>
+
+## Framework-agnostic adapters
+
+If you want to share an adapter across framework families (React, Vue) —
+you can implement a low-level, framework-agnostic adapter:
+
+```ts
+interface KvantAdapterInterface<T> {
+  /** Unique adapter identifier, used to namespace sync channels. */
+  readonly key: string
+  /**
+   * Subscribes to snapshot changes.
+   * @returns An unsubscribe function.
+   */
+  readonly subscribe: (callback: () => void) => () => void
+  /** Returns the current raw values for the adapter's keys. */
+  readonly getSnapshot: () => Record<string, T | undefined>
+  /** Writes raw values to the underlying storage. */
+  readonly update: (values: Record<string, unknown>) => void
+  /**
+   * Register necessary effects (listeners, subscriptions, etc.)
+   * @returns A cleanup function to dispose of the effects.
+   */
+  readonly effects?: () => (() => void) | void
+}
+
+type KvantAdapter<T, Options> = (
+  keys: string[],
+  options: Partial<Options>,
+) => KvantAdapterInterface<T>
 ```
 
-Rules of thumb:
+To have a better idea of how to implement a framework-agnostic adapter,
+check out the source code of the built-in adapters:
 
-- **Snapshot stability** — return the same object reference when nothing
-  changed, so framework integrations can bail out of re-renders.
-- **Scope snapshots to `keys`** — only the keys passed to the factory are
-  observed by the binding.
-- **`update` receives `undefined`** — treat `undefined` values as removals.
-- **Never throw** in `getSnapshot` — resolve to fallbacks instead.
-
-## Framework-agnostic vs framework-specific adapters
-
-The contract above is framework-agnostic: kvant's React and Vue layers
-normalize it (`useSyncExternalStore` on React, `Ref` on Vue) automatically. A
-plain `KvantAdapter` can therefore be reused across all supported frameworks.
-
-Writing a framework-agnostic adapter is worthwhile **only if you actually plan
-to use it across frameworks** (a shared design-system package, a custom
-storage engine, ...). Otherwise prefer a framework-specific adapter built on
-that framework's own primitives — like kvant's internal adapters do — since it
-integrates better with routing lifecycles and SSR.
+| Interface      | Adapter                              | Source                          |
+| -------------- | ------------------------------------ | ------------------------------ |
+| Search Params  | `kvant` → `useSearchParamsKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/adapters/searchParams.ts) |
+| Cookies        | `kvant` → `useCookiesKvantAdapter`   | [GitHub](https://github.com/okdevme/kvant/blob/main/src/adapters/cookies.ts)       |
+| Web Storage    | `kvant` → `useStorageKvantAdapter`   | [GitHub](https://github.com/okdevme/kvant/blob/main/src/adapters/storage.ts)     |

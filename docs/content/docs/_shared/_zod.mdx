@@ -61,8 +61,7 @@ useRouteQuery('price', z.coerce.number().min(1).catch(1))
 ## Codecs
 
 [Zod codecs](https://zod.dev/codecs) are bidirectional by design, which maps
-naturally onto kvant's parse/encode contract. A codec's `decode` runs on
-parse and its `encode` runs on encode:
+naturally onto kvant's parse/encode contract without any intermediate layers:
 
 ```ts
 import * as z from 'zod'
