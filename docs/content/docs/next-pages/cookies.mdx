@@ -1,59 +1,8 @@
 ---
 title: Cookies
-description: Type-safe cookie state with SSR support
+description: Bind React state to cookies, with SSR support in Next.js pages router.
 ---
 
-<include>../_shared/interfaces/_cookies.mdx</include>
+<include>../_shared/_cookies.mdx</include>
 
-## Usage
-
-```tsx
-'use client'
-
-import { useCookies } from 'kvant/react'
-import * as kv from 'kvant/schema'
-
-export function ConsentBanner() {
-  const [consent, setConsent] = useCookies(
-    'consent',
-    kv.enum(['accepted', 'declined']),
-    { maxAge: 60 * 60 * 24 * 365 }, // one year
-  )
-
-  if (consent) return null
-
-  return <button onClick={() => setConsent('accepted')}>Accept</button>
-}
-```
-
-## SSR setup
-
-During server rendering `document.cookie` is unavailable. Pass the request's
-cookie header as the `fallback` option via `CookiesOptionsProvider`, so
-client components read the correct initial value and hydrate without
-mismatches:
-
-```tsx title="app/layout.tsx"
-import { cookies } from 'next/headers'
-import { CookiesOptionsProvider } from 'kvant/react'
-
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const cookieStore = await cookies()
-
-  return (
-    <html>
-      <body>
-        <CookiesOptionsProvider
-          defaultOptions={{ fallback: cookieStore.toString() }}
-        >
-          {children}
-        </CookiesOptionsProvider>
-      </body>
-    </html>
-  )
-}
-```
+<include>../_shared/snippets/_cookies-ssr-setup.mdx</include>

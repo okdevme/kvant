@@ -54,18 +54,9 @@ returns a writable `Ref`.
 
 <include>../_shared/snippets/_search-input-example.mdx</include>
 
-<Switch>
-  <Case react>
-Setting a key to `undefined` removes it from the URL. Values equal to the
-schema default are never written to the URL — defaults stay internal.
-Multiple hooks bound to the same key stay in sync automatically.
-  </Case>
-  <Case vue>
-Setting a key to `undefined` removes it from the URL. Values equal to the
-schema default are never written to the URL — defaults stay internal.
-Multiple composables bound to the same key stay in sync automatically.
-  </Case>
-</Switch>
+<include>../_shared/snippets/_interface-conventions.mdx</include>
+
+Key maps work too:
 
 <include>../_shared/snippets/_search-params-filters-with-set-example.mdx</include>
 

@@ -1,0 +1,16 @@
+---
+title: Interface Conventions
+---
+
+<Switch>
+  <Case react>
+Setting a key to `undefined` removes its entry. Values equal to the
+schema default are never written — defaults stay internal.
+Multiple hooks bound to the same key stay in sync automatically.
+  </Case>
+  <Case vue>
+Setting a key to `undefined` removes its entry. Values equal to the
+schema default are never written — defaults stay internal.
+Multiple composables bound to the same key stay in sync automatically.
+  </Case>
+</Switch>

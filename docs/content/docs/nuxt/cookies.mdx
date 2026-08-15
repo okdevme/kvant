@@ -1,41 +1,6 @@
 ---
 title: Cookies
-description: Type-safe cookie state with SSR support
+description: Bind Vue state to cookies in Nuxt, SSR-ready out of the box.
 ---
 
-<include>../_shared/interfaces/_cookies.mdx</include>
-
-## Usage
-
-The Nuxt cookies adapter is built on `useCookie`, so values are available
-during SSR with no extra setup:
-
-```vue
-<script setup lang="ts">
-import { useCookies } from 'kvant/nuxt'
-import * as kv from 'kvant/schema'
-
-const consent = useCookies(
-  'consent',
-  kv.enum(['accepted', 'declined']),
-  { maxAge: 60 * 60 * 24 * 365 }, // one year
-)
-</script>
-
-<template>
-  <button v-if="!consent" @click="consent = 'accepted'">
-    Accept
-  </button>
-</template>
-```
-
-Cookie attributes (`maxAge`, `expires`, `httpOnly`, `secure`, `domain`,
-`path`, `sameSite`, `priority`, `partitioned`) are passed through to Nuxt's
-`useCookie` on every write — set them per binding or globally:
-
-```ts
-import { provideCookiesOptions } from 'kvant/nuxt'
-
-// In a parent component's setup()
-provideCookiesOptions({ sameSite: 'lax', secure: true })
-```
+<include>../_shared/_cookies.mdx</include>

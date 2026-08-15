@@ -1,0 +1,115 @@
+---
+title: Cookies SSR Setup
+---
+
+## SSR setup
+
+<Switch>
+  <Case react>
+In a React SPA there is no server rendering by default, but if you render
+on the server (custom SSR, prerendering), `document.cookie` is unavailable.
+Provide the request's `Cookie` header as a `fallback` via the options
+provider:
+
+```tsx
+import { CookiesOptionsProvider } from 'kvant/react'
+
+// cookieHeader comes from your server entry
+<CookiesOptionsProvider defaultOptions={{ fallback: cookieHeader }}>
+  <App />
+</CookiesOptionsProvider>
+```
+  </Case>
+  <Case next>
+On the server there is no `document.cookie`, so provide the request's
+cookies as a `fallback` via the options provider. In the app router, you can do it
+in a layout or page:
+
+```tsx title="app/layout.tsx"
+import { cookies } from 'next/headers'
+import { CookiesOptionsProvider } from 'kvant/react'
+
+export default async function RootLayout({ children }) {
+  const cookieStore = await cookies()
+
+  return (
+    <html>
+      <body>
+        <CookiesOptionsProvider
+          defaultOptions={{ fallback: cookieStore.toString() }}
+        >
+          {children}
+        </CookiesOptionsProvider>
+      </body>
+    </html>
+  )
+}
+```
+  </Case>
+  <Case next-pages>
+On the server there is no `document.cookie`, so provide the request's
+cookies as a `fallback` via the options provider — for example from
+`getServerSideProps` into `_app`:
+
+```tsx title="pages/_app.tsx"
+import type { AppProps } from 'next/app'
+import { CookiesOptionsProvider } from 'kvant/react'
+
+export default function App({ Component, pageProps }: AppProps) {
+  return (
+    <CookiesOptionsProvider
+      defaultOptions={{ fallback: pageProps.cookieHeader ?? '' }}
+    >
+      <Component {...pageProps} />
+    </CookiesOptionsProvider>
+  )
+}
+```
+
+```ts title="pages/index.tsx"
+export const getServerSideProps = async ({ req }) => ({
+  props: { cookieHeader: req.headers.cookie ?? '' },
+})
+```
+  </Case>
+  <Case react-router>
+When server-rendering with React Router (framework mode), `document.cookie`
+is unavailable. Provide the request's `Cookie` header as a `fallback` via
+the options provider — e.g. pass it from your loader to the root route:
+
+```tsx title="app/root.tsx"
+import { CookiesOptionsProvider } from 'kvant/react'
+
+export async function loader({ request }: Route.LoaderArgs) {
+  return { cookieHeader: request.headers.get('cookie') ?? '' }
+}
+
+export default function Root({ loaderData }: Route.ComponentProps) {
+  return (
+    <CookiesOptionsProvider
+      defaultOptions={{ fallback: loaderData.cookieHeader }}
+    >
+      <Outlet />
+    </CookiesOptionsProvider>
+  )
+}
+```
+  </Case>
+  <Case vue>
+When rendering on the server (or prerendering), `document.cookie` is
+unavailable. Provide the request's `Cookie` header as a `fallback` with the
+provide function in a top-level component:
+
+```vue
+<script setup lang="ts">
+import { provideCookiesOptions } from 'kvant/vue'
+
+// cookieHeader comes from your server entry, e.g. via SSR context
+provideCookiesOptions({ fallback: cookieHeader })
+</script>
+```
+  </Case>
+</Switch>
+
+With the fallback in place, the first client render matches the
+server-rendered HTML — no hydration mismatch.
