@@ -1,76 +1,188 @@
 ---
-title: comparison-to-nuqs
+title: Comparison to nuqs
+description: How kvant relates to nuqs, and the key differences between them.
 ---
 
-<Callout>
-Not familiar with [nuqs](https://nuqs.dev)? Feel free to skip this page — it
-compares kvant to nuqs for users migrating or evaluating both.
-</Callout>
+[nuqs](https://nuqs.dev) is the library that popularized type-safe URL query
+state for React: `useQueryState` syncs a piece of state with a search param,
+using parsers to convert between strings and typed values. kvant takes heavy
+inspiration from nuqs — if you've used it, the core loop (schema → hook →
+URL as source of truth) will feel familiar.
 
-[nuqs](https://nuqs.dev) is a type-safe search params state manager for React.
-kvant grew out of the same idea — the URL as reactive, typed state — and
-generalizes it in two directions:
+<Switch>
+  <Case react>
+```ts tab="nuqs"
+import { parseAsIndex, useQueryState } from 'nuqs'
 
-- **Interfaces**: nuqs manages URL search params only. kvant manages any
-  key-value interface — search params, route query/params, cookies, web
-  storage — through one consistent API.
-- **Frameworks**: nuqs is React-only (with adapters for Next.js, Remix, React
-  Router, ...). kvant supports both React and Vue framework families with the
-  same mental model.
+const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
+```
 
-## API mapping
+```ts tab="kvant"
+import { useSearchParams } from 'kvant/react'
+import * as kv from 'kvant/schema'
 
-Concepts translate directly:
+const [page, setPage] = useSearchParams('page', kv.index().default(0))
+```
+  </Case>
+  <Case next>
+```ts tab="nuqs"
+import { parseAsIndex, useQueryState } from 'nuqs'
+
+const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
+```
+
+```ts tab="kvant"
+import { useSearchParams } from 'kvant/next'
+import * as kv from 'kvant/schema'
+
+const [page, setPage] = useSearchParams('page', kv.index().default(0))
+```
+  </Case>
+  <Case next-pages>
+```ts tab="nuqs"
+import { parseAsIndex, useQueryState } from 'nuqs'
+
+const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
+```
+
+```ts tab="kvant"
+import { useRouterQuery } from 'kvant/next/pages'
+import * as kv from 'kvant/schema'
+
+const [page, setPage] = useRouterQuery('page', kv.index().default(0))
+```
+  </Case>
+  <Case react-router>
+```ts tab="nuqs"
+import { parseAsIndex, useQueryState } from 'nuqs'
+
+const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
+```
+
+```ts tab="kvant"
+import { useSearchParams } from 'kvant/react-router'
+import * as kv from 'kvant/schema'
+
+const [page, setPage] = useSearchParams('page', kv.index().default(0))
+```
+  </Case>
+  <Case vue>
+```ts tab="nuqs"
+import { parseAsIndex, useQueryState } from 'nuqs'
+
+const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
+```
+
+```ts tab="kvant"
+import { useSearchParams } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+
+const page = useSearchParams('page', kv.index().default(0))
+```
+  </Case>
+  <Case vue-router>
+```ts tab="nuqs"
+import { parseAsIndex, useQueryState } from 'nuqs'
+
+const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
+```
+
+```ts tab="kvant"
+import { useRouteQuery } from 'kvant/vue-router'
+import * as kv from 'kvant/schema'
+
+const page = useRouteQuery('page', kv.index().default(0))
+```
+  </Case>
+  <Case nuxt>
+```ts tab="nuqs"
+import { parseAsIndex, useQueryState } from 'nuqs'
+
+const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
+```
+
+```ts tab="kvant"
+import { useRouteQuery } from 'kvant/nuxt'
+import * as kv from 'kvant/schema'
+
+const page = useRouteQuery('page', kv.index().default(0))
+```
+  </Case>
+</Switch>
+
+## Key differences
+
+### Many interfaces, not just search params
+
+nuqs syncs state with URL search params. kvant treats search params as one
+of many key-value interfaces, all sharing one API:
+
+| Interface        | nuqs | kvant                                       |
+| ---------------- | ---- | ------------------------------------------- |
+| Search Params    | ✅    | ✅ `useSearchParams`                          |
+| Router Query     | —    | ✅ `useRouteQuery` / `useRouterQuery`         |
+| Route Params     | —    | ✅ `useRouteParams` (Vue Router, Nuxt)        |
+| Cookies          | —    | ✅ `useCookies` (SSR-friendly)                |
+| Local Storage   | —    | ✅ `useLocalStorage` (cross-tab sync)         |
+| Session Storage | —    | ✅ `useSessionStorage`                        |
+| Custom Adapters | Limited to search params, undocumented    | ✅ [Supported & documented](./custom-adapters) |
+
+Same mental model everywhere:
+
+```ts
+const [query, setQuery] = useSearchParams('q', kv.string().default(''))
+const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+const [locale, setLocale] = useCookies('locale', kv.string().default('en'))
+```
+
+### Multiple framework families
+
+nuqs is React-only (with adapters for Next.js, React Router and other React-based frameworks).
+kvant additionally supports **Vue, Vue Router, and Nuxt**
+with idiomatic composables that return writable refs:
+
+```vue
+<script setup lang="ts">
+import { useRouteQuery } from 'kvant/vue-router'
+import * as kv from 'kvant/schema'
+
+const query = useRouteQuery('q', kv.string().default(''))
+</script>
+```
+
+### Options live at binding time, not call time
+
+In nuqs, you can pass options per `setState` call
+(`setPage(2, { history: 'push' })`). kvant doesn't allow this by design:
+options are set when binding (hook call) or globally (options providers,
+`defineKvantState` defaults).
+
+kvant hooks mirror the framework's original state API as closely
+as possible: React's `setState` doesn't take options, Vue's `ref.value =`
+can't take options — so kvant's setters don't either. One state API to
+learn, no surprises when switching interfaces.
+
+### Schemas instead of parsers
+
+nuqs parsers define `parse`/`serialize` (with `eq` for comparison). kvant
+schemas define `parse`/`encode` and add a fluent, Zod-like API on top —
+checks, transforms, defaults, structures — via the built-in
+[`kvant/schema`](./schema.mdx) library. Zod and other validation libraries
+slot in too.
+
+## Feature gaps
+
+<include>../_shared/snippets/_throttle-warning.mdx</include>
+
+## Migrating from nuqs?
+
+The concepts map closely:
 
 | nuqs | kvant |
 | ---- | ----- |
 | `useQueryState(key, parser)` | `useSearchParams(key, schema)` |
 | `useQueryStates(keyMap)` | `useSearchParams(keyMap)` |
-| parsers (`parseAsInteger`, ...) | schemas (`kv.number()`, ...) |
+| parsers (`parseAsInteger`, ...) | schemas (`kv.int()`, ...) |
 | `parse` / `serialize` | `parse` / `encode` |
 | `.withDefault(value)` | `.default(value)` |
-| `clearOnDefault` | `clearOnDefault` (default `true`) |
-
-```ts
-// nuqs
-import { parseAsInteger, useQueryState } from 'nuqs'
-
-const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1))
-
-// kvant
-import { useSearchParams } from 'kvant/next'
-import * as kv from 'kvant/schema'
-
-const [page, setPage] = useSearchParams('page', kv.number().default(1))
-```
-
-## Key differences
-
-### No call-level options
-
-In nuqs, the state updater accepts per-call options:
-
-```ts
-// nuqs — NOT possible in kvant
-setPage(2, { history: 'push', scroll: true })
-```
-
-kvant deliberately mirrors your framework's original state API —
-`setState(value)` in React, `ref.value = value` in Vue. Options
-(`history`, `scroll`, `shallow`, ...) are set **at declaration level**: on the
-hook call, in `defineKvantState` defaults, or globally via an options
-provider.
-
-### No built-in throttle/debounce yet
-
-nuqs ships `throttleMs` / `limitUrlUpdates` for rate-limiting URL writes.
-kvant does not have first-party throttle/debounce support yet — it is planned
-for a future release. In the meantime, wrap kvant state in your own
-throttle/debounce mechanism for rapidly changing values, as shown in the
-interfaces documentation.
-
-### Schemas never throw
-
-nuqs parsers return `null` for invalid values (throwing is also supported and
-caught internally). kvant schemas resolve invalid input to `undefined` and
-must never throw — there is no error channel anywhere in kvant.
+| `clearOnDefault` | `.default(value, { clearOnDefault })` |
