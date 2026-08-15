@@ -1,0 +1,142 @@
+---
+title: Route Params
+---
+
+<Switch>
+  <Case vue-router>
+`useRouteParams` binds state to the **route params** — the dynamic
+segments of the route (`/users/:id`). Useful when an identifier belongs in
+the path rather than the query string.
+  </Case>
+  <Case nuxt>
+`useRouteParams` binds state to the **route params** — the dynamic
+segments of the route (`/users/[id]`). Useful when an identifier belongs in
+the path rather than the query string.
+  </Case>
+</Switch>
+
+<Switch>
+  <Case vue-router>
+```vue
+<script setup lang="ts">
+import { useRouteParams } from 'kvant/vue-router'
+import * as kv from 'kvant/schema'
+
+// Route: /users/:id
+const id = useRouteParams('id', kv.string())
+</script>
+
+<template>
+  <p>User #{{ id }}</p>
+</template>
+```
+  </Case>
+  <Case nuxt>
+```vue
+<script setup lang="ts">
+import { useRouteParams } from 'kvant/nuxt'
+import * as kv from 'kvant/schema'
+
+// Route: /users/[id]
+const id = useRouteParams('id', kv.string())
+</script>
+
+<template>
+  <p>User #{{ id }}</p>
+</template>
+```
+  </Case>
+</Switch>
+
+Writing a param navigates to the updated path:
+
+```ts
+id.value = '42' // navigates to /users/42
+```
+
+<Callout type="warn">
+Route params are only as writable as your route definitions allow. Writing
+a param not present in the current route's pattern has no effect on the
+path; for values that don't belong in the path, prefer
+[query parameters](./route-query).
+</Callout>
+
+Repeatable params work too:
+
+<Switch>
+  <Case vue-router>
+```ts
+// Route: /docs/:slug*
+const id = useRouteParams('id', kv.string().array().default([]))
+```
+  </Case>
+  <Case nuxt>
+```ts
+// Route: /docs/[[...slug]]
+const id = useRouteParams('id', kv.string().array().default([]))
+```
+  </Case>
+</Switch>
+
+Key maps bind several params at once:
+
+<Switch>
+  <Case vue-router>
+```ts
+// Route: /:org/:repo
+const route = useRouteParams({
+  org: kv.string(),
+  repo: kv.string(),
+})
+```
+  </Case>
+  <Case nuxt>
+```ts
+// Route: /[org]/[repo]
+const route = useRouteParams({
+  org: kv.string(),
+  repo: kv.string(),
+})
+```
+  </Case>
+</Switch>
+
+## Options
+
+<Switch>
+  <Case vue-router>
+<AutoTypeTable
+  path="node_modules/kvant/dist/vue-router.d.mts"
+  name="RouteParamsKvantAdapterOptions"
+/>
+  </Case>
+  <Case nuxt>
+<AutoTypeTable
+  path="node_modules/kvant/dist/nuxt.d.mts"
+  name="RouteParamsKvantAdapterOptions"
+/>
+  </Case>
+</Switch>
+
+<include>../_shared/snippets/options-providers/_header.mdx</include>
+
+<Switch>
+  <Case vue-router>
+```vue
+<script setup lang="ts">
+import { provideRouteParamsOptions } from 'kvant/vue-router'
+
+provideRouteParamsOptions({ history: 'push' })
+</script>
+```
+  </Case>
+  <Case nuxt>
+```vue
+<script setup lang="ts">
+import { provideRouteParamsOptions } from 'kvant/nuxt'
+
+provideRouteParamsOptions({ history: 'push' })
+</script>
+```
+  </Case>
+</Switch>
