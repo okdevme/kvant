@@ -1,0 +1,70 @@
+---
+title: custom-adapters
+---
+
+When none of the built-in adapters fit — an external store, `IndexedDB`, a
+query-string dialect, a native bridge — you can write your own.
+
+## The adapter contract
+
+An adapter is a factory receiving the bound keys and resolved options, and
+returning an interface object:
+
+```ts
+import type { KvantAdapter } from 'kvant'
+
+interface MyStoreOptions {
+  fallback?: Record<string, string | undefined>
+}
+
+const useMyStoreAdapter: KvantAdapter<string, MyStoreOptions> = (
+  keys,
+  options,
+) => {
+  return {
+    // Unique namespace for this adapter instance.
+    key: 'my-store',
+
+    // Subscribe to external changes; returns an unsubscribe function.
+    subscribe: (callback) => {
+      myStore.addEventListener('change', callback)
+      return () => myStore.removeEventListener('change', callback)
+    },
+
+    // Synchronously return current raw values for the bound keys.
+    getSnapshot: () => pick(myStore.readAll(), keys),
+
+    // Write values back to the store.
+    update: (values) => {
+      myStore.writeAll(values)
+    },
+
+    // Optional: register listeners, return a cleanup function.
+    effects: () => {
+      const stop = startListening()
+      return stop
+    },
+  }
+}
+```
+
+Rules of thumb:
+
+- **Snapshot stability** — return the same object reference when nothing
+  changed, so framework integrations can bail out of re-renders.
+- **Scope snapshots to `keys`** — only the keys passed to the factory are
+  observed by the binding.
+- **`update` receives `undefined`** — treat `undefined` values as removals.
+- **Never throw** in `getSnapshot` — resolve to fallbacks instead.
+
+## Framework-agnostic vs framework-specific adapters
+
+The contract above is framework-agnostic: kvant's React and Vue layers
+normalize it (`useSyncExternalStore` on React, `Ref` on Vue) automatically. A
+plain `KvantAdapter` can therefore be reused across all supported frameworks.
+
+Writing a framework-agnostic adapter is worthwhile **only if you actually plan
+to use it across frameworks** (a shared design-system package, a custom
+storage engine, ...). Otherwise prefer a framework-specific adapter built on
+that framework's own primitives — like kvant's internal adapters do — since it
+integrates better with routing lifecycles and SSR.

@@ -1,0 +1,22 @@
+{
+  "title": "Next.js (pages router)",
+  "root": true,
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "installation",
+    "quick-start",
+    "---Schema---",
+    "schema",
+    "zod",
+    "custom-schema",
+    "---Interfaces---",
+    "router-query",
+    "local-storage",
+    "cookies",
+    "---Going Further---",
+    "advanced-usage",
+    "custom-adapters",
+    "comparison-to-nuqs"
+  ]
+}

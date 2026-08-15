@@ -1,0 +1,84 @@
+---
+title: schema-zod
+---
+
+kvant is fully compatible with [Zod](https://zod.dev). Any Zod schema can be
+passed to kvant hooks and composables — kvant reads `parse`/`encode` (or
+Zod's `parse`/`encode` codecs) from the schema you provide.
+
+<Callout type="warn">
+**Zod schemas passed to kvant must never throw.** kvant treats a schema as a
+pure parse/encode pair: invalid input must resolve to a fallback value, not an
+exception. Use `.catch()` (or design schemas that cover every possible input)
+so a malformed URL or cookie cannot crash your UI.
+</Callout>
+
+## Installation
+
+```npm
+npm install zod
+```
+
+## Basic usage
+
+```ts
+import { z } from 'zod'
+
+// .catch() guarantees no-throw behavior
+const search = z.string().catch('')
+const page = z.coerce.number().int().min(1).catch(1)
+```
+
+## Codecs
+
+[Zod codecs](https://zod.dev/codecs) are bidirectional by design, which makes
+them a great fit for kvant:
+
+```ts
+import { z } from 'zod'
+
+// '{"theme":"dark"}' in the URL, { theme: 'dark' } in your component
+const settings = z.string().to(
+  z.json().pipe(
+    z.object({
+      theme: z.enum(['light', 'dark']),
+    }),
+  ),
+).catch({ theme: 'light' })
+
+// ISO date string in the URL, Date in your component
+const from = z.iso.datetime().pipe(z.transform(s => new Date(s)))
+```
+
+See [Zod codecs](https://zod.dev/codecs#useful-codecs) for more
+(`z.string().to(z.number())`, `z.codec()`, etc.) and the
+[Zod documentation](https://zod.dev) for the full API.
+
+## Intersecting Zod and `kvant/schema`
+
+`kvant/schema` wrappers and combinators accept **any** object with compatible
+`parse`/`encode` functions — including Zod schemas and codecs. A powerful
+pattern is to let `kvant/schema` handle the storage-level representation and
+pipe the result into Zod for deeper validation:
+
+```ts
+import * as kv from 'kvant/schema'
+import { z } from 'zod'
+
+const filters = kv.json(
+  z.object({
+    tags: z.array(z.string()),
+    priceRange: z.tuple([z.number(), z.number()]),
+  }).catch({ tags: [], priceRange: [0, 100] }),
+)
+```
+
+Here `kv.json` owns the URL representation (a JSON string), while Zod owns
+the domain validation. The `.catch()` on the Zod side keeps the whole pipeline
+no-throw.
+
+<Callout type="warn">
+**Be careful with this power!** Mixing two schema systems is expressive, but
+keep the boundary clear: `kvant/schema` for the storage representation, Zod
+for domain validation — and always end the chain with a fallback.
+</Callout>

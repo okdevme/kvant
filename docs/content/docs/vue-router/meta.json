@@ -1,0 +1,22 @@
+{
+  "title": "Vue Router",
+  "root": true,
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "installation",
+    "quick-start",
+    "---Schema---",
+    "schema",
+    "zod",
+    "custom-schema",
+    "---Interfaces---",
+    "route-query",
+    "route-params",
+    "local-storage",
+    "cookies",
+    "---Going Further---",
+    "advanced-usage",
+    "custom-adapters"
+  ]
+}

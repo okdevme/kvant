@@ -1,0 +1,50 @@
+---
+title: Advanced Usage
+description: useKvantState and defineKvantState
+---
+
+<include>../_shared/_advanced-usage.mdx</include>
+
+## Examples
+
+`useKvantState` with the internal React Router search params adapter:
+
+```tsx
+import { useKvantState } from 'kvant/react'
+import { useSearchParamsKvantAdapter } from 'kvant/react-router'
+import * as kv from 'kvant/schema'
+
+export function Pagination() {
+  const [page, setPage] = useKvantState(
+    useSearchParamsKvantAdapter,
+    'page',
+    kv.number().default(1),
+  )
+  // ...
+}
+```
+
+`defineKvantState` to create a pre-configured hook for your app:
+
+```ts title="src/state.ts"
+import { defineKvantState } from 'kvant/react'
+import { useSearchParamsKvantAdapter } from 'kvant/react-router'
+
+export const {
+  useState: useAppSearchParams,
+  OptionsProvider: AppSearchParamsOptionsProvider,
+} = defineKvantState(useSearchParamsKvantAdapter, {
+  history: 'push',
+})
+```
+
+```tsx
+import * as kv from 'kvant/schema'
+import { useAppSearchParams } from './state'
+
+export function Pagination() {
+  // history: 'push' is applied automatically
+  const [page, setPage] = useAppSearchParams('page', kv.number().default(1))
+  // ...
+}
+```

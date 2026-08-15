@@ -1,0 +1,20 @@
+---
+title: Custom Adapters
+description: Writing your own kvant adapters
+---
+
+<include>../_shared/_custom-adapters.mdx</include>
+
+## Reference implementations
+
+kvant's own React adapters are the best starting point:
+
+- Search params — native History API + `popstate`:
+  [`src/react/adapters/searchParams.ts`](https://github.com/okdevme/kvant/blob/main/src/react/adapters/searchParams.ts)
+- Cookies — `document.cookie` + `CookieChangeEvent`:
+  [`src/react/adapters/cookies.ts`](https://github.com/okdevme/kvant/blob/main/src/react/adapters/cookies.ts)
+- Web storage — `localStorage`/`sessionStorage` + the `storage` event:
+  [`src/react/adapters/storage.ts`](https://github.com/okdevme/kvant/blob/main/src/react/adapters/storage.ts)
+
+The React adapters are thin wrappers over the framework-agnostic core adapters
+in `src/adapters/` — useful reading if you target multiple frameworks.

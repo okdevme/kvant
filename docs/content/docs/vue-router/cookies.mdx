@@ -1,0 +1,27 @@
+---
+title: Cookies
+description: Type-safe cookie state
+---
+
+<include>../_shared/interfaces/_cookies.mdx</include>
+
+## Usage
+
+```vue
+<script setup lang="ts">
+import { useCookies } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+
+const consent = useCookies(
+  'consent',
+  kv.enum(['accepted', 'declined']),
+  { maxAge: 60 * 60 * 24 * 365 }, // one year
+)
+</script>
+
+<template>
+  <button v-if="!consent" @click="consent = 'accepted'">
+    Accept
+  </button>
+</template>
+```

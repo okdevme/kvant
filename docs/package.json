@@ -13,7 +13,9 @@
   "dependencies": {
     "cnfast": "catalog:",
     "fumadocs-core": "catalog:",
+    "fumadocs-docgen": "catalog:",
     "fumadocs-mdx": "catalog:",
+    "fumadocs-typescript": "catalog:",
     "fumadocs-ui": "catalog:",
     "kvant": "workspace:*",
     "lucide-react": "catalog:",
@@ -22,6 +24,7 @@
     "react-dom": "catalog:"
   },
   "devDependencies": {
+    "@iconify-json/simple-icons": "catalog:",
     "@tailwindcss/postcss": "catalog:",
     "@types/mdx": "catalog:",
     "@types/node": "catalog:",

@@ -1,0 +1,24 @@
+---
+title: Comparison to nuqs
+description: How kvant relates to nuqs and what differs
+icon: Scale
+---
+
+<include>../_shared/_comparison-to-nuqs.mdx</include>
+
+A throttled binding looks like this in Next.js:
+
+```tsx
+'use client'
+
+import { useSearchParams } from 'kvant/next'
+import * as kv from 'kvant/schema'
+import { useThrottleFn } from 'react-use'
+
+export function Search() {
+  const [q, setQ] = useSearchParams('q', kv.string().default(''))
+  const throttledSetQ = useThrottleFn(setQ, 300)
+
+  return <input defaultValue={q} onChange={e => throttledSetQ(e.target.value)} />
+}
+```

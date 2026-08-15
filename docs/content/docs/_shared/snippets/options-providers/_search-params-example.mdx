@@ -1,0 +1,69 @@
+---
+title: Search Params Example
+---
+
+<Switch>
+  <Case react>
+```tsx
+import { SearchParamsOptionsProvider } from 'kvant/react'
+
+<SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
+  {children}
+</SearchParamsOptionsProvider>
+```
+  </Case>
+  <Case next>
+```tsx
+import { SearchParamsOptionsProvider } from 'kvant/next'
+
+<SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
+  {children}
+</SearchParamsOptionsProvider>
+```
+  </Case>
+  <Case next-pages>
+```tsx
+import { RouterQueryOptionsProvider } from 'kvant/next/pages'
+
+<RouterQueryOptionsProvider defaultOptions={{ history: 'push' }}>
+  {children}
+</RouterQueryOptionsProvider>
+```
+  </Case>
+  <Case react-router>
+```tsx
+import { SearchParamsOptionsProvider } from 'kvant/react-router'
+
+<SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
+  {children}
+</SearchParamsOptionsProvider>
+```
+  </Case>
+  <Case vue>
+```vue
+<script setup lang="ts">
+import { provideSearchParamsOptions } from 'kvant/vue'
+
+provideSearchParamsOptions({ history: 'push' })
+</script>
+```
+  </Case>
+  <Case vue-router>
+```vue
+<script setup lang="ts">
+import { provideRouteQueryOptions } from 'kvant/vue-router'
+
+provideRouteQueryOptions({ history: 'push' })
+</script>
+```
+  </Case>
+  <Case nuxt>
+```vue
+<script setup lang="ts">
+import { provideRouteQueryOptions } from 'kvant/nuxt'
+
+provideRouteQueryOptions({ history: 'push' })
+</script>
+```
+  </Case>
+</Switch>

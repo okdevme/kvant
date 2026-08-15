@@ -1,0 +1,46 @@
+---
+title: Search Params Filters Example
+---
+
+<Switch>
+  <Case react>
+```tsx
+const [filters, setFilters] = useSearchParams({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+  sort: kv.enum(['asc', 'desc']).default('asc'),
+  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+})
+```
+  </Case>
+  <Case next-pages>
+```tsx
+const [filters, setFilters] = useRouterQuery({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+  sort: kv.enum(['asc', 'desc']).default('asc'),
+  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+})
+```
+  </Case>
+  <Case vue>
+```tsx
+const filters = useSearchParams({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+  sort: kv.enum(['asc', 'desc']).default('asc'),
+  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+})
+```
+  </Case>
+  <Case vue-router nuxt>
+```tsx
+const filters = useRouteQuery({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+  sort: kv.enum(['asc', 'desc']).default('asc'),
+  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+})
+```
+  </Case>
+</Switch>

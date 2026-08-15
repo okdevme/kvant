@@ -1,0 +1,62 @@
+---
+title: Introduction
+description: What kvant is, the problem it solves, and why you might want it.
+---
+
+**kvant** is a universal, type-safe state manager for key-value interfaces:
+URL search params, router query and params, cookies, `localStorage`, and
+`sessionStorage` — for React, Next.js, React Router, Vue, Vue Router, and Nuxt.
+
+## The problem
+
+Key-value interfaces are everywhere in web apps, and each comes with its own
+imperative API: `URLSearchParams`, `document.cookie`, `localStorage`,
+framework router objects… Reading and writing them by hand means:
+
+- **No type safety.** Everything is a string (at best), so you re-implement
+  parsing, serialization, and validation at every call site.
+- **No reactivity.** Storages don't notify your UI when they change.
+- **No sync.** Two components bound to the same key drift apart; other tabs
+  never hear about your updates.
+- **Repetition.** Encoding rules (numbers, booleans, dates, JSON) get
+  copy-pasted and slowly diverge.
+
+## The kvant way
+
+kvant turns any key-value interface into plain framework state — <Switch>
+  <Case react>a `useState`-style tuple</Case>
+  <Case vue>a writable `Ref`</Case>
+</Switch> — with a schema
+defining how values are parsed from storage and encoded back:
+
+<include>./snippets/_search-input-example.mdx</include>
+
+The URL stays the single source of truth: the state is read from it, every
+update writes back to it, and all hooks bound to the same key stay in sync —
+across components and, for storage interfaces, across tabs.
+
+## What you get
+
+- **Type-safe by construction.** Schemas define both directions:
+  `parse` (storage → state) and `encode` (state → storage).
+- **Framework-idiomatic.** Hooks feel like `useState` in React, composables
+  return refs in Vue. No new state paradigm to learn.
+- **One mental model, many interfaces.** Search params, router query, route
+  params, cookies, and web storage all share the same API.
+- **SSR-ready.** kvant interfaces support server-side rendering.
+- **Lossless and safe.** Serialization is pure and reversible; invalid stored
+  values fall back instead of throwing.
+
+## A deeper look
+
+Bind to a single key, or to a whole key map at once:
+
+<include>./snippets/_search-params-single-and-multiple-keys-example.mdx</include>
+
+Persist UI preferences across reloads and tabs:
+
+<include>./snippets/_local-storage-theme-example.mdx</include>
+
+Share state with the server via cookies:
+
+<include>./snippets/_cookies-locale-example.mdx</include>

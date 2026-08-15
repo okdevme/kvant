@@ -1,0 +1,116 @@
+---
+title: Search Input Example
+---
+
+<Switch>
+  <Case react>
+```ts
+import { useSearchParams } from 'kvant/react'
+import * as kv from 'kvant/schema'
+
+function SearchInput() {
+  const [query, setQuery] = useSearchParams('q', kv.string().default(''))
+
+  return (
+    <input
+      value={query}
+      onChange={e => setQuery(e.target.value)}
+    />
+  )
+}
+```
+  </Case>
+  <Case next>
+```ts
+import { useSearchParams } from 'kvant/next'
+import * as kv from 'kvant/schema'
+
+function SearchInput() {
+  const [query, setQuery] = useSearchParams('q', kv.string().default(''))
+
+  return (
+    <input
+      value={query}
+      onChange={e => setQuery(e.target.value)}
+    />
+  )
+}
+```
+  </Case>
+  <Case next-pages>
+```ts
+import { useRouterQuery } from 'kvant/next/pages'
+import * as kv from 'kvant/schema'
+
+function SearchInput() {
+  const [query, setQuery] = useRouterQuery('q', kv.string().default(''))
+
+  return (
+    <input
+      value={query}
+      onChange={e => setQuery(e.target.value)}
+    />
+  )
+}
+```
+  </Case>
+  <Case react-router>
+```ts
+import { useSearchParams } from 'kvant/react-router'
+import * as kv from 'kvant/schema'
+
+function SearchInput() {
+  const [query, setQuery] = useSearchParams('q', kv.string().default(''))
+
+  return (
+    <input
+      value={query}
+      onChange={e => setQuery(e.target.value)}
+    />
+  )
+}
+```
+  </Case>
+  <Case vue>
+```vue
+<script setup lang="ts">
+import { useSearchParams } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+
+const query = useSearchParams('q', kv.string().default(''))
+</script>
+
+<template>
+  <input v-model="query">
+</template>
+```
+  </Case>
+  <Case vue-router>
+```vue
+<script setup lang="ts">
+import { useRouteQuery } from 'kvant/vue-router'
+import * as kv from 'kvant/schema'
+
+const query = useRouteQuery('q', kv.string().default(''))
+</script>
+
+<template>
+  <input v-model="query">
+</template>
+```
+  </Case>
+  <Case nuxt>
+```vue
+<script setup lang="ts">
+import { useRouteQuery } from 'kvant/nuxt'
+import * as kv from 'kvant/schema'
+
+const query = useRouteQuery('q', kv.string().default(''))
+</script>
+
+<template>
+  <input v-model="query">
+</template>
+```
+  </Case>
+</Switch>

@@ -1,0 +1,16 @@
+---
+title: Local Storage Theme Example
+---
+
+<Switch>
+  <Case react>
+```ts
+const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+```
+  </Case>
+  <Case vue>
+```ts
+const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+```
+  </Case>
+</Switch>

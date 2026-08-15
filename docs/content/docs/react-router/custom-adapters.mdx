@@ -1,0 +1,15 @@
+---
+title: Custom Adapters
+description: Writing your own kvant adapters
+---
+
+<include>../_shared/_custom-adapters.mdx</include>
+
+## Reference implementations
+
+kvant's own React Router adapter is the best starting point — it builds on
+`useSearchParams` + `useNavigate` from React Router:
+[`src/react-router/adapters/searchParams.ts`](https://github.com/okdevme/kvant/blob/main/src/react-router/adapters/searchParams.ts)
+
+For framework-agnostic adapters, see the core adapters
+(`src/adapters/`), which use no framework APIs at all.

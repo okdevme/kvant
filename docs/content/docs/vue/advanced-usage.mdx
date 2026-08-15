@@ -1,0 +1,47 @@
+---
+title: Advanced Usage
+description: useKvantState and defineKvantState
+---
+
+<include>../_shared/_advanced-usage.mdx</include>
+
+## Examples
+
+`useKvantState` with the internal search params adapter:
+
+```vue
+<script setup lang="ts">
+import { useKvantState, useSearchParamsKvantAdapter } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+
+const page = useKvantState(
+  useSearchParamsKvantAdapter,
+  'page',
+  kv.number().default(1),
+)
+</script>
+```
+
+`defineKvantState` to create a pre-configured composable for your app:
+
+```ts title="src/state.ts"
+import { defineKvantState, useSearchParamsKvantAdapter } from 'kvant/vue'
+
+export const {
+  useState: useAppSearchParams,
+  provideOptions: provideAppSearchParamsOptions,
+} = defineKvantState(useSearchParamsKvantAdapter, {
+  history: 'push',
+  scroll: true,
+})
+```
+
+```vue
+<script setup lang="ts">
+import * as kv from 'kvant/schema'
+import { useAppSearchParams } from './state'
+
+// history: 'push' and scroll: true are applied automatically
+const page = useAppSearchParams('page', kv.number().default(1))
+</script>
+```

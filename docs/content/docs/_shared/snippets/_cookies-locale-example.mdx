@@ -1,0 +1,16 @@
+---
+title: Cookies Locale Example
+---
+
+<Switch>
+  <Case react>
+```ts
+const [locale, setLocale] = useCookies('locale', kv.string().default('en'))
+```
+  </Case>
+  <Case vue>
+```ts
+const locale = useCookies('locale', kv.string().default('en'))
+```
+  </Case>
+</Switch>

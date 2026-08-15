@@ -1,0 +1,76 @@
+---
+title: comparison-to-nuqs
+---
+
+<Callout>
+Not familiar with [nuqs](https://nuqs.dev)? Feel free to skip this page — it
+compares kvant to nuqs for users migrating or evaluating both.
+</Callout>
+
+[nuqs](https://nuqs.dev) is a type-safe search params state manager for React.
+kvant grew out of the same idea — the URL as reactive, typed state — and
+generalizes it in two directions:
+
+- **Interfaces**: nuqs manages URL search params only. kvant manages any
+  key-value interface — search params, route query/params, cookies, web
+  storage — through one consistent API.
+- **Frameworks**: nuqs is React-only (with adapters for Next.js, Remix, React
+  Router, ...). kvant supports both React and Vue framework families with the
+  same mental model.
+
+## API mapping
+
+Concepts translate directly:
+
+| nuqs | kvant |
+| ---- | ----- |
+| `useQueryState(key, parser)` | `useSearchParams(key, schema)` |
+| `useQueryStates(keyMap)` | `useSearchParams(keyMap)` |
+| parsers (`parseAsInteger`, ...) | schemas (`kv.number()`, ...) |
+| `parse` / `serialize` | `parse` / `encode` |
+| `.withDefault(value)` | `.default(value)` |
+| `clearOnDefault` | `clearOnDefault` (default `true`) |
+
+```ts
+// nuqs
+import { parseAsInteger, useQueryState } from 'nuqs'
+
+const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1))
+
+// kvant
+import { useSearchParams } from 'kvant/next'
+import * as kv from 'kvant/schema'
+
+const [page, setPage] = useSearchParams('page', kv.number().default(1))
+```
+
+## Key differences
+
+### No call-level options
+
+In nuqs, the state updater accepts per-call options:
+
+```ts
+// nuqs — NOT possible in kvant
+setPage(2, { history: 'push', scroll: true })
+```
+
+kvant deliberately mirrors your framework's original state API —
+`setState(value)` in React, `ref.value = value` in Vue. Options
+(`history`, `scroll`, `shallow`, ...) are set **at declaration level**: on the
+hook call, in `defineKvantState` defaults, or globally via an options
+provider.
+
+### No built-in throttle/debounce yet
+
+nuqs ships `throttleMs` / `limitUrlUpdates` for rate-limiting URL writes.
+kvant does not have first-party throttle/debounce support yet — it is planned
+for a future release. In the meantime, wrap kvant state in your own
+throttle/debounce mechanism for rapidly changing values, as shown in the
+interfaces documentation.
+
+### Schemas never throw
+
+nuqs parsers return `null` for invalid values (throwing is also supported and
+caught internally). kvant schemas resolve invalid input to `undefined` and
+must never throw — there is no error channel anywhere in kvant.

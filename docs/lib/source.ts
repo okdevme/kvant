@@ -8,6 +8,8 @@ const docs = defineDocs({
   dir: 'content/docs',
   docs: {
     schema: pageSchema,
+    // Underscore-prefixed files are partials for the MDX `include` feature
+    files: ['**/*.mdx', '!**/_*.mdx'],
     postprocess: {
       includeProcessedMarkdown: true,
     },

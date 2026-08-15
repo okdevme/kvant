@@ -1,0 +1,117 @@
+---
+title: Search Params
+---
+
+<Switch>
+  <Case react>
+`useSearchParams` binds state to URL search params via the History API — no
+router required. The URL is the single source of truth: refreshing, sharing,
+or bookmarking the link restores the exact state, and updates preserve the
+URL hash and any params managed by other code.
+  </Case>
+  <Case next>
+`useSearchParams` binds state to URL search params. The URL is the single
+source of truth: refreshing, sharing, or bookmarking the link restores the
+exact state. Writes use the native History API by default (`shallow`), so
+no server round-trip happens — and updates are applied optimistically
+inside a React transition.
+  </Case>
+  <Case next-pages>
+`useRouterQuery` binds state to `router.query`, navigating through the
+Next.js pages router. The URL is the single source of truth: refreshing,
+sharing, or bookmarking the link restores the exact state. Writes are
+shallow by default, so data fetching methods don't re-run — and the URL
+hash is preserved.
+  </Case>
+  <Case react-router>
+`useSearchParams` binds state to URL search params, navigating through
+React Router — so writes integrate with loaders, actions, and router-aware
+scroll handling. The URL is the single source of truth: refreshing,
+sharing, or bookmarking the link restores the exact state.
+  </Case>
+  <Case vue>
+`useSearchParams` binds state to URL search params via the History API — no
+router required. The URL is the single source of truth: refreshing, sharing,
+or bookmarking the link restores the exact state, and updates preserve the
+URL hash and any params managed by other code. The composable returns a
+writable `Ref`.
+  </Case>
+  <Case vue-router>
+`useRouteQuery` binds state to the router's query parameters, using Vue
+Router for navigation — so writes integrate with router guards, scroll
+behavior, and history. The URL is the single source of truth: refreshing,
+sharing, or bookmarking the link restores the exact state. The composable
+returns a writable `Ref`.
+  </Case>
+  <Case nuxt>
+`useRouteQuery` binds state to the router's query parameters, using the
+Nuxt router for navigation — so writes integrate with middleware, scroll
+behavior, and history. The URL is the single source of truth: refreshing,
+sharing, or bookmarking the link restores the exact state. The composable
+returns a writable `Ref`.
+  </Case>
+</Switch>
+
+<include>../_shared/snippets/_search-input-example.mdx</include>
+
+<Switch>
+  <Case react>
+Setting a key to `undefined` removes it from the URL. Values equal to the
+schema default are never written to the URL — defaults stay internal.
+Multiple hooks bound to the same key stay in sync automatically.
+  </Case>
+  <Case vue>
+Setting a key to `undefined` removes it from the URL. Values equal to the
+schema default are never written to the URL — defaults stay internal.
+Multiple composables bound to the same key stay in sync automatically.
+  </Case>
+</Switch>
+
+<include>../_shared/snippets/_search-params-filters-example.mdx</include>
+
+<include>../_shared/snippets/_throttle-warning.mdx</include>
+
+## Options
+
+<Switch>
+  <Case react vue>
+<AutoTypeTable
+  path="node_modules/kvant/dist/index.d.mts"
+  name="SearchParamsKvantAdapterOptions"
+/>
+  </Case>
+  <Case next>
+<AutoTypeTable
+  path="node_modules/kvant/dist/next.d.mts"
+  name="SearchParamsKvantAdapterOptions"
+/>
+  </Case>
+  <Case next-pages>
+<AutoTypeTable
+  path="node_modules/kvant/dist/next/pages.d.mts"
+  name="RouterQueryKvantAdapterOptions"
+/>
+  </Case>
+  <Case react-router>
+<AutoTypeTable
+  path="node_modules/kvant/dist/react-router.d.mts"
+  name="SearchParamsKvantAdapterOptions"
+/>
+  </Case>
+  <Case vue-router>
+<AutoTypeTable
+  path="node_modules/kvant/dist/vue-router.d.mts"
+  name="RouteQueryKvantAdapterOptions"
+/>
+  </Case>
+  <Case nuxt>
+<AutoTypeTable
+  path="node_modules/kvant/dist/nuxt.d.mts"
+  name="RouteQueryKvantAdapterOptions"
+/>
+  </Case>
+</Switch>
+
+<include>../_shared/snippets/options-providers/_header.mdx</include>
+
+<include>../_shared/snippets/options-providers/_search-params-example.mdx</include>

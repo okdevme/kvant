@@ -10,6 +10,7 @@ import {
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import { notFound } from 'next/navigation'
 import { getMDXComponents } from '@/components/mdx'
+import { createBoundSwitch } from '@/components/switch'
 import { gitConfig } from '@/lib/shared'
 import { getPageImageUrl, getPageMarkdownUrl, source } from '@/lib/source'
 
@@ -38,6 +39,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
+            ...createBoundSwitch(source, page),
           })}
         />
       </DocsBody>

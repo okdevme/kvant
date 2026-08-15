@@ -1,0 +1,100 @@
+---
+title: Custom Search Serializer
+---
+
+## Custom search serializer
+
+The default serializer uses `URLSearchParams`, so values are flat strings
+(or repeated keys for arrays). For nested structures, plug in a custom
+parser/serializer — for example [`qs`](https://github.com/ljharb/qs) — by
+defining your own binding (see [Advanced Usage](./advanced-usage)):
+
+<Switch>
+  <Case react>
+```ts title="lib/search-params.ts"
+import { defineKvantState, useSearchParamsKvantAdapter } from 'kvant/react'
+import qs from 'qs'
+
+export const { useState: useSearchParams, OptionsProvider } = defineKvantState(
+  (keys, options) => useSearchParamsKvantAdapter(keys, {
+    parseSearch: search => qs.parse(search, { ignoreQueryPrefix: true }),
+    stringifySearch: values => qs.stringify(values, { encodeValuesOnly: true }),
+    ...options,
+  }),
+)
+```
+  </Case>
+  <Case next>
+```ts title="lib/search-params.ts"
+'use client'
+import { defineKvantState, useSearchParamsKvantAdapter } from 'kvant/next'
+import qs from 'qs'
+
+export const { useState: useSearchParams, OptionsProvider } = defineKvantState(
+  (keys, options) => useSearchParamsKvantAdapter(keys, {
+    parseSearch: search => qs.parse(search, { ignoreQueryPrefix: true }),
+    stringifySearch: values => qs.stringify(values, { encodeValuesOnly: true }),
+    ...options,
+  }),
+)
+```
+  </Case>
+  <Case react-router>
+```ts title="lib/search-params.ts"
+import { defineKvantState, useSearchParamsKvantAdapter } from 'kvant/react-router'
+import qs from 'qs'
+
+export const { useState: useSearchParams, OptionsProvider } = defineKvantState(
+  (keys, options) => useSearchParamsKvantAdapter(keys, {
+    parseSearch: search => qs.parse(search, { ignoreQueryPrefix: true }),
+    stringifySearch: values => qs.stringify(values, { encodeValuesOnly: true }),
+    ...options,
+  }),
+)
+```
+  </Case>
+  <Case vue>
+```ts title="lib/search-params.ts"
+import { defineKvantState, useSearchParamsKvantAdapter } from 'kvant/vue'
+import qs from 'qs'
+
+export const { useState: useSearchParams, provideOptions } = defineKvantState(
+  (keys, options) => useSearchParamsKvantAdapter(keys, {
+    parseSearch: search => qs.parse(search, { ignoreQueryPrefix: true }),
+    stringifySearch: values => qs.stringify(values, { encodeValuesOnly: true }),
+    ...options,
+  }),
+)
+```
+  </Case>
+</Switch>
+
+With `qs` handling (de)serialization, the full power of `kvant/schema`
+opens up inside the URL — objects, nested arrays, and more:
+
+<Switch>
+  <Case react>
+```ts
+const [filters, setFilters] = useSearchParams(
+  'filters',
+  kv.object({
+    tags: kv.string().array().default([]),
+    range: kv.tuple([kv.number(), kv.number()]).optional(),
+  }).default({ tags: [] }),
+)
+// URL: ?filters[tags][0]=a&filters[tags][1]=b&filters[range][0]=1&filters[range][1]=9
+```
+  </Case>
+  <Case vue>
+```ts
+const filters = useSearchParams(
+  'filters',
+  kv.object({
+    tags: kv.string().array().default([]),
+    range: kv.tuple([kv.number(), kv.number()]).optional(),
+  }).default({ tags: [] }),
+)
+// URL: ?filters[tags][0]=a&filters[tags][1]=b&filters[range][0]=1&filters[range][1]=9
+```
+  </Case>
+</Switch>

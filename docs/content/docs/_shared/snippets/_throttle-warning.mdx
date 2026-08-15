@@ -1,0 +1,77 @@
+---
+title: Throttle Warning
+---
+
+<Callout type="warn" title="Fast-changing values">
+kvant does not yet provide built-in throttle/debounce for URL writes.
+Until then, avoid binding state directly to
+quickly changing values (text inputs, sliders), or wrap the binding in a
+throttled layer with local state:
+
+<Switch>
+  <Case react>
+```tsx
+import { useThrottleFn } from 'react-use'
+
+function SearchInput() {
+  const [search, setSearch] = useSearchParams('q', kv.string().default(''))
+
+  // Local state updates instantly; the URL follows at most every 300 ms
+  const [text, setText] = useState(search)
+  useThrottleFn(setSearch, 300, [text])
+
+  return <input value={text} onChange={e => setText(e.target.value)} />
+}
+```
+  </Case>
+  <Case next-pages>
+```tsx
+import { useThrottleFn } from 'react-use'
+
+function SearchInput() {
+  const [search, setSearch] = useRouterQuery('q', kv.string().default(''))
+
+  // Local state updates instantly; the URL follows at most every 300 ms
+  const [text, setText] = useState(search)
+  useThrottleFn(setSearch, 300, [text])
+
+  return <input value={text} onChange={e => setText(e.target.value)} />
+}
+```
+  </Case>
+  <Case vue>
+```vue
+<script setup lang="ts">
+import { watchThrottled } from '@vueuse/core'
+
+const search = useSearchParams('q', kv.string().default(''))
+
+// Local ref updates instantly; the URL follows at most every 300 ms
+const text = ref(search.value)
+watchThrottled(text, v => search.value = v, { throttle: 300 })
+</script>
+
+<template>
+  <input v-model="text">
+</template>
+```
+  </Case>
+  <Case vue-router nuxt>
+```vue
+<script setup lang="ts">
+import { watchThrottled } from '@vueuse/core'
+
+const search = useRouteQuery('q', kv.string().default(''))
+
+// Local ref updates instantly; the URL follows at most every 300 ms
+const text = ref(search.value)
+watchThrottled(text, v => search.value = v, { throttle: 300 })
+</script>
+
+<template>
+  <input v-model="text">
+</template>
+```
+  </Case>
+</Switch>
+</Callout>

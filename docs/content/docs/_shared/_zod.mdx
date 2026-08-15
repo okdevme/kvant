@@ -1,0 +1,113 @@
+---
+title: Zod
+description: Using Zod schemas with kvant, including codecs and piping from kvant/schema.
+---
+
+kvant accepts **any** object with `parse` and `encode` methods — including
+Zod schemas. Pass them directly to hooks and composables wherever a schema
+is expected.
+
+## Installation
+
+```npm
+npm install zod
+```
+
+## The golden rule: never throw
+
+Zod's `.parse()` **throws** on invalid input — that's the opposite of the
+kvant schema contract, where stored values are user-editable and invalid
+input must degrade gracefully.
+
+When passing a Zod schema to kvant, make it total: either cover every
+possible input, or attach a fallback with `.catch()`:
+
+<Switch>
+  <Case react vue>
+```ts
+import * as z from 'zod'
+
+// ❌ Throws on ?price=abc
+useSearchParams('price', z.coerce.number())
+
+// ✅ Falls back to 1
+useSearchParams('price', z.coerce.number().min(1).catch(1))
+```
+  </Case>
+  <Case next-pages>
+```ts
+import * as z from 'zod'
+
+// ❌ Throws on ?price=abc
+useRouterQuery('price', z.coerce.number())
+
+// ✅ Falls back to 1
+useRouterQuery('price', z.coerce.number().min(1).catch(1))
+```
+  </Case>
+  <Case vue-router nuxt>
+```ts
+import * as z from 'zod'
+
+// ❌ Throws on ?price=abc
+useRouteQuery('price', z.coerce.number())
+
+// ✅ Falls back to 1
+useRouteQuery('price', z.coerce.number().min(1).catch(1))
+```
+  </Case>
+</Switch>
+
+## Codecs
+
+[Zod codecs](https://zod.dev/codecs) are bidirectional by design, which maps
+naturally onto kvant's parse/encode contract. A codec's `decode` runs on
+parse and its `encode` runs on encode:
+
+```ts
+import * as z from 'zod'
+
+// Stored as an ISO string, used as a Date
+const dateCodec = z.codec(
+  z.iso.datetime().optional().catch(undefined),
+  z.date().optional(),
+  {
+    decode: iso => iso != null ? new Date(iso) : undefined,
+    encode: date => date?.toISOString(),
+  }
+)
+
+useLocalStorage('last-visit', dateCodec)
+```
+
+See [zod.dev/codecs#useful-codecs](https://zod.dev/codecs#useful-codecs) for
+more (`base64ToBytes`, `stringToURL`, etc.) — all of them work with
+kvant as long as they can't throw on the inputs the desired interface can actually
+contain.
+
+## Mixing `kvant/schema` and Zod
+
+The most practical setup: let `kvant/schema` handle the storage layer
+(smart casting, defaults, clear-on-default) and pipe into Zod:
+
+```ts
+import * as kv from 'kvant/schema'
+import * as z from 'zod'
+
+const uriToEmail = kv.uriComponent().pipe(
+  z.email().optional().catch(undefined)
+)
+```
+
+`.pipe(schema)`, as well as all other built-in `kvant/schema` wrappers and combinators,
+accept any `{ parse, encode }` object — not just kvant schemas —
+so the kvant side deals with the raw storage representation, and Zod
+validates the typed result. Encoding runs in reverse through the same chain.
+Be careful with this power!
+
+## Learn more
+
+- [Zod documentation](https://zod.dev)
+- [Zod codecs](https://zod.dev/codecs)
+- [kvant/schema](./schema) — the built-in alternative
+- [Custom schema](./custom-schema) — adapting other libraries

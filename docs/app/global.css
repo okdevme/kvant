@@ -10,3 +10,31 @@ html > body[data-scroll-locked] {
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
 }
+
+/* Framework accent colors (official brand colors) */
+:root[data-framework='next'] {
+  --accent: #000000;
+}
+.dark:root[data-framework='next'],
+.dark :root[data-framework='next'] {
+  --accent: #ffffff;
+}
+:root[data-framework='react'] {
+  --accent: #61dafb;
+}
+:root[data-framework='react-router'] {
+  --accent: #f44250;
+}
+:root[data-framework='nuxt'] {
+  --accent: #00dc82;
+}
+:root[data-framework='vue'] {
+  --accent: #42b883;
+}
+:root[data-framework='vue-router'] {
+  --accent: #4fc08d;
+}
+
+:root[data-framework] {
+  --color-fd-primary: var(--accent);
+}

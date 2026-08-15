@@ -1,0 +1,97 @@
+---
+title: schema-custom
+---
+
+A kvant schema is any object with `parse` and `encode` functions:
+
+```ts
+interface KvantSchema<Input, Output, Raw> {
+  parse: (value: Raw | undefined) => Output
+  encode: (value: Input) => Raw | undefined
+}
+```
+
+- `parse` — raw stored value (or `undefined` when missing) → typed state.
+- `encode` — state → raw value; return `undefined` to remove the key.
+
+<Callout type="warn">
+**Schemas must never throw.** kvant has no error channel: an exception inside
+`parse` or `encode` will propagate into your UI. Always return a fallback
+(`undefined` or a default) for invalid input.
+</Callout>
+
+## Plain-object schemas
+
+The simplest schema is a plain object:
+
+```ts
+import type { KvantSchema } from 'kvant'
+
+const commaList: KvantSchema<string[], string[], string> = {
+  parse: value => (value ? value.split(',').filter(Boolean) : []),
+  encode: value => (value.length ? value.join(',') : undefined),
+}
+
+commaList.parse('a,b,c') // ['a', 'b', 'c']
+commaList.encode(['a', 'b']) // 'a,b'
+commaList.encode([]) // undefined (removes the key)
+```
+
+You can also use `kv.custom()` from `kvant/schema`, which gives you the same
+result with full type inference and access to the chainable combinators
+(`.default()`, `.pipe()`, `.refine()`, ...):
+
+```ts
+import * as kv from 'kvant/schema'
+
+const commaList = kv.custom<string[], string[], string>({
+  parse: value => (value ? value.split(',').filter(Boolean) : []),
+  encode: value => (value.length ? value.join(',') : undefined),
+}).default([])
+```
+
+## Adapting other schema libraries
+
+Any library whose schemas expose a parse function can be adapted to the kvant
+schema interface.
+
+### Valibot
+
+```ts
+import * as v from 'valibot'
+import * as kv from 'kvant/schema'
+
+const TagsSchema = v.pipe(
+  v.string(),
+  v.transform(value => value.split(',').filter(Boolean)),
+)
+
+const tags = kv.custom<string[], string[], string>({
+  parse: (value) => {
+    const result = v.safeParse(TagsSchema, value)
+    return result.success ? result.output : undefined
+  },
+  encode: value => (value.length ? value.join(',') : undefined),
+})
+```
+
+### ArkType
+
+```ts
+import { type } from 'arktype'
+import * as kv from 'kvant/schema'
+
+const Page = type('string.numeric.parse').to('number.integer >= 1')
+
+const page = kv.custom<number, number, string>({
+  parse: (value) => {
+    const result = Page(value)
+    return result instanceof type.errors ? undefined : result
+  },
+  encode: value => String(value),
+}).default(1)
+```
+
+The pattern is always the same: wrap the library's parse call, convert errors
+into `undefined` (never let them escape), and provide the reverse
+transformation in `encode`.

@@ -1,0 +1,25 @@
+---
+title: Cookies
+description: Type-safe cookie state
+---
+
+<include>../_shared/interfaces/_cookies.mdx</include>
+
+## Usage
+
+```tsx
+import { useCookies } from 'kvant/react'
+import * as kv from 'kvant/schema'
+
+export function ConsentBanner() {
+  const [consent, setConsent] = useCookies(
+    'consent',
+    kv.enum(['accepted', 'declined']),
+    { maxAge: 60 * 60 * 24 * 365 }, // one year
+  )
+
+  if (consent) return null
+
+  return <button onClick={() => setConsent('accepted')}>Accept</button>
+}
+```

@@ -1,0 +1,291 @@
+---
+title: Quick Start
+description: Get productive with kvant in seconds.
+---
+
+## Core principle
+
+<Switch>
+  <Case react>
+kvant turns key-value interfaces into React state. Bind a key, pass a
+schema from `kvant/schema`, and read/write it like `useState` — the
+interface (here, the URL) stays the single source of truth:
+  </Case>
+  <Case vue>
+kvant turns key-value interfaces into Vue refs. Bind a key, pass a schema
+from `kvant/schema`, and read/write it like any writable `Ref` — the
+interface (here, the URL) stays the single source of truth:
+  </Case>
+</Switch>
+
+<include>./snippets/_search-input-example.mdx</include>
+
+<Switch>
+  <Case react>
+`?q=hello` in the URL → `query` is `'hello'`. Calling `setQuery` writes back to the URL.
+  </Case>
+  <Case vue>
+`?q=hello` in the URL → `query.value` is `'hello'`. Assigning to
+`query.value` writes back to the URL.
+  </Case>
+</Switch>
+
+## Multiple keys
+
+Bind a whole key map in one call — updates batch into a single write:
+
+<include>./snippets/_search-params-filters-with-set-example.mdx</include>
+
+## Options
+
+Pass options as the last argument:
+
+<Switch>
+  <Case react>
+```tsx
+const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
+  history: 'push', // add browser history entries
+})
+```
+  </Case>
+  <Case next>
+```tsx
+const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
+  history: 'push', // add browser history entries
+  shallow: false,  // go through the Next.js router (re-run server components)
+})
+```
+  </Case>
+  <Case next-pages>
+```tsx
+const [query, setQuery] = useRouterQuery('q', kv.string().default(''), {
+  history: 'push', // add browser history entries
+  shallow: false,  // re-run data fetching (getServerSideProps)
+})
+```
+  </Case>
+  <Case vue>
+```ts
+const query = useSearchParams('q', kv.string().default(''), {
+  history: 'push', // add browser history entries
+})
+```
+  </Case>
+  <Case vue-router nuxt>
+```ts
+const query = useRouteQuery('q', kv.string().default(''), {
+  history: 'push', // add browser history entries
+})
+```
+  </Case>
+</Switch>
+
+## Every interface
+
+The same pattern works for all supported key-value interfaces:
+
+<Switch>
+  <Case react>
+```tsx
+import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvant/react'
+import * as kv from 'kvant/schema'
+
+// URL search params — shareable, bookmarkable
+const [query, setQuery] = useSearchParams('q', kv.string().default(''))
+
+// localStorage — persists across reloads, syncs across tabs
+const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+
+// sessionStorage — scoped to the current tab
+const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
+
+// Cookies — readable by the server, respect Set-Cookie attributes
+const [consent, setConsent] = useCookies(
+  'consent',
+  kv.stringbool().default(false),
+  { maxAge: 60 * 60 * 24 * 365 },
+)
+```
+
+Full guides:
+[Search Params](./search-params) ·
+[Local Storage](./local-storage) ·
+[Cookies](./cookies)
+  </Case>
+  <Case next>
+```tsx
+import { useSearchParams } from 'kvant/next'
+import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
+import * as kv from 'kvant/schema'
+
+// URL search params — shareable, bookmarkable
+const [query, setQuery] = useSearchParams('q', kv.string().default(''))
+
+// localStorage — persists across reloads, syncs across tabs
+const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+
+// sessionStorage — scoped to the current tab
+const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
+
+// Cookies — readable by the server, respect Set-Cookie attributes
+// (requires additional setup for SSR — see the full guide)
+const [consent, setConsent] = useCookies(
+  'consent',
+  kv.stringbool().default(false),
+  { maxAge: 60 * 60 * 24 * 365 },
+)
+```
+
+Full guides:
+[Search Params](./search-params) ·
+[Local Storage](./local-storage) ·
+[Cookies](./cookies)
+  </Case>
+  <Case next-pages>
+```tsx
+import { useRouterQuery } from 'kvant/next/pages'
+import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
+import * as kv from 'kvant/schema'
+
+// Router query — shareable, bookmarkable
+const [query, setQuery] = useRouterQuery('q', kv.string().default(''))
+
+// localStorage — persists across reloads, syncs across tabs
+const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+
+// sessionStorage — scoped to the current tab
+const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
+
+// Cookies — readable by the server, respect Set-Cookie attributes
+// (requires additional setup for SSR — see the full guide)
+const [consent, setConsent] = useCookies(
+  'consent',
+  kv.stringbool().default(false),
+  { maxAge: 60 * 60 * 24 * 365 },
+)
+```
+
+Full guides:
+[Router Query](./router-query) ·
+[Local Storage](./local-storage) ·
+[Cookies](./cookies)
+  </Case>
+  <Case react-router>
+```tsx
+import { useSearchParams } from 'kvant/react-router'
+import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
+import * as kv from 'kvant/schema'
+
+// URL search params — shareable, bookmarkable
+const [query, setQuery] = useSearchParams('q', kv.string().default(''))
+
+// localStorage — persists across reloads, syncs across tabs
+const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+
+// sessionStorage — scoped to the current tab
+const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
+
+// Cookies — readable by the server, respect Set-Cookie attributes
+// (requires additional setup for SSR — see the full guide)
+const [consent, setConsent] = useCookies(
+  'consent',
+  kv.stringbool().default(false),
+  { maxAge: 60 * 60 * 24 * 365 },
+)
+```
+
+Full guides:
+[Search Params](./search-params) ·
+[Local Storage](./local-storage) ·
+[Cookies](./cookies)
+  </Case>
+  <Case vue>
+```ts
+import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+
+// URL search params — shareable, bookmarkable
+const query = useSearchParams('q', kv.string().default(''))
+
+// localStorage — persists across reloads, syncs across tabs
+const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+
+// sessionStorage — scoped to the current tab
+const draft = useSessionStorage('draft', kv.string().default(''))
+
+// Cookies — readable by the server, respect Set-Cookie attributes
+const consent = useCookies('consent', kv.stringbool().default(false), {
+  maxAge: 60 * 60 * 24 * 365,
+})
+```
+
+Full guides:
+[Search Params](./search-params) ·
+[Local Storage](./local-storage) ·
+[Cookies](./cookies)
+  </Case>
+  <Case vue-router>
+```ts
+import { useRouteParams, useRouteQuery } from 'kvant/vue-router'
+import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+
+// Route query — shareable, bookmarkable
+const query = useRouteQuery('q', kv.string().default(''))
+
+// Route params — identifiers that belong in the path (/users/[id])
+const id = useRouteParams('id', kv.number().int().min(1))
+
+// localStorage — persists across reloads, syncs across tabs
+const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+
+// sessionStorage — scoped to the current tab
+const draft = useSessionStorage('draft', kv.string().default(''))
+
+// Cookies — readable by the server, respect Set-Cookie attributes
+const consent = useCookies('consent', kv.stringbool().default(false), {
+  maxAge: 60 * 60 * 24 * 365,
+})
+```
+
+Full guides:
+[Route Query](./route-query) ·
+[Route Params](./route-params) ·
+[Local Storage](./local-storage) ·
+[Cookies](./cookies)
+  </Case>
+  <Case nuxt>
+```ts
+import { useCookies, useRouteParams, useRouteQuery } from 'kvant/nuxt'
+import { useLocalStorage, useSessionStorage } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+
+// Route query — shareable, bookmarkable
+const query = useRouteQuery('q', kv.string().default(''))
+
+// Route params — identifiers that belong in the path (/users/[id])
+const id = useRouteParams('id', kv.number().int().min(1))
+
+// localStorage — persists across reloads, syncs across tabs
+const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
+
+// sessionStorage — scoped to the current tab
+const draft = useSessionStorage('draft', kv.string().default(''))
+
+// Cookies — SSR-ready out of the box (built on Nuxt's useCookie)
+const locale = useCookies('locale', kv.string().default('en'))
+```
+
+Full guides:
+[Route Query](./route-query) ·
+[Route Params](./route-params) ·
+[Local Storage](./local-storage) ·
+[Cookies](./cookies)
+  </Case>
+</Switch>
+
+## Global default options
+
+<include>./snippets/options-providers/_header.mdx</include>
+
+<include>./snippets/options-providers/_search-params-example.mdx</include>

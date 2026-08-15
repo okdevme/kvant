@@ -1,0 +1,121 @@
+---
+title: Custom schema
+description: Writing your own schemas and adapting other validation libraries to kvant.
+---
+
+Any object with `parse` and `encode` functions is a valid kvant schema:
+
+```ts
+interface KvantSchema<Output, Input = Output, RawInput = unknown> {
+  parse: (value: RawInput) => Output  // storage → state
+  encode: (value: Output) => Input    // state → storage
+}
+```
+
+## Rolling your own
+
+Build a schema from two functions with `kv.custom()` — the result gets the
+full chainable API (`.default()`, `.pipe()`, `.refine()`, …):
+
+```ts
+import * as kv from 'kvant/schema'
+
+const parseHexColor = (value: string | undefined): string | undefined => {
+  const match = /^#?([0-9a-f]{6})$/i.exec(value ?? '')
+  return match ? `#${match[1]!.toLowerCase()}` : undefined
+}
+
+const hexColor = kv.custom<string | undefined, string | undefined>({
+  parse: (value) => typeof value === 'string'
+    ? parseHexColor(value)
+    : undefined,
+  encode: parseHexColor,
+})
+
+// URL: ?color=ff8800 → state: '#ff8800'
+useLocalStorage('color', hexColor.default('#000000'))
+```
+
+Contract, in short:
+
+1. **Never throw** — return `undefined` for invalid input instead — URLs, cookies, and storage
+are user-editable, and throwing turns a bad value into a broken page.
+2. **Lossless** — `encode(parse(v))` preserves valid values.
+3. **Pure** — no side effects; same input, same output.
+
+You can also skip `kv.custom()` entirely and pass a plain
+`{ parse, encode }` object — you just lose the fluent helpers.
+
+## Adapting other schema libraries
+
+### Valibot
+
+[Valibot](https://valibot.dev) is validation-only, so wrap it with an
+encode side and a non-throwing parse:
+
+```ts
+import * as v from 'valibot'
+import type { KvantSchema } from 'kvant'
+
+function valibot<T>(
+  schema: v.BaseSchema<unknown, T, v.BaseIssue<unknown>>
+): KvantSchema<T | undefined> {
+  return {
+    parse: (value) => {
+      const result = v.safeParse(schema, value)
+      return result.success ? result.output : undefined
+    },
+    encode: (value) => value,
+  }
+}
+```
+
+### ArkType
+
+[ArkType](https://arktype.io) schemas return errors instead of throwing, so
+the adapter is straightforward:
+
+```ts
+import { type Type, ArkErrors } from 'arktype'
+import type { KvantSchema } from 'kvant'
+
+function arktype<T>(
+  def: Type<T>
+): KvantSchema<T | undefined> {
+  return {
+    parse: (value) => {
+      const out = def(value)
+      return out instanceof ArkErrors ? undefined : out as T
+    },
+    encode: (value) => value,
+  }
+}
+```
+
+### Standard Schema
+
+Any [Standard Schema](https://standardschema.dev)-compatible library works
+through the same adapter shape:
+
+```ts
+import type { StandardSchemaV1 } from '@standard-schema/spec'
+import type { KvantSchema } from 'kvant'
+
+function standard<T>(
+  schema: StandardSchemaV1<unknown, T>
+): KvantSchema<T | undefined> {
+  return {
+    parse: (value) => {
+      const result = schema['~standard'].validate(value)
+      if (result instanceof Promise)
+        throw new TypeError('Async schemas are not supported by kvant')
+      return result.issues ? undefined : result.value
+    },
+    encode: (value) => value,
+  }
+}
+```
+
+The pattern is always the same: **safe-parse on the way in, identity (or a
+codec) on the way out**, and `undefined` — never an exception — for invalid
+input.

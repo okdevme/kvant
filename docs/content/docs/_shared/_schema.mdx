@@ -1,0 +1,904 @@
+---
+title: kvant/schema
+description: The built-in bidirectional schema library for kvant.
+---
+
+## Why schemas?
+
+Storage values are untyped: URLs hold strings, cookies hold strings, web
+storage holds strings. A schema defines the contract between the stored
+representation and your typed state:
+
+- `parse(value)` — storage → state. Called on reads.
+- `encode(value)` — state → storage. Called on writes.
+
+Without a schema, values pass through as-is (strings for most interfaces).
+With one, `useSearchParams('page', kv.number())` hands you a real `number`
+and writes a canonical string back to the URL.
+
+## Why `kvant/schema`?
+
+`kvant/schema` is a small schema library purpose-built for key-value storage.
+If you know [Zod](https://zod.dev), you already know most of the API:
+
+```ts
+import * as kv from 'kvant/schema'
+
+const page = kv.int().min(1).default(1)
+```
+
+What makes it different from Zod & friends:
+
+- **Bidirectional.** Every schema both parses *and* encodes. Validation-only
+  libraries can't serialize your state back to a string.
+- **Smart casting.** Schemas accept loosely-typed raw input and cast it:
+  `'42'` → `42`, `'true'` → `true`, a repeated query param → an array.
+  There is no strict "input must already be a number" stage.
+- **No errors by design.** Schemas never throw. Invalid input parses to
+  `undefined` (or your default), which is exactly the resilience you want
+  when reading user-editable URLs and cookies.
+
+`kvant/schema` is framework-agnostic — import it anywhere:
+
+```ts
+import * as kv from 'kvant/schema'
+
+kv.string() // stored string → string
+kv.number() // stored string → number
+```
+
+`kvant/schema` is not tied to kvant hooks — it works anywhere you need
+bidirectional parsing or smart casting, including server-side code:
+
+<Switch>
+  <Case react vue vue-router>
+```ts title="server-side or build-time usage (e.g. an API handler)"
+import * as kv from 'kvant/schema'
+import { parseSearch } from 'kvant'
+
+const querySchema = kv.object({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+})
+
+export function parseProductsQuery(url: URL) {
+  return querySchema.parse(
+    parseSearch(url.search)
+  )
+}
+```
+  </Case>
+  <Case next>
+```tsx title="app/products/page.tsx"
+import * as kv from 'kvant/schema'
+
+const searchParamsSchema = kv.object({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+})
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
+  const { q, page } = searchParamsSchema.parse(await searchParams)!
+  const products = await fetchProducts({ q, page })
+  // ...
+}
+```
+  </Case>
+  <Case next-pages>
+```ts title="pages/products.tsx"
+import * as kv from 'kvant/schema'
+import type { GetServerSideProps } from 'next'
+
+const querySchema = kv.object({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+})
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { q, page } = querySchema.parse(query)!
+  const products = await fetchProducts({ q, page })
+  // ...
+}
+```
+  </Case>
+  <Case react-router>
+```tsx title="routes/products.tsx"
+import * as kv from 'kvant/schema'
+import { parseSearch } from 'kvant'
+
+const searchParamsSchema = kv.object({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+})
+
+export async function loader({ url }: Route.LoaderArgs) {
+  const { q, page } = searchParamsSchema.parse(
+    parseSearch(url.search)
+  )!
+  const products = fetchProducts({ q, page })
+  // ...
+}
+```
+  </Case>
+  <Case nuxt>
+```ts title="server/api/products.get.ts"
+import * as kv from 'kvant/schema'
+
+const querySchema = kv.object({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+})
+
+export default defineEventHandler((event) => {
+  const { q, page } = querySchema.parse(
+    getQuery(event)
+  )!
+  const products = fetchProducts({ q, page })
+  // ...
+})
+```
+  </Case>
+</Switch>
+
+Prefer to use [Zod](https://zod.dev) or another validation library? See [Zod](./zod)
+and [Custom schemas](./custom-schemas).
+
+## API
+
+### How to read this reference
+
+Every kvant schema is **bidirectional**. It exposes two operations:
+
+- `parse(value)` / `decode(value)` — storage → state. Accepts loosely-typed raw
+  input (usually `string`, `string[]`, or `Record<string, string>`) and returns
+  the typed output.
+- `encode(value)` — state → storage. Serializes the typed output back to the
+  stored representation.
+
+Schemas **never throw**. Any invalid input parses to `undefined` (or your
+default, if one is set) instead of raising an error.
+
+Chained constraints like `.min()`, `.regex()`, `.refine()` are **filters**,
+not validators: a rejected value falls back to `undefined` rather than
+producing an error. This is a deliberate difference from Zod — `kvant/schema`
+never fails, because storage it reads (URLs, cookies) is user-editable and
+must degrade gracefully.
+
+```ts
+kv.int().min(1).parse('42')  // 42
+kv.int().min(1).parse('-5')  // undefined — rejected by the filter
+kv.int().min(1).parse('abc') // undefined — not a number
+```
+
+<Callout type="info" title="Coming from Zod?">
+`kvant/schema` deliberately does **not** mirror deprecated or legacy Zod APIs.
+For example, `kv.number().int()` does not exist — use `kv.int()` instead.
+More differences are called out per-section below.
+</Callout>
+
+### Primitives
+
+#### `kv.string()`
+
+Parses any non-nullish, non-array raw value via `String(value)`.
+
+```ts
+kv.string().parse('hello') // 'hello'
+kv.string().parse(42)      // '42' (smart casting)
+kv.string().parse(null)    // undefined
+```
+
+Chainable filters and transforms:
+
+```ts
+kv.string().min(3)          // rejects strings shorter than 3 chars
+kv.string().max(20)         // rejects strings longer than 20 chars
+kv.string().length(8)       // exact length
+kv.string().nonempty()      // alias of .min(1)
+kv.string().regex(/^[a-z]+$/)
+kv.string().startsWith('sk_')
+kv.string().endsWith('.json')
+kv.string().includes('@')
+
+// Mutating transforms — applied in both directions (parse and encode),
+// so the stored value is always canonical:
+kv.string().trim()
+kv.string().toLowerCase()
+kv.string().toUpperCase()
+kv.string().normalize()     // Unicode normalization
+kv.string().slice(0, 8)
+kv.string().uppercase()     // filter: rejects non-uppercase strings
+kv.string().lowercase()     // filter: rejects non-lowercase strings
+```
+
+#### `kv.number()`
+
+Smart-casts raw input with `Number.parseFloat()`. `NaN` and non-finite values
+parse to `undefined`.
+
+```ts
+kv.number().parse('3.14')  // 3.14
+kv.number().parse('abc')   // undefined
+kv.number().encode(3.14)   // 3.14
+```
+
+Chainable filters and transforms:
+
+```ts
+kv.number().gt(0) / .gte(0)   // aliases: .positive() / .nonnegative()
+kv.number().lt(0) / .lte(0)   // aliases: .negative() / .nonpositive()
+kv.number().min(1)            // alias of .gte(1)
+kv.number().max(100)          // alias of .lte(100)
+kv.number().multipleOf(5)     // alias: .step(5)
+
+// Mutating transforms (bidirectional — also applied on encode):
+kv.number().clamp(0, 100)     // clamps into [min, max]; .clamp(max) clamps above only
+kv.number().floor()
+kv.number().ceil()
+kv.number().round()
+kv.number().trunc()
+```
+
+#### `kv.int()`
+
+An integer schema: parses like `kv.number()`, then truncates toward zero and
+clamps into the safe integer range.
+
+```ts
+kv.int().parse('42.9')   // 42 (truncated)
+kv.int().parse('abc')    // undefined
+kv.int().min(0).max(9)   // supports all number filters
+```
+
+#### `kv.index()`
+
+Zero-based state mapped to a **one-based** stored value — perfect for page
+numbers, where `?page=1` should read as index `0`.
+
+```ts
+kv.index().parse('1')  // 0
+kv.index().parse('3')  // 2
+kv.index().encode(0)   // 1
+```
+
+Negative state values are clamped to `0`; stored values below `1` clamp to `0`
+in state.
+
+#### `kv.boolean()`
+
+Parses truthiness via `Boolean(value)`. Note that this means the string
+`'false'` parses to `true` — for string representations of booleans, use
+`kv.stringbool()` instead.
+
+```ts
+kv.boolean().parse('anything') // true
+kv.boolean().parse('')         // false
+kv.boolean().parse(undefined)  // undefined
+```
+
+#### `kv.stringbool()`
+
+Parses common string representations of booleans. Case-insensitive by default.
+
+```ts
+const bool = kv.stringbool()
+
+bool.parse('true')  // true
+bool.parse('yes')   // true
+bool.parse('0')     // false
+bool.parse('maybe') // undefined
+
+bool.encode(true)   // 'true'
+bool.encode(false)  // 'false'
+```
+
+Defaults:
+- Truthy values: `'true'`, `'1'`, `'yes'`, `'on'`, `'y'`, `'enabled'`.
+- Falsy values: `'false'`, `'0'`, `'no'`, `'off'`, `'n'`, `'disabled'`.
+
+Customize the recognized strings — the **first entry** of each list is used
+when encoding:
+
+```ts
+const onOff = kv.stringbool({
+  truthy: ['on'],
+  falsy: ['off'],
+  case: 'sensitive', // default: 'insensitive'
+})
+
+onOff.encode(true) // 'on'
+```
+
+#### `kv.enum()`
+
+Validates against a fixed set of string values. Accepts an array or an
+enum-like object (including TypeScript `enum`s):
+
+```ts
+const sort = kv.enum(['newest', 'oldest', 'popular'])
+// or: kv.enum(SortOrder) / kv.enum({ Newest: 'newest', ... })
+
+sort.parse('newest')  // 'newest'
+sort.parse('random')  // undefined
+
+sort.enum   // { newest: 'newest', oldest: 'oldest', popular: 'popular' }
+sort.values // Set { 'newest', 'oldest', 'popular' }
+
+// Derive narrower enums:
+sort.extract(['newest', 'oldest'])
+sort.exclude(['popular'])
+```
+
+#### `kv.any()` / `kv.unknown()`
+
+Pass any value through unchanged. Inferred type is `any` / `unknown`
+respectively.
+
+```ts
+kv.any().parse('whatever')     // 'whatever'
+kv.unknown().parse({ a: 1 })   // { a: 1 }
+```
+
+### Strings with codecs
+
+These schemas encode/decode strings through common string codecs. They have no
+first-party equivalent in Zod (Zod documents them as copy-paste recipes) —
+kvant ships them built-in.
+
+All codec strings extend `kv.string()`, so string filters (`.regex()`,
+`.max()`, ...) apply to the **decoded** value.
+
+#### `kv.uriComponent()`
+
+Decodes with `decodeURIComponent()`, encodes with `encodeURIComponent()`.
+Malformed escape sequences parse to `undefined`.
+
+```ts
+kv.uriComponent().parse('Hello%20World%21') // 'Hello World!'
+kv.uriComponent().encode('Hello World!')    // 'Hello%20World!'
+```
+
+Useful when a stored value itself contains URL-reserved characters:
+
+<Switch>
+  <Case react vue>
+```ts
+useSearchParams('redirect', kv.uriComponent())
+// ?redirect=%2Fcheckout%3Fcoupon%3DFREE → '/checkout?coupon=FREE'
+```
+  </Case>
+  <Case next-pages>
+```ts
+useRouterQuery('redirect', kv.uriComponent())
+// ?redirect=%2Fcheckout%3Fcoupon%3DFREE → '/checkout?coupon=FREE'
+```
+  </Case>
+  <Case vue-router nuxt>
+```ts
+useRouteQuery('redirect', kv.uriComponent())
+// ?redirect=%2Fcheckout%3Fcoupon%3DFREE → '/checkout?coupon=FREE'
+```
+  </Case>
+</Switch>
+
+#### `kv.base64()`
+
+Decodes/encodes Base64 strings (`atob`/`btoa`). Invalid Base64 parses to
+`undefined`.
+
+```ts
+kv.base64().parse('SGVsbG8=') // 'Hello'
+kv.base64().encode('Hello')   // 'SGVsbG8='
+```
+
+#### `kv.base64url()`
+
+URL-safe Base64 ([RFC 4648 §5](https://datatracker.ietf.org/doc/html/rfc4648#section-5)):
+`-`/`_` alphabet, no padding. Ideal for URLs and cookies.
+
+```ts
+kv.base64url().parse('SGVsbG8') // 'Hello'
+kv.base64url().encode('Hello')  // 'SGVsbG8'
+```
+
+#### `kv.hex()`
+
+Hexadecimal string ↔ `number` (integer). Encodes with an even digit count.
+
+```ts
+kv.hex().parse('ff')   // 255
+kv.hex().encode(255)   // 'ff'
+kv.hex().encode(10)    // '0a'
+```
+
+Supports all number filters:
+
+```ts
+kv.hex().min(0).max(255)
+```
+
+### Dates
+
+Date schemas are **codecs**: they parse stored strings/numbers into `Date`
+objects and serialize them back. (Zod's `z.date()` only validates existing
+`Date` instances — kvant's date schemas both convert and validate.)
+
+All date schemas support `.min(date)` / `.max(date)` filters and
+`.clamp(min, max)` (both accept `Date` or epoch milliseconds):
+
+```ts
+kv.isoDateToDate().min(new Date('2020-01-01'))
+kv.epochSecondsToDate().clamp(new Date('2020-01-01'), new Date('2030-01-01'))
+```
+
+#### `kv.isoDatetimeToDate()`
+
+Full ISO 8601 datetime strings ↔ `Date`.
+
+```ts
+kv.isoDatetimeToDate().parse('2024-01-15T10:30:00.000Z') // Date
+kv.isoDatetimeToDate().encode(new Date('2024-01-15'))    // '2024-01-15T00:00:00.000Z'
+kv.isoDatetimeToDate().parse('not a date')               // undefined
+```
+
+#### `kv.isoDateToDate()` / `kv.isoYearMonthToDate()` / `kv.isoYearToDate()`
+
+Shorter ISO formats — `YYYY-MM-DD`, `YYYY-MM`, `YYYY`:
+
+```ts
+kv.isoDateToDate().parse('2024-01-15')      // Date
+kv.isoDateToDate().encode(date)             // '2024-01-15'
+kv.isoYearMonthToDate().encode(date)        // '2024-01'
+kv.isoYearToDate().encode(date)             // '2024'
+```
+
+#### `kv.epochMillisToDate()` / `kv.epochSecondsToDate()`
+
+Unix timestamps ↔ `Date`. Seconds variant multiplies by 1000 on parse and
+divides (with truncation) on encode.
+
+```ts
+kv.epochMillisToDate().parse('1705314600000') // Date
+kv.epochSecondsToDate().parse('1705314600')   // Date
+kv.epochSecondsToDate().encode(date)          // 1705314600
+```
+
+### Composites
+
+#### `kv.object(shape)`
+
+Parses plain objects property-by-property. Each property schema receives the
+raw value at its key; unknown keys are **stripped** by default.
+
+```ts
+const filters = kv.object({
+  q: kv.string().default(''),
+  page: kv.index().default(0),
+  tags: kv.string().array(),
+})
+
+filters.parse({ q: 'shoes', page: '2' })
+// { q: 'shoes', page: 1 }
+
+filters.parse({})
+// { q: '', page: 0 } — defaults apply per-property
+```
+
+Note: properties that parse to `undefined` are **kept as explicit
+`undefined`** if the key was present in the input, and omitted otherwise.
+
+Object properties and methods:
+
+```ts
+filters.shape        // access property schemas
+filters.keyof()      // enum schema of keys: kv.enum(['q', 'page', 'tags'])
+
+filters.extend({ sort: kv.enum(['asc', 'desc']) })
+filters.safeExtend({ q: kv.string().min(1).default('') }) // type-checked override
+filters.pick({ q: true })
+filters.omit({ page: true })
+filters.partial()             // make all properties optional
+filters.partial({ q: true })  // make specific properties optional
+filters.catchall(kv.string()) // define a schema for unrecognized keys
+```
+
+`kv.looseObject(shape)` passes unknown keys through unchanged (still
+type-`unknown` in the output).
+
+#### `kv.array(schema)` / `.array()`
+
+Wraps a schema into an array of itself. A single (non-repeated) raw value is
+wrapped into a one-item array — handy for interfaces that may repeat a key,
+like search params (`?tag=a&tag=b`).
+
+```ts
+const tags = kv.array(kv.string())
+// or: kv.string().array()
+
+tags.parse(['a', 'b']) // ['a', 'b']
+tags.parse('a')        // ['a']  (single value wrapped)
+tags.parse(undefined)  // undefined
+```
+
+<Callout type="warn">
+Each element is parsed **independently** — invalid elements parse to
+`undefined` inside the array rather than rejecting the whole array. Combine
+with `.transform()` if you need stricter behavior:
+
+```ts
+// reject arrays with invalid elements
+kv.string().array()
+  .transform(arr => arr?.every(i => i !== undefined) ? arr : undefined)
+
+// remove invalid elements
+kv.string().array()
+  .transform(arr => arr.filter(i => i !== undefined))
+```
+</Callout>
+
+Filters and transforms:
+
+```ts
+kv.string().array().nonempty()   // alias: .min(1)
+kv.string().array().min(1)
+kv.string().array().max(5)
+kv.string().array().length(3)
+
+kv.string().array().slice(0, 10)
+```
+
+#### `kv.tuple(items, rest?)`
+
+Fixed-length array with per-position schemas. Trailing items whose schema
+parses to `undefined` are omitted from the output.
+
+```ts
+const range = kv.tuple([kv.number(), kv.number()])
+
+range.parse(['0', '100']) // [0, 100]
+range.encode([0, 100])    // [0, 100]
+
+// Variadic rest argument:
+const path = kv.tuple([kv.string()], kv.number())
+// [string, ...number[]]
+```
+
+#### `kv.set(schema)`
+
+A `Set` of the inner schema's outputs. Parses from single or repeated raw
+values; encodes to an array.
+
+```ts
+const ids = kv.set(kv.int())
+
+ids.parse(['1', '2', '2']) // Set { 1, 2 }
+ids.encode(new Set([1, 2])) // [1, 2]
+```
+
+Filters and transforms:
+
+```ts
+kv.set(kv.int()).nonempty()   // alias: .min(1)
+kv.set(kv.int()).min(1)
+kv.set(kv.int()).max(5)
+kv.set(kv.int()).size(3)
+
+kv.set(kv.int()).slice(0, 10)
+```
+
+#### `kv.record(keySchema, valueSchema)`
+
+Object schema whose keys and values are (de)serialized through schemas.
+Keys that fail to parse (or parse to non-string/non-number) are skipped.
+
+```ts
+const cache = kv.record(kv.string(), kv.int())
+
+cache.parse({ a: '1', b: '2' }) // { a: 1, b: 2 }
+```
+
+With an enum key schema:
+
+```ts
+const keys = kv.enum(['id', 'name'])
+kv.record(keys, kv.string())        // Record<'id' | 'name', string | undefined>
+```
+
+`kv.record()` requires **all** enum keys to be
+present (missing keys parse to `undefined` values); use `kv.partialRecord()`
+to allow missing keys:
+
+```ts
+const keys = kv.enum(['id', 'name'])
+kv.partialRecord(keys, kv.string()) // Partial<Record<'id' | 'name', string | undefined>>
+```
+
+#### `kv.map(keySchema, valueSchema)`
+
+Like `record`, but produces a `Map`. Both keys and values go through their
+schemas in both directions.
+
+```ts
+const votes = kv.map(kv.string(), kv.int())
+
+votes.parse({ a: '1', b: '2' }) // Map { 'a' => 1, 'b' => 2 }
+votes.encode(new Map([['a', 1]])) // { a: 1 }
+```
+
+### Wrappers & combinators
+
+All schemas expose these chainable methods:
+
+#### `.optional()` / `.nullable()` / `.nullish()`
+
+Allow `undefined` / `null` / both to pass through. Top-level
+`kv.optional(schema)` and `kv.nullable(schema)` equivalents exist.
+
+```ts
+kv.string().optional()           // string | undefined
+kv.int().nullable().parse(null)  // null
+kv.int().nullable().unwrap()     // back to the inner schema
+```
+
+#### `.default(value, options?)`
+
+Falls back to `value` when parsing yields `undefined`. The default can be a
+plain value or a factory function (called per parse).
+
+By default, when the state **equals** the default, the stored value is
+cleared (`clearOnDefault: true`) — so defaults never end up written to the
+URL/cookies.
+
+```ts
+const page = kv.index().default(0)
+
+page.parse(undefined) // 0
+page.encode(0)        // undefined — key is cleared from storage
+page.encode(2)        // 3
+
+// Opt out of clearing:
+kv.index().default(0, { clearOnDefault: false })
+
+// Custom equality check (e.g. for arrays/objects):
+kv.string().array().default([], {
+  isDefault: (value, defaultValue) => value.length === defaultValue.length
+    && value.every((v, i) => v === defaultValue[i]),
+})
+```
+
+#### `.prefault(value, options?)`
+
+Like `.default()`, but the fallback is given as **stored input** and is parsed
+by the wrapped schema first. Use it when the natural default is easier to
+express in its stored form, or when you want it to go through transforms.
+
+```ts
+const date = kv.isoDateToDate().prefault('2024-01-01')
+date.parse(undefined) // Date('2024-01-01')
+
+// vs .default(), which must be an output value and skips parsing:
+kv.isoDateToDate().default(new Date('2024-01-01'))
+```
+
+Both `.default()` and `.prefault()` support `clearOnDefault` / `isDefault`
+options and `.unwrap()`.
+
+#### `.singular(index?)`
+
+Picks one element when the raw value is an array — the inverse of `.array()`.
+Defaults to the first element. Pass a negative index (via `.at()` semantics)
+or a function for custom picking.
+
+```ts
+kv.int().singular().parse(['1', '2'])      // 1
+kv.int().singular(-1).parse(['1', '2'])    // 2
+kv.int().singular(arr => arr.length - 1)   // last element
+```
+
+Useful for interfaces that allow repeated keys (search params) when you only
+care about one value:
+
+<Switch>
+  <Case react vue>
+```ts
+useSearchParams('page', kv.index().singular())
+```
+  </Case>
+  <Case next-pages>
+```ts
+useRouterQuery('page', kv.index().singular())
+```
+  </Case>
+  <Case vue-router nuxt>
+```ts
+useRouteQuery('page', kv.index().singular())
+```
+  </Case>
+</Switch>
+
+#### `.transform(def)`
+
+Pipes the schema into a bidirectional transformation that **changes the type**.
+
+A bare function applies to both directions and its output type must be assignable to the input type.
+Pass `{ decode, encode }` for asymmetric transforms.
+
+```ts
+kv.string().array() // (string | undefined)[] | undefined
+  .transform(arr => arr?.filter(i => i !== undefined)) // string[] | undefined
+
+const csv = kv.string().transform({
+  decode: v => v?.split(',').filter(Boolean),
+  encode: v => v?.join(','),
+})
+csv.parse('a,b,c')     // ['a', 'b', 'c']
+csv.encode(['a', 'b']) // 'a,b'
+```
+
+<Callout>
+Unlike Zod's unidirectional `.transform()` (which cannot encode), kvant
+transforms are always bidirectional — a schema that can't encode its state
+would break kvant's write path.
+</Callout>
+
+#### `.overwrite(def)`
+
+Transforms the output in place — after parse and before encode — **without
+changing the schema's types**. This allows you to transform a value while
+keeping access to the original schema's methods and properties.
+
+A bare function applies to both directions and
+must be safe to run on its own output (idempotent).
+Pass `{ decode, encode }` to transform each direction separately.
+
+```ts
+kv.string()
+  .overwrite(v => v.padEnd(25, '.'))
+  .trim()
+  .toLowerCase()
+
+kv.int()
+  .overwrite({
+    decode: v => v - 1,
+    encode: v => v + 1,
+  })
+  .min(0)
+```
+
+#### `.refine(check, fallback?)`
+
+Keeps values passing `check`; rejected values fall back to `fallback` (or
+`undefined` when the output type allows it). The check runs in **both**
+directions.
+
+```ts
+const rating = kv.int().refine(v => v >= 1 && v <= 5)
+rating.parse('9') // undefined
+
+const clamped = kv.int().default(0).refine(v => v <= 10, 10)
+clamped.parse('99') // 10 — fallback instead of undefined
+```
+
+This is what powers built-ins like `.min()`, `.max()`, etc.
+
+#### `kv.json(schema, options?)`
+
+JSON string ↔ typed value. Parses with `JSON.parse` (invalid JSON →
+`undefined`), then validates the result against the inner schema. Encodes with
+`JSON.stringify`.
+
+```ts
+const settingsSchema = kv.object({
+  theme: kv.enum(['light', 'dark']).default('light'),
+})
+
+const jsonToSettings = kv.json(settingsSchema)
+
+jsonToSettings.parse('{"theme":"dark"}') // { theme: 'dark' }
+jsonToSettings.parse('~~invalid~~')      // undefined
+jsonToSettings.encode({ theme: 'dark' }) // '{"theme":"dark"}'
+```
+
+Accepts `reviver`, `replacer`, and `space` options (passed through to
+`JSON.parse`/`JSON.stringify`).
+
+Unlike Zod, where a JSON codec is a copy-paste recipe, `kv.json()` is
+first-party — and the ideal way to store complex structures in local storage
+or cookies.
+
+#### `.pipe(schema)`
+
+Chains two schemas: `b` parses `a`'s output; encoding runs in reverse (`b`
+encodes first, then `a`).
+
+```ts
+const settingsSchema = kv.object({
+  theme: kv.enum(['light', 'dark']).default('light'),
+})
+
+const base64urlToSettings = kv.base64url()
+  .pipe(kv.json(settingsSchema))
+
+base64urlToSettings.parse('eyJ0aGVtZSI6ImRhcmsifQ')
+// 'eyJ0aGVtZSI6ImRhcmsifQ' → '{"theme":"dark"}' → { theme: 'dark' }
+
+base64urlToSettings.encode({ theme: 'dark' })
+// { theme: 'dark' } → '{"theme":"dark"}' → 'eyJ0aGVtZSI6ImRhcmsifQ'
+```
+
+#### `kv.preprocess(def, schema)`
+
+Transforms the **raw input** before the schema parses it (and the raw output
+after encoding). Since the preprocessor is expected to handle arbitrary raw
+storage values, its `decode` input type is `unknown` by default:
+
+```ts
+const fromCsv = kv.preprocess(
+  {
+    decode: (raw) => String(raw ?? '').split(','),
+    encode: (raw) => raw?.join(','),
+  },
+  kv.string().array(),
+)
+
+fromCsv.parse('a,b,c') // ['a', 'b', 'c']
+```
+
+To narrow the input type and get proper typing, annotate it explicitly:
+
+```ts
+const csv = kv.preprocess(
+  {
+    decode: (raw: string | undefined) => raw?.split(',').map(s => s.trim()),
+    encode: (raw) => raw?.join(','),
+  },
+  kv.string().array(),
+)
+
+csv.parse('a, b, c')    // ['a', 'b', 'c']
+csv.encode(['a', 'b'])  // 'a,b'
+```
+
+#### `kv.custom(def)`
+
+Builds a schema from plain `parse`/`encode` functions:
+
+```ts
+const even = kv.custom({
+  parse: (value: string) => {
+    const n = Number(value)
+    return Number.isInteger(n) && n % 2 === 0 ? n : undefined
+  },
+  encode: (value: number) => String(value),
+})
+```
+
+#### `.apply(fn)`
+
+Passes the schema to a function and returns its result — useful for custom
+reusable combinators:
+
+```ts
+const bounded = <S extends kv.KvantNumber>(s: S) => {
+  return s.clamp(0, 100).step(5)
+}
+
+kv.number().apply(bounded)
+```
+
+### Type utilities
+
+```ts
+const page = kv.index().default(0)
+
+type Page = kv.output<typeof page>    // output type (state) — alias: `infer`
+type Stored = kv.input<typeof page>   // stored input type (what encode accepts / parse emits at the boundary)
+type Raw = kv.rawInput<typeof page>   // raw storage type parse accepts (unknown by default for most schemas)
+```
+
+`KvantType<Output, Input, RawInput>` is the fluent interface every schema
+implements — extend it when typing your own schema factories.

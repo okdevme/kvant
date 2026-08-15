@@ -1,0 +1,40 @@
+---
+title: advanced-usage
+---
+
+## Adapters, briefly
+
+Under the hood, every kvant binding talks to an **adapter** — a small factory
+that connects a key-value interface (URL, cookies, storage, ...) to the state
+layer:
+
+```ts
+type KvantAdapter<T, Options> = (
+  keys: string[],
+  options: Partial<Options>,
+) => KvantAdapterInterface<T>
+```
+
+An adapter owns three things:
+
+- **snapshot** — the current raw values for the bound keys,
+- **update(values)** — writes values back to the interface,
+- **subscriptions/effects** — notifies kvant about external changes
+  (navigation, cross-tab storage events, cookie changes, ...).
+
+The pre-bound hooks (`useSearchParams`, `useCookies`, ...) are just
+convenience wrappers around internal adapters. Everything below uses the same
+machinery directly.
+
+## `useKvantState`
+
+The generic hook accepts any adapter — including the internal ones kvant
+exports. Use it when a pre-bound hook doesn't exist for your use case, or when
+you need to pass an adapter around explicitly.
+
+## `defineKvantState`
+
+`defineKvantState` binds an adapter once and returns a ready-to-use
+`useState`-style hook plus an options provider. This is exactly how the
+pre-bound hooks are built internally — and the recommended way to pre-configure
+an adapter (custom parsers, default history mode, ...) for your whole app.

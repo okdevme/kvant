@@ -1,0 +1,44 @@
+---
+title: Installation
+description: Install kvant with your package manager and check framework compatibility.
+---
+
+Install kvant with your package manager of choice:
+
+```npm
+npm install kvant
+```
+
+kvant ships as a single package with per-framework entry points:
+
+| Entry point          | Framework                        |
+| -------------------- | -------------------------------- |
+| `kvant/react`        | React (SPA)                      |
+| `kvant/next`         | Next.js (app router)             |
+| `kvant/next/pages`   | Next.js (pages router)           |
+| `kvant/react-router` | React Router                     |
+| `kvant/vue`          | Vue                              |
+| `kvant/vue-router`   | Vue Router                       |
+| `kvant/nuxt`         | Nuxt                             |
+| `kvant/schema`       | Schema library (all frameworks)  |
+| `kvant`              | Core adapters and types (advanced) |
+
+Only install the peer dependency for the framework you use — the others are
+optional.
+
+## Version compatibility
+
+| Framework    | Supported versions |
+| ------------ | ------------------ |
+| React        | `>=18.0.0`         |
+| Next.js      | `>=14.2.0`         |
+| React Router | `>=7.0.0`          |
+| Vue          | `>=3.0.0`          |
+| Vue Router   | `>=4.0.0`          |
+| Nuxt         | `>=3.0.0`          |
+
+<Callout type="info">
+React-based entry points (`kvant/react`, `kvant/next`, `kvant/next/pages`,
+`kvant/react-router`) ship with the `'use client'` directive, so they work out
+of the box in React Server Components trees.
+</Callout>

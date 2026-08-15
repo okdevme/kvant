@@ -1,0 +1,45 @@
+---
+title: schema-intro
+---
+
+Every kvant binding is defined by a **schema** — an object with two functions:
+
+```ts
+interface KvantSchema<Input, Output, Raw> {
+  parse: (value: Raw | undefined) => Output
+  encode: (value: Input) => Raw | undefined
+}
+```
+
+- `parse` converts a raw stored value (e.g. a URL string) into your typed state.
+- `encode` converts state back into the raw value for storage.
+
+Schemas are the contract that makes kvant type-safe: the state you read and
+write always matches the schema's inferred type. They are also what make kvant
+resilient — **schemas must never throw**. Invalid input resolves to
+`undefined` instead of crashing your UI.
+
+## Meet `kvant/schema`
+
+kvant ships with its own schema library, `kvant/schema`, purpose-built for
+key-value interfaces:
+
+- **Bidirectional** — every schema both parses and encodes, no extra
+  serializer needed.
+- **Smart casting** — `kv.number()` knows how to read `'42'` from a URL and
+  write `42` back; `kv.array()` accepts single raw values and wraps them.
+- **No errors by design** — parsing invalid data returns `undefined`, never
+  throws. No try/catch, no error states.
+- **Zod-like API** — if you know Zod, you will feel at home: chainable
+  methods, combinators, type inference via `kv.infer`.
+
+```ts
+import * as kv from 'kvant/schema'
+
+const page = kv.number().int().min(1).default(1)
+const sort = kv.enum(['asc', 'desc']).default('asc')
+const filters = kv.array(kv.string()).default([])
+```
+
+`kvant/schema` is not tied to kvant hooks — it works anywhere you need
+bidirectional parsing, including server-side code:

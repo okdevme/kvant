@@ -1,0 +1,388 @@
+---
+title: schema-api
+---
+
+## API Reference
+
+All constructors and combinators are available from `kvant/schema`:
+
+```ts
+import * as kv from 'kvant/schema'
+```
+
+All schemas share these properties:
+
+- **Never throw** — invalid input parses to `undefined`.
+- **Bidirectional** — every schema has both `parse` and `encode`.
+- **Type inference** — use `kv.infer<typeof schema>` (alias `kv.output`) for
+  the parsed type, `kv.input` for the encodable type, `kv.rawInput` for the
+  raw stored type.
+
+### Primitives
+
+#### `kv.string()`
+
+Parses any value to a string; encodes strings as-is.
+
+```ts
+const schema = kv.string()
+
+schema.parse('hello') // 'hello'
+schema.parse(42) // '42'
+
+kv.string().min(2).max(10)
+kv.string().length(8)
+kv.string().regex(/^[a-z]+$/)
+kv.string().trim().toLowerCase()
+kv.string().startsWith('id_').endsWith('_v1')
+kv.string().includes('-')
+```
+
+#### `kv.number()`
+
+Parses numeric strings and numbers; invalid input becomes `undefined`.
+
+```ts
+const schema = kv.number()
+
+schema.parse('3.14') // 3.14
+schema.parse('nope') // undefined
+
+kv.number().int() // truncate to safe integer
+kv.number().gt(0).lt(100)
+kv.number().min(1).max(10)
+kv.number().floor().ceil().round()
+kv.number().clamp(0, 100)
+```
+
+#### `kv.int()`
+
+Shorthand for `kv.number().int()` — parses to a safe integer.
+
+#### `kv.index()`
+
+Zero-based index encoded as one-based number — ideal for page numbers:
+`parse` subtracts 1, `encode` adds 1.
+
+```ts
+const page = kv.index().default(0)
+
+page.parse('1') // 0
+page.encode(0) // 1
+```
+
+#### `kv.hex()`
+
+Parses a hexadecimal string into an integer; encodes with an even digit count.
+
+```ts
+kv.hex().parse('ff') // 255
+kv.hex().encode(255) // 'ff'
+```
+
+#### `kv.boolean()`
+
+JavaScript truthiness: `parse` applies `Boolean(value)`, `encode` passes
+booleans through. For string booleans (`'true'`/`'false'`), use
+[`kv.stringbool()`](#kvstringbooloptions).
+
+#### `kv.stringbool(options?)`
+
+Parses common string representations of booleans.
+
+```ts
+const schema = kv.stringbool()
+
+schema.parse('true') // true
+schema.parse('1') // true
+schema.parse('off') // false
+schema.parse('') // false
+
+// Customize the accepted values
+kv.stringbool({ truthy: ['yes'], falsy: ['no'], caseSensitive: true })
+```
+
+Default truthy values: `'true'`, `'1'`, `'yes'`, `'on'`. Default falsy values:
+`'false'`, `'0'`, `'no'`, `'off'`, `''`.
+
+#### `kv.uriComponent()`
+
+Applies `decodeURIComponent` on parse and `encodeURIComponent` on encode —
+useful for values that may contain reserved URL characters.
+
+#### `kv.base64()` / `kv.base64url()`
+
+Base64 (`atob`/`btoa`) and URL-safe base64 codecs.
+
+### Enums
+
+#### `kv.enum(values)`
+
+Accepts only members of the given value list.
+
+```ts
+const sort = kv.enum(['asc', 'desc'])
+
+sort.parse('asc') // 'asc'
+sort.parse('sideways') // undefined
+
+const ratings = kv.enum([1, 2, 3, 4, 5])
+
+// Derive a narrowed enum
+const ascending = sort.extract(['asc'])
+const noDefault = sort.exclude(['desc'])
+```
+
+Also exported as `kv._enum` for environments where `enum` is a reserved word.
+
+### Dates
+
+Date codecs parse strings/numbers into `Date` objects and encode back to the
+same representation.
+
+| Constructor | Format | Example raw value |
+| ----------- | ------ | ----------------- |
+| `kv.isoDatetimeToDate()` | ISO 8601 datetime | `'2026-08-13T10:30:00.000Z'` |
+| `kv.isoDateToDate()` | ISO date | `'2026-08-13'` |
+| `kv.isoYearMonthToDate()` | Year + month | `'2026-08'` |
+| `kv.isoYearToDate()` | Year | `'2026'` |
+| `kv.epochToDate()` | Unix epoch (ms) | `1786550400000` |
+| `kv.epochMilliToDate()` | Unix epoch (s) | `1786550400` |
+
+```ts
+const createdAfter = kv.isoDateToDate()
+
+createdAfter.parse('2026-08-13') // Date
+createdAfter.encode(new Date('2026-08-13')) // '2026-08-13'
+```
+
+### Collections
+
+#### `kv.array(schema)`
+
+Parses arrays of values; a single raw value is wrapped into a one-item array.
+
+```ts
+const tags = kv.array(kv.string())
+
+tags.parse('react') // ['react']
+tags.parse(['react', 'vue']) // ['react', 'vue']
+
+kv.array(kv.number()).min(1).max(5).length(3)
+kv.array(kv.string()).slice(0, 10)
+```
+
+#### `kv.set(schema)`
+
+Like `array`, but parses into a `Set` — duplicates are removed.
+
+```ts
+const ids = kv.set(kv.number())
+
+ids.parse(['1', '2', '2']) // Set { 1, 2 }
+ids.encode(new Set([1, 2])) // [1, 2]
+
+kv.set(kv.string()).min(1).max(10).size(3)
+```
+
+#### `kv.tuple(schemas, rest?)`
+
+Fixed-length arrays with per-position schemas. Optionally accepts a `rest`
+schema for trailing elements.
+
+```ts
+const range = kv.tuple([kv.number(), kv.number()])
+
+range.parse(['0', '10']) // [0, 10]
+
+const csv = kv.tuple([kv.string()], kv.number())
+csv.parse(['name', '1', '2']) // ['name', 1, 2]
+```
+
+#### `kv.object(shape)`
+
+Parses plain objects with a fixed shape.
+
+```ts
+const point = kv.object({
+  x: kv.number().default(0),
+  y: kv.number().default(0),
+})
+
+point.parse({ x: '10' }) // { x: 10, y: 0 }
+
+point.extend({ z: kv.number().default(0) })
+point.pick({ x: true })
+point.omit({ y: true })
+point.partial() // all properties optional
+point.catchall(kv.number())
+point.keyof() // enum of keys: 'x' | 'y'
+```
+
+#### `kv.record(keySchema, valueSchema)`
+
+Key-value objects where both keys and values are parsed. All keys of an enum
+key schema are required in the output.
+
+```ts
+const scores = kv.record(kv.enum(['math', 'art']), kv.number())
+
+scores.parse({ math: '5' }) // { math: 5, art: undefined }
+```
+
+#### `kv.partialRecord(keySchema, valueSchema)`
+
+Like `record`, but enum keys are optional.
+
+#### `kv.map(keySchema, valueSchema)`
+
+Parses plain objects into a native `Map`.
+
+```ts
+const votes = kv.map(kv.string(), kv.number())
+
+votes.parse({ a: '1' }) // Map { 'a' => 1 }
+votes.encode(new Map([['a', 1]])) // { a: 1 }
+```
+
+#### `kv.json(schema, options?)`
+
+Parses a JSON string, then validates the result against the given schema.
+Encodes via `JSON.stringify`.
+
+```ts
+const settings = kv.json(kv.object({
+  theme: kv.enum(['light', 'dark']).default('light'),
+}))
+
+settings.parse('{"theme":"dark"}') // { theme: 'dark' }
+settings.encode({ theme: 'dark' }) // '{"theme":"dark"}'
+
+// Custom reviver/replacer
+kv.json(kv.any(), { reviver, replacer })
+```
+
+### Wrappers
+
+#### `.default(value)`
+
+Fallback used when the raw value is missing. By default, values equal to the
+default are omitted from storage when writing (`clearOnDefault`).
+
+```ts
+const page = kv.number().default(1)
+
+page.parse(undefined) // 1
+page.encode(1) // undefined (omitted — it is the default)
+page.encode(2) // 2
+
+// Keep defaults in storage
+kv.number().default({ value: 1, clearOnDefault: false })
+
+// Custom equality check
+kv.number().default({ value: 1, isDefault: v => v <= 1 })
+```
+
+#### `.prefault(value)`
+
+Like `.default`, but the fallback goes through the schema's `parse` first —
+useful when the default is expressed in the raw/input representation.
+
+#### `.optional()` / `.nullable()` / `.nullish()`
+
+Allow `undefined`, `null`, or both to pass through as-is.
+
+#### `.singular(indexOrSelector?)`
+
+Picks one element when the raw value is an array. Defaults to the first
+element; accepts an index or a selector function.
+
+```ts
+const first = kv.array(kv.string()).singular()
+
+first.parse(['a', 'b']) // 'a'
+first.encode('a') // 'a'
+```
+
+### Combinators
+
+#### `.pipe(schema)`
+
+Chains schemas: the output of the first becomes the input of the second.
+
+```ts
+const positivePage = kv.number()
+  .pipe(kv.number().min(1))
+  .default(1)
+```
+
+#### `.transform(definition)`
+
+Bidirectional transformation. Pass an object with `parse`/`encode`, or a bare
+function applied in both directions.
+
+```ts
+const cents = kv.number().transform({
+  parse: value => value * 100,
+  encode: value => value / 100,
+})
+
+// Same transformation in both directions
+const trimmed = kv.string().transform(value => value.trim())
+```
+
+#### `.preprocess(definition)`
+
+Transforms the raw value *before* the schema parses it (and after encoding).
+
+```ts
+const loose = kv.number().preprocess(value =>
+  typeof value === 'string' ? value.replace(/,/g, '') : value,
+)
+
+loose.parse('1,000') // 1000
+```
+
+#### `.overwrite(definition)`
+
+Transforms the value *after* parsing / *before* encoding, keeping the types
+unchanged. Accepts a function or `{ decode, encode }`.
+
+#### `.refine(check, fallback?)`
+
+Validates the parsed value. When the check fails, the result is the fallback
+(defaults to `undefined`). The fallback is required when the output type
+cannot be `undefined` (e.g. after `.default()`).
+
+```ts
+const even = kv.number().refine(value => value % 2 === 0)
+
+even.parse('4') // 4
+even.parse('5') // undefined
+
+const positive = kv.number().refine(value => value > 0, 1).default(1)
+```
+
+### Escape hatches
+
+#### `kv.any()` / `kv.unknown()`
+
+Pass-through schemas with no parsing. Values are used as-is.
+
+#### `kv.custom(definition)`
+
+Build a schema from scratch. See the **Custom schemas** page for a full guide.
+
+```ts
+const schema = kv.custom<string, string, string>({
+  parse: value => value?.toUpperCase(),
+  encode: value => value.toLowerCase(),
+})
+```
+
+## Using `kvant/schema` with other schema libraries
+
+`kvant/schema` combinators accept **any** object with compatible
+`parse`/`encode` (or `parse`/`serialize`) functions — not only kvant schemas.
+This makes interop with libraries like Zod possible; see the **Zod** page
+(*Intersecting Zod and `kvant/schema`*) for an example.

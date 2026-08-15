@@ -1,0 +1,52 @@
+---
+title: Local Storage
+description: Type-safe localStorage and sessionStorage state
+---
+
+<include>../_shared/interfaces/_local-storage.mdx</include>
+
+## Usage
+
+```tsx
+'use client'
+
+import { useLocalStorage } from 'kvant/react'
+import * as kv from 'kvant/schema'
+
+export function Settings() {
+  const [settings, setSettings] = useLocalStorage({
+    theme: kv.enum(['light', 'dark']).default('light'),
+    fontSize: kv.number().default(16),
+  })
+
+  return (
+    <button
+      onClick={() =>
+        setSettings(prev => ({
+          ...prev,
+          theme: prev.theme === 'light' ? 'dark' : 'light',
+        }))
+      }
+    >
+      {settings.theme}
+    </button>
+  )
+}
+```
+
+## Session storage
+
+The same API is available for `sessionStorage` via `useSessionStorage` — state
+is scoped to the tab and cleared when it closes:
+
+```tsx
+'use client'
+
+import { useSessionStorage } from 'kvant/react'
+import * as kv from 'kvant/schema'
+
+export function Wizard() {
+  const [step, setStep] = useSessionStorage('wizard-step', kv.number().default(0))
+  // ...
+}
+```
