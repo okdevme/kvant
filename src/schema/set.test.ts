@@ -27,6 +27,8 @@ describe('set', () => {
   it('validates min/max/size constraints', () => {
     expect(set(string()).min(2).parse(['a'])).toBeUndefined()
     expect(set(string()).min(2).parse(['a', 'b'])).toEqual(new Set(['a', 'b']))
+    expect(set(string()).nonempty().parse([])).toBeUndefined()
+    expect(set(string()).nonempty().parse(['a'])).toEqual(new Set(['a']))
     expect(set(string()).max(1).parse(['a', 'b'])).toBeUndefined()
     expect(set(string()).size(2).parse(['a', 'b'])).toEqual(new Set(['a', 'b']))
     expect(set(string()).size(2).parse(['a'])).toBeUndefined()

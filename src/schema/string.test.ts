@@ -25,6 +25,8 @@ describe('string', () => {
   it('validates length constraints', () => {
     expect(string().min(2).parse('a')).toBeUndefined()
     expect(string().min(2).parse('ab')).toBe('ab')
+    expect(string().nonempty().parse('')).toBeUndefined()
+    expect(string().nonempty().parse('a')).toBe('a')
     expect(string().max(2).parse('abc')).toBeUndefined()
     expect(string().length(2).parse('ab')).toBe('ab')
     expect(string().length(2).parse('abc')).toBeUndefined()

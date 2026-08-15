@@ -16,6 +16,7 @@ export interface KvantArray<S extends KvantGenericSchema> extends KvantType<
   readonly min: (minLength: number) => this
   readonly max: (maxLength: number) => this
   readonly length: (length: number) => this
+  readonly nonempty: () => this
   readonly slice: (start: number, end?: number) => this
 }
 
@@ -51,6 +52,9 @@ export function array<S extends KvantGenericSchema>(schema: S): KvantArray<S> {
     },
     length(length) {
       return refine(this, v => v.length === length)
+    },
+    nonempty() {
+      return refine(this, v => v.length > 0)
     },
     slice(start, end) {
       return overwrite(this, v => v.slice(start, end))

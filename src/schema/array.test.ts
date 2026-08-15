@@ -38,6 +38,8 @@ describe('array', () => {
     expect(schema.parse(['a'])).toBeUndefined()
     expect(schema.parse(['a', 'b'])).toEqual(['a', 'b'])
 
+    expect(array(string()).nonempty().parse([])).toBeUndefined()
+    expect(array(string()).nonempty().parse(['a'])).toEqual(['a'])
     expect(array(string()).max(1).parse(['a', 'b'])).toBeUndefined()
     expect(array(string()).length(2).parse(['a', 'b'])).toEqual(['a', 'b'])
     expect(array(string()).length(2).parse(['a'])).toBeUndefined()

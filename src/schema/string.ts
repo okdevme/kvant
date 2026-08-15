@@ -9,6 +9,7 @@ interface KvantStringGenerics {
   readonly max: <S extends KvantStringGenericSchema>(this: S, maxLength: number) => S
   readonly min: <S extends KvantStringGenericSchema>(this: S, minLength: number) => S
   readonly length: <S extends KvantStringGenericSchema>(this: S, length: number) => S
+  readonly nonempty: <S extends KvantStringGenericSchema>(this: S) => S
   readonly regex: <S extends KvantStringGenericSchema>(this: S, regex: RegExp) => S
   readonly startsWith: <S extends KvantStringGenericSchema>(this: S, value: string) => S
   readonly endsWith: <S extends KvantStringGenericSchema>(this: S, value: string) => S
@@ -34,6 +35,9 @@ const stringGenerics = {
   },
   length(this: KvantStringGenericSchema, length) {
     return refine(this, v => v.length === length)
+  },
+  nonempty(this: KvantStringGenericSchema) {
+    return refine(this, v => v.length > 0)
   },
   regex(this: KvantStringGenericSchema, regex) {
     return refine(this, v => regex.test(v))
