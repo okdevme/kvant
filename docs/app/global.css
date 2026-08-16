@@ -11,30 +11,21 @@ html > body[data-scroll-locked] {
   --removed-body-scroll-bar-size: 0px !important;
 }
 
-/* Framework accent colors (official brand colors) */
-:root[data-framework='next'] {
-  --accent: #000000;
-}
-.dark:root[data-framework='next'],
-.dark :root[data-framework='next'] {
-  --accent: #ffffff;
-}
-:root[data-framework='react'] {
-  --accent: #61dafb;
-}
-:root[data-framework='react-router'] {
-  --accent: #f44250;
-}
-:root[data-framework='nuxt'] {
-  --accent: #00dc82;
-}
-:root[data-framework='vue'] {
-  --accent: #42b883;
-}
-:root[data-framework='vue-router'] {
-  --accent: #4fc08d;
+body {
+  --color-fd-primary: #dce0df;
 }
 
-:root[data-framework] {
-  --color-fd-primary: var(--accent);
+/* Framework accent colors (official brand colors) */
+/* body.react {
+  --color-fd-primary: #61dafb;
 }
+body.react-router {
+  --color-fd-primary: #f44250;
+}
+body.vue,
+body.vue-router {
+  --color-fd-primary: #42b883;
+}
+body.nuxt {
+  --color-fd-primary: #00dc82;
+} */
