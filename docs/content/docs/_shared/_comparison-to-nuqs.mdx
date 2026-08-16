@@ -117,14 +117,14 @@ const page = useRouteQuery('page', kv.index().default(0))
 nuqs syncs state with URL search params. kvant treats search params as one
 of many key-value interfaces, all sharing one API:
 
-| Interface        | nuqs | kvant                                       |
+|                  | nuqs | kvant                                       |
 | ---------------- | ---- | ------------------------------------------- |
-| Search Params    | ✅    | ✅ `useSearchParams`                          |
-| Router Query     | —    | ✅ `useRouteQuery` / `useRouterQuery`         |
+| Search Params    | ✅ `useQueryState`    | ✅ `useSearchParams` / `useRouteQuery` (Vue Router, Nuxt)    |
 | Route Params     | —    | ✅ `useRouteParams` (Vue Router, Nuxt)        |
-| Cookies          | —    | ✅ `useCookies` (SSR-friendly)                |
-| Local Storage   | —    | ✅ `useLocalStorage` (cross-tab sync)         |
+| Router Query     | —    | ✅ `useRouterQuery` (Next.js pages router)          |
+| Local Storage   | —    | ✅ `useLocalStorage`         |
 | Session Storage | —    | ✅ `useSessionStorage`                        |
+| Cookies          | —    | ✅ `useCookies`                |
 | Custom Adapters | Limited to search params, undocumented    | ✅ [Supported & documented](./custom-adapters) |
 
 Same mental model everywhere:

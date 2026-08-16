@@ -1,48 +1,6 @@
 ---
 title: Advanced Usage
-description: useKvantState and defineKvantState
+description: Building your own bindings with useKvantState and defineKvantState.
 ---
 
 <include>../_shared/_advanced-usage.mdx</include>
-
-## Examples
-
-`useKvantState` with the internal Nuxt route query adapter:
-
-```vue
-<script setup lang="ts">
-import { useKvantState } from 'kvant/vue'
-import { useRouteQueryKvantAdapter } from 'kvant/nuxt'
-import * as kv from 'kvant/schema'
-
-const page = useKvantState(
-  useRouteQueryKvantAdapter,
-  'page',
-  kv.number().default(1),
-)
-</script>
-```
-
-`defineKvantState` to create a pre-configured composable for your app:
-
-```ts title="app/state.ts"
-import { defineKvantState } from 'kvant/vue'
-import { useRouteQueryKvantAdapter } from 'kvant/nuxt'
-
-export const {
-  useState: useAppRouteQuery,
-  provideOptions: provideAppRouteQueryOptions,
-} = defineKvantState(useRouteQueryKvantAdapter, {
-  history: 'push',
-})
-```
-
-```vue
-<script setup lang="ts">
-import * as kv from 'kvant/schema'
-import { useAppRouteQuery } from './state'
-
-// history: 'push' is applied automatically
-const page = useAppRouteQuery('page', kv.number().default(1))
-</script>
-```

@@ -25,38 +25,77 @@ The framework-idiomatic bindings (`useSearchParams`, `useCookies`, etc.) are
 pre-bound versions of the generic `useKvantState`, which takes an adapter
 explicitly:
 
+<Switch>
+  <Case react>
 ```tsx
 import { useKvantState } from 'kvant/react'
-import { useSearchParamsKvantAdapter, parseSearch, stringifySearch } from 'kvant'
+import { useCookiesKvantAdapter } from 'kvant'
 import * as kv from 'kvant/schema'
 
 const [page, setPage] = useKvantState(
-  (keys, options) => useSearchParamsKvantAdapter(keys, {
-    parseSearch,
-    stringifySearch,
-    ...options,
-  }),
-  'page',
-  kv.number().default(1),
+  useCookiesKvantAdapter,
+  'consent',
+  kv.stringbool().default(false),
+  { maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' },
 )
 ```
+  </Case>
+  <Case vue>
+```tsx
+import { useKvantState } from 'kvant/vue'
+import { useCookiesKvantAdapter } from 'kvant'
+import * as kv from 'kvant/schema'
+
+const page = useKvantState(
+  useCookiesKvantAdapter,
+  'consent',
+  kv.stringbool().default(false),
+  { maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' },
+)
+```
+  </Case>
+</Switch>
 
 Signatures:
 
+<Switch>
+  <Case react>
 ```ts
 // Single key
-const [state, setState] = useKvantState(adapter, key, schema?, options?)
+const [state, setState] = useKvantState(adapter, key, schema, options)
 
 // Key map — bind several keys in one call
-const [state, setState] = useKvantState(adapter, keyMap, options?)
+const [state, setState] = useKvantState(adapter, keyMap, options)
 ```
+  </Case>
+  <Case vue>
+```ts
+// Single key
+const state = useKvantState(adapter, key, schema, options)
+
+// Key map — bind several keys in one call
+const state = useKvantState(adapter, keyMap, options)
+```
+  </Case>
+</Switch>
 
 ## `defineKvantState`
 
+<Switch>
+  <Case react>
 While `useKvantState` passes the adapter at every call site, `defineKvantState`
 pre-binds an adapter once and returns a ready-to-use hook plus an
 [options provider](./quick-start#global-default-options):
+  </Case>
+  <Case vue>
+While `useKvantState` passes the adapter at every call site, `defineKvantState`
+pre-binds an adapter once and returns a ready-to-use composable plus an
+[provide function](./quick-start#global-default-options):
+  </Case>
+</Switch>
 
+<Switch>
+  <Case react>
 ```tsx
 import { defineKvantState } from 'kvant/react'
 import { useCookiesKvantAdapter } from 'kvant'
@@ -66,10 +105,33 @@ export const {
   OptionsProvider: CookiesOptionsProvider,
 } = defineKvantState(useCookiesKvantAdapter)
 ```
+  </Case>
+  <Case vue>
+```tsx
+import { defineKvantState } from 'kvant/vue'
+import { useCookiesKvantAdapter } from 'kvant'
 
+export const {
+  useState: useCookies,
+  provideOptions: provideCookiesOptions,
+} = defineKvantState(useCookiesKvantAdapter)
+```
+  </Case>
+</Switch>
+
+<Switch>
+  <Case react>
 As an alternative to [options providers](./quick-start#global-default-options),
 you can also specify default adapter options for the entire binding:
+  </Case>
+  <Case vue>
+As an alternative to [provide functions](./quick-start#global-default-options),
+you can also specify default adapter options for the entire binding:
+  </Case>
+</Switch>
 
+<Switch>
+  <Case react>
 ```tsx
 import { defineKvantState } from 'kvant/react'
 import { useCookiesKvantAdapter } from 'kvant'
@@ -82,6 +144,30 @@ export const {
   sameSite: 'lax'
 })
 ```
+  </Case>
+  <Case vue>
+```tsx
+import { defineKvantState } from 'kvant/vue'
+import { useCookiesKvantAdapter } from 'kvant'
 
+export const {
+  useState: useCookies,
+  provideOptions: provideCookiesOptions,
+} = defineKvantState(useCookiesKvantAdapter, {
+  maxAge: 60 * 60 * 24 * 365,
+  sameSite: 'lax'
+})
+```
+  </Case>
+</Switch>
+
+<Switch>
+  <Case react>
 This is exactly how the pre-bound hooks are built internally — and the recommended way to pre-configure
 an adapter for your whole app.
+  </Case>
+  <Case vue>
+This is exactly how the pre-bound composables are built internally — and the recommended way to pre-configure
+an adapter for your whole app.
+  </Case>
+</Switch>
