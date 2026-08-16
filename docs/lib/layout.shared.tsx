@@ -1,5 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
-import { appName, gitConfig } from './shared'
+import { KvantLogo } from '@/components/branding'
+import { gitConfig } from './shared'
 
 export type FrameworkFamily = 'react' | 'vue'
 export type FrameworkId = 'react' | 'next' | 'next-pages' | 'react-router' | 'vue' | 'vue-router' | 'nuxt'
@@ -59,7 +60,7 @@ export const frameworks: Framework[] = [
 export function baseOptions(): BaseLayoutProps {
   return {
     nav: {
-      title: appName,
+      title: <KvantLogo className="h-8" />,
     },
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   }
