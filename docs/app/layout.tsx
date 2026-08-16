@@ -1,6 +1,5 @@
-import { RootProvider } from 'fumadocs-ui/provider/next'
 import { Inter } from 'next/font/google'
-import { Body } from './layout.client'
+import { Body, Provider } from './layout.client'
 import './global.css'
 
 const inter = Inter({
@@ -11,7 +10,7 @@ export default function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <Body>
-        <RootProvider>{children}</RootProvider>
+        <Provider>{children}</Provider>
       </Body>
     </html>
   )

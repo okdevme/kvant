@@ -1,7 +1,8 @@
 import type { LayoutTab } from 'fumadocs-ui/layouts/shared'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import { FrameworkIcon } from '@/components/framework-icon'
-import { baseOptions, frameworks } from '@/lib/layout.shared'
+import { frameworks } from '@/lib/frameworks'
+import { baseOptions } from '@/lib/layout.shared'
 import { source } from '@/lib/source'
 
 const tabs: LayoutTab[] = frameworks.map(framework => ({

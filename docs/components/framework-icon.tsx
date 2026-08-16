@@ -1,4 +1,4 @@
-import type { FrameworkId } from '@/lib/layout.shared'
+import type { FrameworkId } from '@/lib/frameworks'
 
 export function ReactIcon(props: React.SVGProps<SVGSVGElement>) {
   return (

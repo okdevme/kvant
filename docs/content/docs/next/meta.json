@@ -1,5 +1,5 @@
 {
-  "title": "Next.js",
+  "title": "Next.js (app router)",
   "root": true,
   "pages": [
     "---Getting Started---",

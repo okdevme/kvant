@@ -1,8 +1,8 @@
 import type { LoaderConfig, LoaderOutput, Page } from 'fumadocs-core/source'
 import type { ReactNode } from 'react'
-import type { FrameworkId } from '@/lib/layout.shared'
+import type { FrameworkId } from '@/lib/frameworks'
 import { Children, isValidElement } from 'react'
-import { frameworks } from '@/lib/layout.shared'
+import { frameworks } from '@/lib/frameworks'
 
 export type CaseProps = {
   [key in FrameworkId]?: boolean
