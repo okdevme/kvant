@@ -11,12 +11,15 @@
   },
   "dependencies": {
     "kvant": "workspace:*",
-    "vue": "catalog:"
+    "qs": "catalog:",
+    "vue": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@kvant/e2e-shared": "workspace:*",
     "@playwright/test": "catalog:",
     "@types/node": "catalog:",
+    "@types/qs": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:"

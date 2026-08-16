@@ -60,6 +60,9 @@ catalogs:
     '@types/node':
       specifier: ^26.1.2
       version: 26.2.0
+    '@types/qs':
+      specifier: ^6.15.0
+      version: 6.15.1
     '@types/react':
       specifier: ^19.2.18
       version: 19.2.18
@@ -126,6 +129,9 @@ catalogs:
     publint:
       specifier: ^0.3.23
       version: 0.3.23
+    qs:
+      specifier: ^6.15.0
+      version: 6.15.3
     react:
       specifier: ^19.2.8
       version: 19.2.8
@@ -179,6 +185,9 @@ importers:
       '@antfu/eslint-config':
         specifier: 'catalog:'
         version: 9.3.0(@eslint-react/eslint-plugin@5.18.0(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(@next/eslint-plugin-next@16.2.10)(@typescript-eslint/typescript-estree@8.66.0(supports-color@10.2.2)(typescript@6.0.3))(@typescript-eslint/utils@8.66.0(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(@vue/compiler-sfc@3.5.41)(eslint-plugin-react-refresh@0.5.3(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2)))(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3)(vitest@4.1.10(@types/node@26.1.2)(happy-dom@20.11.2)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.49.2)(yaml@2.9.0)))
+      '@standard-schema/spec':
+        specifier: 'catalog:'
+        version: 1.1.0
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -188,9 +197,15 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.1.2
+      '@types/qs':
+        specifier: 'catalog:'
+        version: 6.15.1
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.18
+      arktype:
+        specifier: 'catalog:'
+        version: 2.2.3
       eslint:
         specifier: 'catalog:'
         version: 10.8.0(jiti@2.7.0)(supports-color@10.2.2)
@@ -212,6 +227,9 @@ importers:
       publint:
         specifier: 'catalog:'
         version: 0.3.23
+      qs:
+        specifier: 'catalog:'
+        version: 6.15.3
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -233,6 +251,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
+      valibot:
+        specifier: 'catalog:'
+        version: 1.4.2(typescript@6.0.3)
       vitest:
         specifier: 'catalog:'
         version: 4.1.10(@types/node@26.1.2)(happy-dom@20.11.2)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.49.2)(yaml@2.9.0))
@@ -242,6 +263,9 @@ importers:
       vue-router:
         specifier: 'catalog:'
         version: 5.2.0(@vue/compiler-sfc@3.5.41)(esbuild@0.28.1)(rolldown@1.2.3)(rollup@4.62.4)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.49.2)(yaml@2.9.0))(vue@3.5.41(typescript@6.0.3))
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
 
   docs:
     dependencies:
@@ -377,12 +401,18 @@ importers:
       kvant:
         specifier: workspace:*
         version: link:../..
+      qs:
+        specifier: 'catalog:'
+        version: 6.15.3
       react:
         specifier: 'catalog:'
         version: 19.2.8
       react-dom:
         specifier: 'catalog:'
         version: 19.2.8(react@19.2.8)
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
     devDependencies:
       '@kvant/e2e-shared':
         specifier: workspace:*
@@ -393,6 +423,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.2.0
+      '@types/qs':
+        specifier: 'catalog:'
+        version: 6.15.1
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.18
@@ -475,9 +508,15 @@ importers:
       kvant:
         specifier: workspace:*
         version: link:../..
+      qs:
+        specifier: 'catalog:'
+        version: 6.15.3
       vue:
         specifier: 'catalog:'
         version: 3.5.41(typescript@6.0.3)
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
     devDependencies:
       '@kvant/e2e-shared':
         specifier: workspace:*
@@ -488,6 +527,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.2.0
+      '@types/qs':
+        specifier: 'catalog:'
+        version: 6.15.1
       '@vitejs/plugin-vue':
         specifier: 'catalog:'
         version: 6.0.8(vite@8.1.5(@types/node@26.2.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.49.2)(yaml@2.9.0))(vue@3.5.41(typescript@6.0.3))

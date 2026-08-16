@@ -28,6 +28,15 @@ test.describe('next app router / search params', () => {
     await expect(page.locator('#count')).toHaveText('42')
     await expect(page).toHaveURL(/[?&]count=42/)
   })
+
+  test('replace history mode by default', async ({ page }) => {
+    await navigateTo(page, '/')
+    await navigateTo(page, '/search-params')
+    await page.locator('#set-pass').click()
+    await expect(page).toHaveURL(/[?&]test=pass/)
+    await page.goBack()
+    await expect(page).not.toHaveURL(/test=/)
+  })
 })
 
 test.describe('next app router / search params push', () => {

@@ -37,6 +37,7 @@ catalog:
   '@testing-library/vue': ^8.1.0
   '@types/mdx': ^2.0.14
   '@types/node': ^26.1.2
+  '@types/qs': ^6.15.0
   '@types/react': ^19.2.18
   '@types/react-dom': ^19
   '@vitejs/plugin-react': ^6.0.1
@@ -62,6 +63,7 @@ catalog:
   nuxt: ^4.5.2
   postcss: ^8.5.25
   publint: ^0.3.23
+  qs: ^6.15.0
   react: ^19.2.8
   react-dom: ^19.2.8
   react-router: ^8.3.0

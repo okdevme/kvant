@@ -11,13 +11,16 @@
   },
   "dependencies": {
     "kvant": "workspace:*",
+    "qs": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@kvant/e2e-shared": "workspace:*",
     "@playwright/test": "catalog:",
     "@types/node": "catalog:",
+    "@types/qs": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",

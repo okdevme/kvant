@@ -69,10 +69,13 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
+    "@standard-schema/spec": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/vue": "catalog:",
     "@types/node": "catalog:",
+    "@types/qs": "catalog:",
     "@types/react": "catalog:",
+    "arktype": "catalog:",
     "eslint": "catalog:",
     "happy-dom": "catalog:",
     "jiti": "catalog:",
@@ -80,6 +83,7 @@
     "next": "catalog:",
     "nuxt": "catalog:",
     "publint": "catalog:",
+    "qs": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router": "catalog:",
@@ -87,9 +91,11 @@
     "tsdown": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
+    "valibot": "catalog:",
     "vitest": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "zod": "catalog:"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && pnpm build && npx lint-staged"

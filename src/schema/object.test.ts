@@ -101,4 +101,11 @@ describe('object', () => {
   it('exposes the schema type tag', () => {
     expect(object({}).type).toBe('object')
   })
+
+  it('survives null-prototype raw input', () => {
+    const schema = object({ q: string() })
+    const raw = Object.create(null)
+    raw.q = 'hello'
+    expect(schema.parse(raw)).toEqual({ q: 'hello' })
+  })
 })

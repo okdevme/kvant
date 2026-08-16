@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './app.vue'
 import ConditionalRenderingPage from './pages/conditionalRendering.vue'
+import CookiesPage from './pages/cookies.vue'
 import FormPage from './pages/form.vue'
 import HashPreservationPage from './pages/hashPreservation.vue'
 import HomePage from './pages/home.vue'
@@ -33,6 +34,7 @@ const router = createRouter({
     { path: '/multi-hook-sync', component: MultiHookSyncPage },
     { path: '/key-isolation', component: KeyIsolationPage },
     { path: '/routing', component: RoutingPage },
+    { path: '/cookies', component: CookiesPage },
   ],
 })
 

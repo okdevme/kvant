@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import ConditionalRenderingPage from './pages/conditionalRendering.vue'
 import CookieAttributesPage from './pages/cookieAttributes.vue'
 import CookiesPage from './pages/cookies.vue'
+import CustomSerializerPage from './pages/customSerializer.vue'
 import FormPage from './pages/form.vue'
 import HashPreservationPage from './pages/hashPreservation.vue'
 import HomePage from './pages/home.vue'
@@ -19,6 +20,7 @@ import ScrollPage from './pages/scroll.vue'
 import SearchParamsPage from './pages/searchParams.vue'
 import SessionStoragePage from './pages/sessionStorage.vue'
 import SpecialCharsPage from './pages/specialChars.vue'
+import ZodSchemaPage from './pages/zodSchema.vue'
 import { navigate, usePath } from './router'
 
 const path = usePath()
@@ -43,6 +45,8 @@ const routes: Record<string, any> = {
   '/options-provider': OptionsProviderPage,
   '/multi-interface': MultiInterfacePage,
   '/cookie-attributes': CookieAttributesPage,
+  '/zod-schema': ZodSchemaPage,
+  '/custom-serializer': CustomSerializerPage,
 }
 
 const current = computed(() => routes[path.value] ?? HomePage)

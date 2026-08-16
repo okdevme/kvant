@@ -5,6 +5,7 @@ import { useCookies } from 'kvant/vue'
 const value = useCookies('test', string())
 const expiring = useCookies('expiring', string(), { maxAge: 3600 })
 const scoped = useCookies('scoped', string(), { path: '/cookie-attributes' })
+const samesite = useCookies('samesite', string(), { sameSite: 'strict' })
 </script>
 
 <template>
@@ -17,7 +18,11 @@ const scoped = useCookies('scoped', string(), { path: '/cookie-attributes' })
   <button id="set-scoped" @click="scoped = 'scoped-value'">
     Set scoped
   </button>
+  <button id="set-samesite" @click="samesite = 'strict-value'">
+    Set samesite
+  </button>
   <pre id="state">{{ value ?? '' }}</pre>
   <pre id="expiring">{{ expiring ?? '' }}</pre>
   <pre id="scoped">{{ scoped ?? '' }}</pre>
+  <pre id="samesite">{{ samesite ?? '' }}</pre>
 </template>

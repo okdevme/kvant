@@ -267,7 +267,8 @@ export function testMultiInterface(bench: string, path: string) {
 /**
  * Shared specs for cookie attributes.
  * Page contract: #set-expiring writes 'expiring' cookie with maxAge,
- * #set-scoped writes a cookie scoped to `path`, #state/#expiring/#scoped display.
+ * #set-scoped writes a cookie scoped to `path`, #set-samesite writes a
+ * SameSite=strict cookie, #state/#expiring/#scoped/#samesite display.
  */
 export function testCookieAttributes(bench: string, path: string) {
   test.describe(`${bench} / cookie attributes`, () => {
@@ -285,6 +286,16 @@ export function testCookieAttributes(bench: string, path: string) {
       expect(cookie).toBeDefined()
       // expires roughly maxAge (3600s) in the future
       expect(cookie!.expires).toBeGreaterThan(Date.now() / 1000 + 3000)
+    })
+
+    test('sameSite attribute is written to the cookie', async ({ page }) => {
+      await navigateTo(page, path)
+      await page.locator('#set-samesite').click()
+      await expect(page.locator('#samesite')).toHaveText('strict-value')
+
+      const cookies = await page.context().cookies()
+      const cookie = cookies.find(c => c.name === 'samesite')
+      expect(cookie?.sameSite).toBe('Strict')
     })
 
     test('path-scoped cookie is sent on its path only', async ({ page }) => {
@@ -456,6 +467,91 @@ export function testRouting(bench: string, path: string, destPath: string) {
       await page.goForward()
       await expectUrl(page, isDest)
       await expect(page.locator('#state')).toHaveText('routed')
+    })
+  })
+}
+
+/**
+ * Shared specs for zod schema integration (docs: /docs/schema/zod).
+ * Page contract: key 'test' bound via a zod schema with `.catch(fallback)`.
+ * #state shows the typed value, #set-valid writes a valid value,
+ * #set-invalid writes an out-of-domain value (e.g. below min),
+ * #clear removes the key.
+ */
+export function testZodSchema(bench: string, path: string) {
+  test.describe(`${bench} / zod schema`, () => {
+    test('reads a valid value from the URL', async ({ page }) => {
+      await navigateTo(page, path, '?test=5')
+      await expect(page.locator('#state')).toHaveText('5')
+    })
+
+    test('invalid URL value falls back via .catch()', async ({ page }) => {
+      await navigateTo(page, path, '?test=abc')
+      await expect(page.locator('#state')).toHaveText('1')
+    })
+
+    test('out-of-domain URL value falls back via .catch()', async ({ page }) => {
+      await navigateTo(page, path, '?test=0')
+      await expect(page.locator('#state')).toHaveText('1')
+    })
+
+    test('missing key falls back via .catch()', async ({ page }) => {
+      await navigateTo(page, path)
+      await expect(page.locator('#state')).toHaveText('1')
+    })
+
+    test('writing a valid value updates the URL and survives reload', async ({ page }) => {
+      await navigateTo(page, path)
+      await page.locator('#set-valid').click()
+      await expect(page.locator('#state')).toHaveText('42')
+      await expectUrl(page, /[?&]test=42/)
+      await page.reload()
+      await page.waitForLoadState('networkidle')
+      await expect(page.locator('#state')).toHaveText('42')
+    })
+  })
+}
+
+/**
+ * Shared specs for a custom qs-based search serializer
+ * (docs: custom search serializer snippet).
+ * Page contract: key 'filters' bound via kv.object({ tags: string[].default([]),
+ * range: tuple([number, number]).optional() }); #state shows JSON of the value,
+ * #set-filters writes { tags: ['a','b'], range: [1,9] }, #clear removes the key.
+ */
+export function testCustomSerializer(bench: string, path: string) {
+  test.describe(`${bench} / custom search serializer (qs)`, () => {
+    test('reads nested values from a qs-style URL', async ({ page }) => {
+      await navigateTo(
+        page,
+        `${path}?filters[tags][0]=a&filters[tags][1]=b&filters[range][0]=1&filters[range][1]=9`,
+      )
+      await expect(page.locator('#state'))
+        .toHaveText('{"tags":["a","b"],"range":[1,9]}')
+    })
+
+    test('writes nested values in qs format', async ({ page }) => {
+      await navigateTo(page, path)
+      await page.locator('#set-filters').click()
+      await expect(page.locator('#state'))
+        .toHaveText('{"tags":["a","b"],"range":[1,9]}')
+      await expectUrl(page, /filters\[tags\]\[0\]=a/)
+      await expectUrl(page, /filters\[range\]\[1\]=9/)
+    })
+
+    test('applies defaults when the key is absent', async ({ page }) => {
+      await navigateTo(page, path)
+      await expect(page.locator('#state')).toHaveText('{"tags":[]}')
+    })
+
+    test('nested state survives reload', async ({ page }) => {
+      await navigateTo(page, path)
+      await page.locator('#set-filters').click()
+      await expectUrl(page, /filters\[tags\]\[0\]=a/)
+      await page.reload()
+      await page.waitForLoadState('networkidle')
+      await expect(page.locator('#state'))
+        .toHaveText('{"tags":["a","b"],"range":[1,9]}')
     })
   })
 }

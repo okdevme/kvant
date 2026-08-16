@@ -5,6 +5,7 @@ export function CookieAttributesPage() {
   const [value, setValue] = useCookies('test', string())
   const [expiring, setExpiring] = useCookies('expiring', string(), { maxAge: 3600 })
   const [scoped, setScoped] = useCookies('scoped', string(), { path: '/cookie-attributes' })
+  const [samesite, setSamesite] = useCookies('samesite', string(), { sameSite: 'strict' })
 
   return (
     <>
@@ -17,9 +18,13 @@ export function CookieAttributesPage() {
       <button id="set-scoped" onClick={() => setScoped('scoped-value')}>
         Set scoped
       </button>
+      <button id="set-samesite" onClick={() => setSamesite('strict-value')}>
+        Set samesite
+      </button>
       <pre id="state">{value ?? ''}</pre>
       <pre id="expiring">{expiring ?? ''}</pre>
       <pre id="scoped">{scoped ?? ''}</pre>
+      <pre id="samesite">{samesite ?? ''}</pre>
     </>
   )
 }

@@ -1,6 +1,7 @@
 import { ConditionalRenderingPage } from './pages/conditionalRendering'
 import { CookieAttributesPage } from './pages/cookieAttributes'
 import { CookiesPage } from './pages/cookies'
+import { CustomSerializerPage } from './pages/customSerializer'
 import { FormPage } from './pages/form'
 import { HashPreservationPage } from './pages/hashPreservation'
 import { HomePage } from './pages/home'
@@ -17,6 +18,7 @@ import { SearchParamsPage } from './pages/searchParams'
 import { SearchParamsPushPage } from './pages/searchParamsPush'
 import { SessionStoragePage } from './pages/sessionStorage'
 import { SpecialCharsPage } from './pages/specialChars'
+import { ZodSchemaPage } from './pages/zodSchema'
 import { Link, Route, Switch } from './router'
 
 export function App() {
@@ -57,6 +59,8 @@ export function App() {
         <Route path="/options-provider" component={OptionsProviderPage} />
         <Route path="/multi-interface" component={MultiInterfacePage} />
         <Route path="/cookie-attributes" component={CookieAttributesPage} />
+        <Route path="/zod-schema" component={ZodSchemaPage} />
+        <Route path="/custom-serializer" component={CustomSerializerPage} />
         <Route path="/" component={HomePage} />
       </Switch>
     </>
