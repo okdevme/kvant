@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata = {
+  title: {
+    absolute: 'kvant | Universal, type-safe state manager for key-value interfaces',
+  },
+} satisfies Metadata
 
 export default function HomePage() {
   return (

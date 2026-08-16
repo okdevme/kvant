@@ -11,6 +11,7 @@ import { createRelativeLink } from 'fumadocs-ui/mdx'
 import { notFound } from 'next/navigation'
 import { getMDXComponents } from '@/components/mdx'
 import { createBoundSwitch } from '@/components/switch'
+import { getFramework } from '@/lib/frameworks'
 import { gitConfig } from '@/lib/shared'
 import { getPageImageUrl, getPageMarkdownUrl, source } from '@/lib/source'
 
@@ -57,8 +58,10 @@ export async function generateMetadata(props: PageProps<'/docs/[[...slug]]'>): P
   if (!page)
     notFound()
 
+  const framework = getFramework(page.slugs[0])
+
   return {
-    title: page.data.title,
+    title: page.data.title + (framework ? ` on ${framework.title}` : ''),
     description: page.data.description,
     openGraph: {
       images: getPageImageUrl(page).url,

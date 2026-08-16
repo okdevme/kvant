@@ -46,3 +46,7 @@ export const frameworks: Framework[] = [
 ]
 
 export const defaultFramework = frameworks.find(f => f.id === 'next')!
+
+export function getFramework(id: string | undefined): Framework | undefined {
+  return frameworks.find(f => f.id === id)
+}
