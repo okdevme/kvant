@@ -27,7 +27,7 @@ export const frameworks: Framework[] = [
   {
     id: 'next',
     family: 'react',
-    title: 'Next.js',
+    title: 'Next.js (app router)',
     url: '/docs/next',
     icon: 'nextdotjs',
     color: '#000000',
