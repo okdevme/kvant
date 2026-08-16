@@ -14,26 +14,36 @@ interface KvantSchema<Output, Input = Output, RawInput = unknown> {
 
 ## Rolling your own
 
-Build a schema from two functions with `kv.custom()` — the result gets the
-full chainable API (`.default()`, `.pipe()`, `.refine()`, …):
+The simplest schema is a plain object:
+
+```ts
+import type { KvantSchema } from 'kvant'
+
+const commaListSchema: KvantSchema<string[] | undefined, string | undefined> = {
+  parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
+  encode: value => value?.length ? value.join(',') : undefined,
+}
+
+commaListSchema.parse('a,b,c') // ['a', 'b', 'c']
+commaListSchema.encode(['a', 'b']) // 'a,b'
+commaListSchema.encode([]) // undefined (removes the key)
+
+useLocalStorage('tags', commaListSchema)
+```
+
+You can also use `kv.custom()` from `kvant/schema`, which gives you the same
+result with full type inference and access to the chainable combinators
+(`.default()`, `.pipe()`, `.refine()`, ...):
 
 ```ts
 import * as kv from 'kvant/schema'
 
-const parseHexColor = (value: string | undefined): string | undefined => {
-  const match = /^#?([0-9a-f]{6})$/i.exec(value ?? '')
-  return match ? `#${match[1]!.toLowerCase()}` : undefined
-}
-
-const hexColor = kv.custom<string | undefined, string | undefined>({
-  parse: (value) => typeof value === 'string'
-    ? parseHexColor(value)
-    : undefined,
-  encode: parseHexColor,
+const commaListSchema = kv.custom<string[] | undefined, string | undefined>({
+  parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
+  encode: value => value?.length ? value.join(',') : undefined,
 })
 
-// URL: ?color=ff8800 → state: '#ff8800'
-useLocalStorage('color', hexColor.default('#000000'))
+useLocalStorage('tags', commaListSchema.default([]))
 ```
 
 Contract, in short:
@@ -42,9 +52,6 @@ Contract, in short:
 are user-editable, and throwing turns a bad value into a broken page.
 2. **Lossless** — `encode(parse(v))` preserves valid values.
 3. **Pure** — no side effects; same input, same output.
-
-You can also skip `kv.custom()` entirely and pass a plain
-`{ parse, encode }` object — you just lose the fluent helpers.
 
 ## Adapting other schema libraries
 
