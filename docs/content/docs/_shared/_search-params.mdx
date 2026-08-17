@@ -33,22 +33,19 @@ sharing, or bookmarking the link restores the exact state.
 `useSearchParams` binds state to URL search params via the History API — no
 router required. The URL is the single source of truth: refreshing, sharing,
 or bookmarking the link restores the exact state, and updates preserve the
-URL hash and any params managed by other code. The composable returns a
-writable `Ref`.
+URL hash and any params managed by other code.
   </Case>
   <Case vue-router>
 `useRouteQuery` binds state to the router's query parameters, using Vue
 Router for navigation — so writes integrate with router guards, scroll
 behavior, and history. The URL is the single source of truth: refreshing,
-sharing, or bookmarking the link restores the exact state. The composable
-returns a writable `Ref`.
+sharing, or bookmarking the link restores the exact state.
   </Case>
   <Case nuxt>
 `useRouteQuery` binds state to the router's query parameters, using the
 Nuxt router for navigation — so writes integrate with middleware, scroll
 behavior, and history. The URL is the single source of truth: refreshing,
-sharing, or bookmarking the link restores the exact state. The composable
-returns a writable `Ref`.
+sharing, or bookmarking the link restores the exact state.
   </Case>
 </Switch>
 
