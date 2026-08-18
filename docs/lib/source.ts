@@ -15,6 +15,8 @@ const docs = defineDocs({
       framework: z.enum(
         frameworks.map(f => f.id) as [FrameworkId, ...FrameworkId[]],
       ),
+      // Comma-separated list of slugs for matching same pages with different slugs across frameworks
+      alt: z.string().optional(),
     }),
     // Underscore-prefixed files are partials for the MDX `include` feature
     files: ['**/*.mdx', '!**/_*.mdx'],
