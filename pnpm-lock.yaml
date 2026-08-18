@@ -54,6 +54,9 @@ catalogs:
     '@testing-library/vue':
       specifier: ^8.1.0
       version: 8.1.0
+    '@types/mdast':
+      specifier: ^4.0.4
+      version: 4.0.4
     '@types/mdx':
       specifier: ^2.0.14
       version: 2.0.14
@@ -117,6 +120,9 @@ catalogs:
     lucide-react:
       specifier: ^1.28.0
       version: 1.31.0
+    mdast-util-mdx-jsx:
+      specifier: ^3.2.0
+      version: 3.2.0
     next:
       specifier: ~16.2.0
       version: 16.2.12
@@ -156,9 +162,18 @@ catalogs:
     typescript:
       specifier: ^6.0.3
       version: 6.0.3
+    unified:
+      specifier: ^11.0.5
+      version: 11.0.5
+    unist-util-visit:
+      specifier: ^5.1.0
+      version: 5.1.0
     valibot:
       specifier: ^1.4.2
       version: 1.4.2
+    vfile:
+      specifier: ^6.0.3
+      version: 6.0.3
     vite:
       specifier: ^8.0.3
       version: 8.1.5
@@ -302,6 +317,9 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.2.8(react@19.2.8)
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
     devDependencies:
       '@iconify-json/simple-icons':
         specifier: 'catalog:'
@@ -309,6 +327,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.3.3
+      '@types/mdast':
+        specifier: 'catalog:'
+        version: 4.0.4
       '@types/mdx':
         specifier: 'catalog:'
         version: 2.0.14
@@ -324,6 +345,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 10.8.0(jiti@2.7.0)(supports-color@10.2.2)
+      mdast-util-mdx-jsx:
+        specifier: 'catalog:'
+        version: 3.2.0(supports-color@10.2.2)
       postcss:
         specifier: 'catalog:'
         version: 8.5.25
@@ -331,6 +355,15 @@ importers:
         specifier: 'catalog:'
         version: 4.3.3
       typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      unified:
+        specifier: 'catalog:'
+        version: 11.0.5
+      unist-util-visit:
+        specifier: 'catalog:'
+        version: 5.1.0
+      vfile:
         specifier: 'catalog:'
         version: 6.0.3
 

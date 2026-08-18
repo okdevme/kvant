@@ -95,29 +95,25 @@ export default function DefaultSearchDialog({ open, onOpenChange, ...props }: Sh
               <ChevronDown className="size-3.5 text-fd-muted-foreground" />
             </PopoverTrigger>
             <PopoverContent className="flex flex-col p-1 gap-1" align="start">
-              {items.map((item, i) => {
-                const isSelected = item.value === tag
-
-                return (
-                  <button
-                    key={i}
-                    onClick={() => {
-                      setTag(item.value)
-                      setSelectOpen(false)
-                    }}
-                    className={cn(
-                      'rounded-lg text-start px-2 py-1.5 flex gap-2 items-center',
-                      isSelected
-                        ? 'text-fd-primary bg-fd-primary/10'
-                        : 'hover:text-fd-accent-foreground hover:bg-fd-accent',
-                    )}
-                  >
-                    {item.framework && <FrameworkIcon id={item.framework.id} className="size-5" />}
-                    <p className="font-medium">{item.name}</p>
-                    {/* <p className="text-xs opacity-70">{item.description}</p> */}
-                  </button>
-                )
-              })}
+              {items.map(item => (
+                <button
+                  key={item.value}
+                  onClick={() => {
+                    setTag(item.value)
+                    setSelectOpen(false)
+                  }}
+                  className={cn(
+                    'rounded-lg text-start px-2 py-1.5 flex gap-2 items-center',
+                    item.value === tag
+                      ? 'text-fd-primary bg-fd-primary/10'
+                      : 'hover:text-fd-accent-foreground hover:bg-fd-accent',
+                  )}
+                >
+                  {item.framework && <FrameworkIcon id={item.framework.id} className="size-5" />}
+                  <p className="font-medium">{item.name}</p>
+                  {/* <p className="text-xs opacity-70">{item.description}</p> */}
+                </button>
+              ))}
             </PopoverContent>
           </Popover>
         </SearchDialogFooter>

@@ -21,18 +21,24 @@
     "lucide-react": "catalog:",
     "next": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@iconify-json/simple-icons": "catalog:",
     "@tailwindcss/postcss": "catalog:",
+    "@types/mdast": "catalog:",
     "@types/mdx": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "eslint": "catalog:",
+    "mdast-util-mdx-jsx": "catalog:",
     "postcss": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "unified": "catalog:",
+    "unist-util-visit": "catalog:",
+    "vfile": "catalog:"
   }
 }

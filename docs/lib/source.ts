@@ -1,13 +1,21 @@
+import type { FrameworkId } from './frameworks'
 import { loader } from 'fumadocs-core/source'
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons'
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema'
 import { defineDocs } from 'fumadocs-mdx/macro'
+import { z } from 'zod'
+import { frameworks } from './frameworks'
 import { docsContentRoute, docsImageRoute, docsRoute } from './shared'
 
 const docs = defineDocs({
   dir: 'content/docs',
   docs: {
-    schema: pageSchema,
+    schema: pageSchema.extend({
+      // Current framework, consumed at build time by `lib/remark-switch.ts`
+      framework: z.enum(
+        frameworks.map(f => f.id) as [FrameworkId, ...FrameworkId[]],
+      ),
+    }),
     // Underscore-prefixed files are partials for the MDX `include` feature
     files: ['**/*.mdx', '!**/_*.mdx'],
     postprocess: {
