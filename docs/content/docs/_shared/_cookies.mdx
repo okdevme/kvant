@@ -2,24 +2,24 @@
 title: Cookies
 ---
 
-<Switch>
-  <Case react vue>
+<switch>
+  <case react vue>
 `useCookies` binds state to a cookie. Cookies **can be read by server**,
 which makes them ideal for values that affect SSR — locale, theme, feature flags.
 Changes are picked up across tabs via the [Cookie Store API](https://developer.mozilla.org/en-US/docs/Web/API/Cookie_Store_API)
 where available.
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 `useCookies` binds state to a cookie, built on Nuxt's SSR-aware
 [`useCookie`](https://nuxt.com/docs/api/composables/use-cookie) — cookies
 work on both server and client with no fallback setup: the server reads the
 request's `Cookie` header and the value is serialized into the payload for
 hydration.
-  </Case>
-</Switch>
+  </case>
+</switch>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { useCookies } from 'kvant/react'
 import * as kv from 'kvant/schema'
@@ -35,8 +35,8 @@ export function LocaleSelect() {
   )
 }
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```vue
 <script setup lang="ts">
 import { useCookies } from 'kvant/vue'
@@ -52,8 +52,8 @@ const locale = useCookies('locale', kv.string().default('en'))
   </select>
 </template>
 ```
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```vue
 <script setup lang="ts">
 import { useCookies } from 'kvant/nuxt'
@@ -69,15 +69,15 @@ const locale = useCookies('locale', kv.string().default('en'))
   </select>
 </template>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 <include>../_shared/snippets/_interface-conventions.mdx</include>
 
 Key maps work too:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 const [prefs, setPrefs] = useCookies({
   locale: kv.string().default('en'),
@@ -86,8 +86,8 @@ const [prefs, setPrefs] = useCookies({
 
 setPrefs(prev => ({ ...prev, theme: 'dark' }))
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 const prefs = useCookies({
   locale: kv.string().default('en'),
@@ -97,32 +97,32 @@ const prefs = useCookies({
 prefs.value = { ...prefs.value, theme: 'dark' }
 prefs.value.theme = 'dark' // deeply reactive!
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Options
 
-<Switch>
-  <Case react vue>
+<switch>
+  <case react vue>
 Options extend the standard `Set-Cookie` attributes:
 
 <AutoTypeTable
   path="node_modules/kvant/dist/index.d.mts"
   name="CookiesKvantAdapterOptions"
 />
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 Options are a subset of Nuxt's `CookieOptions`:
 
 <AutoTypeTable
   path="node_modules/kvant/dist/nuxt.d.mts"
   name="CookiesKvantAdapterOptions"
 />
-  </Case>
-</Switch>
+  </case>
+</switch>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 const [consent, setConsent] = useCookies(
   'consent',
@@ -130,8 +130,8 @@ const [consent, setConsent] = useCookies(
   { maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' },
 )
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```tsx
 const consent = useCookies(
   'consent',
@@ -139,13 +139,13 @@ const consent = useCookies(
   { maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' },
 )
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 <include>../_shared/snippets/options-providers/_header.mdx</include>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { CookiesOptionsProvider } from 'kvant/react'
 
@@ -155,8 +155,8 @@ import { CookiesOptionsProvider } from 'kvant/react'
   {children}
 </CookiesOptionsProvider>
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```vue
 <script setup lang="ts">
 import { provideCookiesOptions } from 'kvant/vue'
@@ -164,8 +164,8 @@ import { provideCookiesOptions } from 'kvant/vue'
 provideCookiesOptions({ maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' })
 </script>
 ```
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```vue
 <script setup lang="ts">
 import { provideCookiesOptions } from 'kvant/nuxt'
@@ -173,5 +173,5 @@ import { provideCookiesOptions } from 'kvant/nuxt'
 provideCookiesOptions({ maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' })
 </script>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>

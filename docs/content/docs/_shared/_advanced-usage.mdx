@@ -25,8 +25,8 @@ The framework-idiomatic bindings (`useSearchParams`, `useCookies`, etc.) are
 pre-bound versions of the generic `useKvantState`, which takes an adapter
 explicitly:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { useKvantState } from 'kvant/react'
 import { useCookiesKvantAdapter } from 'kvant'
@@ -39,8 +39,8 @@ const [page, setPage] = useKvantState(
   { maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' },
 )
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```tsx
 import { useKvantState } from 'kvant/vue'
 import { useCookiesKvantAdapter } from 'kvant'
@@ -53,13 +53,13 @@ const page = useKvantState(
   { maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' },
 )
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 Signatures:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```ts
 // Single key
 const [state, setState] = useKvantState(adapter, key, schema, options)
@@ -67,8 +67,8 @@ const [state, setState] = useKvantState(adapter, key, schema, options)
 // Key map — bind several keys in one call
 const [state, setState] = useKvantState(adapter, keyMap, options)
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 // Single key
 const state = useKvantState(adapter, key, schema, options)
@@ -76,26 +76,26 @@ const state = useKvantState(adapter, key, schema, options)
 // Key map — bind several keys in one call
 const state = useKvantState(adapter, keyMap, options)
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## `defineKvantState`
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 While `useKvantState` passes the adapter at every call site, `defineKvantState`
 pre-binds an adapter once and returns a ready-to-use hook plus an
 [options provider](./quick-start#global-default-options):
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 While `useKvantState` passes the adapter at every call site, `defineKvantState`
 pre-binds an adapter once and returns a ready-to-use composable plus an
 [provide function](./quick-start#global-default-options):
-  </Case>
-</Switch>
+  </case>
+</switch>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { defineKvantState } from 'kvant/react'
 import { useCookiesKvantAdapter } from 'kvant'
@@ -105,8 +105,8 @@ export const {
   OptionsProvider: CookiesOptionsProvider,
 } = defineKvantState(useCookiesKvantAdapter)
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```tsx
 import { defineKvantState } from 'kvant/vue'
 import { useCookiesKvantAdapter } from 'kvant'
@@ -116,22 +116,22 @@ export const {
   provideOptions: provideCookiesOptions,
 } = defineKvantState(useCookiesKvantAdapter)
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 As an alternative to [options providers](./quick-start#global-default-options),
 you can also specify default adapter options for the entire binding:
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 As an alternative to [provide functions](./quick-start#global-default-options),
 you can also specify default adapter options for the entire binding:
-  </Case>
-</Switch>
+  </case>
+</switch>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { defineKvantState } from 'kvant/react'
 import { useCookiesKvantAdapter } from 'kvant'
@@ -144,8 +144,8 @@ export const {
   sameSite: 'lax'
 })
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```tsx
 import { defineKvantState } from 'kvant/vue'
 import { useCookiesKvantAdapter } from 'kvant'
@@ -158,16 +158,16 @@ export const {
   sameSite: 'lax'
 })
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 This is exactly how the pre-bound hooks are built internally — and the recommended way to pre-configure
 an adapter for your whole app.
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 This is exactly how the pre-bound composables are built internally — and the recommended way to pre-configure
 an adapter for your whole app.
-  </Case>
-</Switch>
+  </case>
+</switch>

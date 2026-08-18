@@ -7,8 +7,8 @@ query-string dialect, a native bridge — you can write your own adapter for any
 
 ## The adapter contract
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 An adapter is a hook receiving the bound keys and resolved options, and
 returning an interface object:
 
@@ -27,8 +27,8 @@ type KvantReactAdapter<T, Options> = (
   options: Partial<Options>,
 ) => KvantReactAdapterInterface<T>
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 An adapter is a composable receiving the bound keys and resolved options, and
 returning an interface object:
 
@@ -47,28 +47,28 @@ type KvantVueAdapter<T, Options> = (
   options: Partial<Options>,
 ) => KvantVueAdapterInterface<T>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 To have a better idea of how to implement an adapter,
 check out the source code of the built-in adapters:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 | Interface      | Adapter                              | Source                          |
 | -------------- | ------------------------------------ | ------------------------------ |
 | Next.js (app router) → Search Params | `kvant/next` → `useSearchParamsKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/next/adapters/searchParams.ts) |
 | Next.js (pages router) → Router Query  | `kvant/next/pages` → `useRouterQueryKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/next/pages/adapters/query.ts) |
 | React Router → Search Params  | `kvant/react-router` → `useSearchParamsKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/react-router/adapters/searchParams.ts) |
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 | Interface      | Adapter                              | Source                          |
 | -------------- | ------------------------------------ | ------------------------------ |
 | Vue Router → Route Query | `kvant/vue-router` → `useRouteQueryKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/vue-router/adapters/query.ts) |
 | Vue Router → Route Params  | `kvant/vue-router` → `useRouteParamsKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/vue-router/adapters/params.ts) |
 | Nuxt → Cookies  | `kvant/nuxt` → `useCookiesKvantAdapter` | [GitHub](https://github.com/okdevme/kvant/blob/main/src/nuxt/adapters/cookies.ts) |
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Framework-agnostic adapters
 

@@ -2,8 +2,8 @@
 title: Search Params Filters Example
 ---
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 const [filters, setFilters] = useSearchParams({
   q: kv.string().default(''),
@@ -14,8 +14,8 @@ const [filters, setFilters] = useSearchParams({
 
 setFilters(prev => ({ ...prev, page: prev.page + 1 }))
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```tsx
 const [filters, setFilters] = useRouterQuery({
   q: kv.string().default(''),
@@ -26,8 +26,8 @@ const [filters, setFilters] = useRouterQuery({
 
 setFilters(prev => ({ ...prev, page: prev.page + 1 }))
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```tsx
 const filters = useSearchParams({
   q: kv.string().default(''),
@@ -39,8 +39,8 @@ const filters = useSearchParams({
 filters.value = { ...filters.value, page: filters.value.page + 1 }
 filters.value.page += 1 // deeply reactive!
 ```
-  </Case>
-  <Case vue-router nuxt>
+  </case>
+  <case vue-router nuxt>
 ```tsx
 const filters = useRouteQuery({
   q: kv.string().default(''),
@@ -52,5 +52,5 @@ const filters = useRouteQuery({
 filters.value = { ...filters.value, page: filters.value.page + 1 }
 filters.value.page += 1 // deeply reactive!
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>

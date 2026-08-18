@@ -2,8 +2,8 @@
 title: Search Params Single and Multiple Keys Example
 ---
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```ts
 const [page, setPage] = useSearchParams('page', kv.index().default(0))
 
@@ -13,8 +13,8 @@ const [filters, setFilters] = useSearchParams({
   sort: kv.enum(['asc', 'desc']).default('asc'),
 })
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```ts
 const [page, setPage] = useRouterQuery('page', kv.index().default(0))
 
@@ -24,8 +24,8 @@ const [filters, setFilters] = useRouterQuery({
   sort: kv.enum(['asc', 'desc']).default('asc'),
 })
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 const page = useSearchParams('page', kv.index().default(0))
 
@@ -35,8 +35,8 @@ const filters = useSearchParams({
   sort: kv.enum(['asc', 'desc']).default('asc'),
 })
 ```
-  </Case>
-  <Case vue-router nuxt>
+  </case>
+  <case vue-router nuxt>
 ```ts
 const page = useRouteQuery('page', kv.index().default(0))
 
@@ -46,5 +46,5 @@ const filters = useRouteQuery({
   sort: kv.enum(['asc', 'desc']).default('asc'),
 })
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>

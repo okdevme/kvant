@@ -2,15 +2,15 @@
 title: Local Storage Theme Example
 ---
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```ts
 const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>

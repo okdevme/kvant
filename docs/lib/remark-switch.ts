@@ -5,14 +5,14 @@ import { visit } from 'unist-util-visit'
 import { frameworks, getFramework } from './frameworks'
 
 /**
- * Remark plugin that resolves `<Switch>`/`<Case>` at build time.
+ * Remark plugin that resolves `<switch>`/`<case>` at build time.
  *
  * Mirrors the runtime React components (`components/switch.tsx`): the current
  * framework comes from the page's `framework` frontmatter (schema extended in
  * `lib/source.ts`), cases match by framework id first, then by family.
  * A case carrying the current framework id set to `false` renders nothing.
  *
- * Runs after fumadocs-mdx `remarkInclude`, so `<Switch>` blocks inside
+ * Runs after fumadocs-mdx `remarkInclude`, so `<switch>` blocks inside
  * included partials (`content/docs/_shared`) resolve with the including
  * page's frontmatter. Pages without a resolvable `framework` frontmatter
  * are left untouched — the runtime React components stay in charge there.
@@ -50,11 +50,11 @@ export const remarkSwitch: Plugin<[], Root> = () => {
     const resolve = (node: JsxElement): Nodes[] => {
       const props = readProps(node)
 
-      // `<Switch react>…</Switch>` — the Switch itself acts as a single Case
+      // `<switch react>…</Switch>` — the Switch itself acts as a single case
       const cases = frameworks.some(f => f.id in props)
         ? [{ props, children: node.children }]
         : node.children
-            .filter(isJsxElement)
+            .filter((node): node is JsxElement => isJsxElement(node) && node.name === 'case')
             .map(child => ({ props: readProps(child), children: child.children }))
 
       const match = cases.find(item => framework.id in item.props)
@@ -66,7 +66,7 @@ export const remarkSwitch: Plugin<[], Root> = () => {
     }
 
     visit(tree as Parents, (node, index, parent) => {
-      if (!parent || typeof index !== 'number' || !isJsxElement(node) || node.name !== 'Switch')
+      if (!parent || typeof index !== 'number' || !isJsxElement(node) || node.name !== 'switch')
         return
       parent.children.splice(index, 1, ...resolve(node) as Parents['children'])
       return index

@@ -2,52 +2,52 @@
 title: Search Params
 ---
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 `useSearchParams` binds state to URL search params via the History API — no
 router required. The URL is the single source of truth: refreshing, sharing,
 or bookmarking the link restores the exact state, and updates preserve the
 URL hash and any params managed by other code.
-  </Case>
-  <Case next>
+  </case>
+  <case next>
 `useSearchParams` binds state to URL search params. The URL is the single
 source of truth: refreshing, sharing, or bookmarking the link restores the
 exact state. Writes use the native History API by default (`shallow`), so
 no server round-trip happens — and updates are applied optimistically
 inside a React transition.
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 `useRouterQuery` binds state to `router.query`, navigating through the
 Next.js pages router. The URL is the single source of truth: refreshing,
 sharing, or bookmarking the link restores the exact state. Writes are
 shallow by default, so data fetching methods don't re-run — and the URL
 hash is preserved.
-  </Case>
-  <Case react-router>
+  </case>
+  <case react-router>
 `useSearchParams` binds state to URL search params, navigating through
 React Router — so writes integrate with loaders, actions, and router-aware
 scroll handling. The URL is the single source of truth: refreshing,
 sharing, or bookmarking the link restores the exact state.
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 `useSearchParams` binds state to URL search params via the History API — no
 router required. The URL is the single source of truth: refreshing, sharing,
 or bookmarking the link restores the exact state, and updates preserve the
 URL hash and any params managed by other code.
-  </Case>
-  <Case vue-router>
+  </case>
+  <case vue-router>
 `useRouteQuery` binds state to the router's query parameters, using Vue
 Router for navigation — so writes integrate with router guards, scroll
 behavior, and history. The URL is the single source of truth: refreshing,
 sharing, or bookmarking the link restores the exact state.
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 `useRouteQuery` binds state to the router's query parameters, using the
 Nuxt router for navigation — so writes integrate with middleware, scroll
 behavior, and history. The URL is the single source of truth: refreshing,
 sharing, or bookmarking the link restores the exact state.
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 <include>../_shared/snippets/_search-input-example.mdx</include>
 
@@ -61,44 +61,44 @@ Key maps work too:
 
 ## Options
 
-<Switch>
-  <Case react vue>
+<switch>
+  <case react vue>
 <AutoTypeTable
   path="node_modules/kvant/dist/index.d.mts"
   name="SearchParamsKvantAdapterOptions"
 />
-  </Case>
-  <Case next>
+  </case>
+  <case next>
 <AutoTypeTable
   path="node_modules/kvant/dist/next.d.mts"
   name="SearchParamsKvantAdapterOptions"
 />
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 <AutoTypeTable
   path="node_modules/kvant/dist/next/pages.d.mts"
   name="RouterQueryKvantAdapterOptions"
 />
-  </Case>
-  <Case react-router>
+  </case>
+  <case react-router>
 <AutoTypeTable
   path="node_modules/kvant/dist/react-router.d.mts"
   name="SearchParamsKvantAdapterOptions"
 />
-  </Case>
-  <Case vue-router>
+  </case>
+  <case vue-router>
 <AutoTypeTable
   path="node_modules/kvant/dist/vue-router.d.mts"
   name="RouteQueryKvantAdapterOptions"
 />
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 <AutoTypeTable
   path="node_modules/kvant/dist/nuxt.d.mts"
   name="RouteQueryKvantAdapterOptions"
 />
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 <include>../_shared/snippets/options-providers/_header.mdx</include>
 

@@ -2,21 +2,21 @@
 title: Route Params
 ---
 
-<Switch>
-  <Case vue-router>
+<switch>
+  <case vue-router>
 `useRouteParams` binds state to the **route params** — the dynamic
 segments of the route (`/users/:id`). Useful when an identifier belongs in
 the path rather than the query string.
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 `useRouteParams` binds state to the **route params** — the dynamic
 segments of the route (`/users/[id]`). Useful when an identifier belongs in
 the path rather than the query string.
-  </Case>
-</Switch>
+  </case>
+</switch>
 
-<Switch>
-  <Case vue-router>
+<switch>
+  <case vue-router>
 ```vue
 <script setup lang="ts">
 import { useRouteParams } from 'kvant/vue-router'
@@ -30,8 +30,8 @@ const id = useRouteParams('id', kv.string())
   <p>User #{{ id }}</p>
 </template>
 ```
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```vue
 <script setup lang="ts">
 import { useRouteParams } from 'kvant/nuxt'
@@ -45,8 +45,8 @@ const id = useRouteParams('id', kv.string())
   <p>User #{{ id }}</p>
 </template>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 Writing a param navigates to the updated path:
 
@@ -63,25 +63,25 @@ path; for values that don't belong in the path, prefer
 
 Repeatable params work too:
 
-<Switch>
-  <Case vue-router>
+<switch>
+  <case vue-router>
 ```ts
 // Route: /docs/:slug*
 const slug = useRouteParams('slug', kv.string().array().default([]))
 ```
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```ts
 // Route: /docs/[[...slug]]
 const slug = useRouteParams('slug', kv.string().array().default([]))
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 Key maps bind several params at once:
 
-<Switch>
-  <Case vue-router>
+<switch>
+  <case vue-router>
 ```ts
 // Route: /:org/:repo
 const route = useRouteParams({
@@ -89,8 +89,8 @@ const route = useRouteParams({
   repo: kv.string(),
 })
 ```
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```ts
 // Route: /[org]/[repo]
 const route = useRouteParams({
@@ -98,30 +98,30 @@ const route = useRouteParams({
   repo: kv.string(),
 })
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Options
 
-<Switch>
-  <Case vue-router>
+<switch>
+  <case vue-router>
 <AutoTypeTable
   path="node_modules/kvant/dist/vue-router.d.mts"
   name="RouteParamsKvantAdapterOptions"
 />
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 <AutoTypeTable
   path="node_modules/kvant/dist/nuxt.d.mts"
   name="RouteParamsKvantAdapterOptions"
 />
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 <include>../_shared/snippets/options-providers/_header.mdx</include>
 
-<Switch>
-  <Case vue-router>
+<switch>
+  <case vue-router>
 ```vue
 <script setup lang="ts">
 import { provideRouteParamsOptions } from 'kvant/vue-router'
@@ -129,8 +129,8 @@ import { provideRouteParamsOptions } from 'kvant/vue-router'
 provideRouteParamsOptions({ history: 'push' })
 </script>
 ```
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```vue
 <script setup lang="ts">
 import { provideRouteParamsOptions } from 'kvant/nuxt'
@@ -138,5 +138,5 @@ import { provideRouteParamsOptions } from 'kvant/nuxt'
 provideRouteParamsOptions({ history: 'push' })
 </script>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>

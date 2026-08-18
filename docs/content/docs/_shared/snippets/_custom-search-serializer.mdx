@@ -9,8 +9,8 @@ The default serializer uses `URLSearchParams`, so values are flat strings
 parser/serializer — for example [`qs`](https://github.com/ljharb/qs) — by
 defining your own binding (see [Advanced Usage](./advanced-usage)):
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```ts title="lib/search-params.ts"
 import { useSearchParamsKvantAdapter } from 'kvant'
 import { defineKvantState } from 'kvant/react'
@@ -27,8 +27,8 @@ export const {
   }),
 )
 ```
-  </Case>
-  <Case next>
+  </case>
+  <case next>
 ```ts title="lib/search-params.ts"
 'use client'
 import { useSearchParamsKvantAdapter } from 'kvant/next'
@@ -46,8 +46,8 @@ export const {
   }),
 )
 ```
-  </Case>
-  <Case react-router>
+  </case>
+  <case react-router>
 ```ts title="lib/search-params.ts"
 import { useSearchParamsKvantAdapter } from 'kvant/react-router'
 import { defineKvantState } from 'kvant/react'
@@ -64,8 +64,8 @@ export const {
   }),
 )
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts title="lib/search-params.ts"
 import { useSearchParamsKvantAdapter } from 'kvant'
 import { defineKvantState } from 'kvant/vue'
@@ -82,14 +82,14 @@ export const {
   }),
 )
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 With `qs` handling (de)serialization, the full power of `kvant/schema`
 opens up inside the URL — objects, nested arrays, and more:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```ts
 const [filters, setFilters] = useSearchParams(
   'filters',
@@ -100,8 +100,8 @@ const [filters, setFilters] = useSearchParams(
 )
 // URL: ?filters[tags][0]=a&filters[tags][1]=b&filters[range][0]=1&filters[range][1]=9
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 const filters = useSearchParams(
   'filters',
@@ -112,5 +112,5 @@ const filters = useSearchParams(
 )
 // URL: ?filters[tags][0]=a&filters[tags][1]=b&filters[range][0]=1&filters[range][1]=9
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>

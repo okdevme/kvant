@@ -4,8 +4,8 @@ title: Cookies SSR Setup
 
 ## SSR setup
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 In a React SPA there is no server rendering by default, but if you render
 on the server (custom SSR, prerendering), `document.cookie` is unavailable.
 Provide the request's `Cookie` header as a `fallback` via the options
@@ -19,8 +19,8 @@ import { CookiesOptionsProvider } from 'kvant/react'
   <App />
 </CookiesOptionsProvider>
 ```
-  </Case>
-  <Case next>
+  </case>
+  <case next>
 On the server there is no `document.cookie`, so provide the request's
 cookies as a `fallback` via the options provider. In the app router, you can do it
 in a layout or page:
@@ -45,8 +45,8 @@ export default async function RootLayout({ children }) {
   )
 }
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 On the server there is no `document.cookie`, so provide the request's
 cookies as a `fallback` via the options provider — for example from
 `getServerSideProps` into `_app`:
@@ -71,8 +71,8 @@ export const getServerSideProps = async ({ req }) => ({
   props: { cookieHeader: req.headers.cookie ?? '' },
 })
 ```
-  </Case>
-  <Case react-router>
+  </case>
+  <case react-router>
 When server-rendering with React Router (framework mode), `document.cookie`
 is unavailable. Provide the request's `Cookie` header as a `fallback` via
 the options provider — e.g. pass it from your loader to the root route:
@@ -94,8 +94,8 @@ export default function Root({ loaderData }: Route.ComponentProps) {
   )
 }
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 When rendering on the server (or prerendering), `document.cookie` is
 unavailable. Provide the request's `Cookie` header as a `fallback` with the
 provide function in a top-level component:
@@ -108,8 +108,8 @@ import { provideCookiesOptions } from 'kvant/vue'
 provideCookiesOptions({ fallback: cookieHeader })
 </script>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 With the fallback in place, the first client render matches the
 server-rendered HTML — no hydration mismatch.

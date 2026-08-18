@@ -50,8 +50,8 @@ kv.number() // stored string → number
 `kvant/schema` is not tied to kvant hooks — it works anywhere you need
 bidirectional parsing or smart casting, including server-side code:
 
-<Switch>
-  <Case react vue vue-router>
+<switch>
+  <case react vue vue-router>
 ```ts title="server-side or build-time usage (e.g. an API handler)"
 import * as kv from 'kvant/schema'
 import { parseSearch } from 'kvant'
@@ -67,8 +67,8 @@ export function parseProductsQuery(url: URL) {
   )
 }
 ```
-  </Case>
-  <Case next>
+  </case>
+  <case next>
 ```tsx title="app/products/page.tsx"
 import * as kv from 'kvant/schema'
 
@@ -87,8 +87,8 @@ export default async function Page({
   // ...
 }
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```ts title="pages/products.tsx"
 import * as kv from 'kvant/schema'
 import type { GetServerSideProps } from 'next'
@@ -104,8 +104,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // ...
 }
 ```
-  </Case>
-  <Case react-router>
+  </case>
+  <case react-router>
 ```tsx title="routes/products.tsx"
 import * as kv from 'kvant/schema'
 import { parseSearch } from 'kvant'
@@ -123,8 +123,8 @@ export async function loader({ url }: Route.LoaderArgs) {
   // ...
 }
 ```
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```ts title="server/api/products.get.ts"
 import * as kv from 'kvant/schema'
 
@@ -141,8 +141,8 @@ export default defineEventHandler((event) => {
   // ...
 })
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 Prefer to use [Zod](https://zod.dev) or another validation library? See [Zod](./zod)
 and [Custom schemas](./custom-schemas).
@@ -207,8 +207,8 @@ kv.string().includes('@')
 // Mutating transforms — applied in both directions (parse and encode),
 // so the stored value is always canonical:
 kv.string().trim()
-kv.string().toLowerCase()
-kv.string().toUpperCase()
+kv.string().toLowercase()
+kv.string().toUppercase()
 kv.string().normalize()     // Unicode normalization
 kv.string().slice(0, 8)
 kv.string().uppercase()     // filter: rejects non-uppercase strings
@@ -282,7 +282,7 @@ kv.boolean().parse(undefined)  // undefined
 
 #### `kv.stringbool()`
 
-Parses common string representations of booleans. Case-insensitive by default.
+Parses common string representations of booleans. case-insensitive by default.
 
 ```ts
 const bool = kv.stringbool()
@@ -364,26 +364,26 @@ kv.uriComponent().encode('Hello World!')    // 'Hello%20World!'
 
 Useful when a stored value itself contains URL-reserved characters:
 
-<Switch>
-  <Case react vue>
+<switch>
+  <case react vue>
 ```ts
 useSearchParams('redirect', kv.uriComponent())
 // ?redirect=%2Fcheckout%3Fcoupon%3DFREE → '/checkout?coupon=FREE'
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```ts
 useRouterQuery('redirect', kv.uriComponent())
 // ?redirect=%2Fcheckout%3Fcoupon%3DFREE → '/checkout?coupon=FREE'
 ```
-  </Case>
-  <Case vue-router nuxt>
+  </case>
+  <case vue-router nuxt>
 ```ts
 useRouteQuery('redirect', kv.uriComponent())
 // ?redirect=%2Fcheckout%3Fcoupon%3DFREE → '/checkout?coupon=FREE'
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 #### `kv.base64()`
 
@@ -702,23 +702,23 @@ kv.int().singular(arr => arr.length - 1)   // last element
 Useful for interfaces that allow repeated keys (search params) when you only
 care about one value:
 
-<Switch>
-  <Case react vue>
+<switch>
+  <case react vue>
 ```ts
 useSearchParams('page', kv.index().singular())
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```ts
 useRouterQuery('page', kv.index().singular())
 ```
-  </Case>
-  <Case vue-router nuxt>
+  </case>
+  <case vue-router nuxt>
 ```ts
 useRouteQuery('page', kv.index().singular())
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 #### `.transform(def)`
 
@@ -759,7 +759,7 @@ Pass `{ decode, encode }` to transform each direction separately.
 kv.string()
   .overwrite(v => v.padEnd(25, '.'))
   .trim()
-  .toLowerCase()
+  .toLowercase()
 
 kv.int()
   .overwrite({

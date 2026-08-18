@@ -5,8 +5,8 @@ title: Local Storage
 `useLocalStorage` binds state to a `localStorage` entry. Values persist
 across reloads, and changes **sync across tabs** via the `storage` event.
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { useLocalStorage } from 'kvant/react'
 import * as kv from 'kvant/schema'
@@ -24,8 +24,8 @@ export function ThemeToggle() {
   )
 }
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```vue
 <script setup lang="ts">
 import { useLocalStorage } from 'kvant/vue'
@@ -42,15 +42,15 @@ function toggle() {
   <button @click="toggle">Theme: {{ theme }}</button>
 </template>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 <include>../_shared/snippets/_interface-conventions.mdx</include>
 
 Key maps work too:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 const [prefs, setPrefs] = useLocalStorage({
   theme: kv.enum(['light', 'dark']).default('light'),
@@ -59,8 +59,8 @@ const [prefs, setPrefs] = useLocalStorage({
 
 setPrefs(prev => ({ ...prev, fontSize: prev.fontSize + 1 }))
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 const prefs = useLocalStorage({
   theme: kv.enum(['light', 'dark']).default('light'),
@@ -70,8 +70,8 @@ const prefs = useLocalStorage({
 prefs.value = { ...prefs.value, fontSize: prefs.value.fontSize + 1 }
 prefs.value.fontSize += 1 // deeply reactive!
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Session storage
 
@@ -79,22 +79,22 @@ The same API exists for `sessionStorage` via `useSessionStorage` — scoped
 to the current tab, cleared when the tab closes, and not shared across
 tabs:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { useSessionStorage } from 'kvant/react'
 
 const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 import { useSessionStorage } from 'kvant/vue'
 
 const draft = useSessionStorage('draft', kv.string().default(''))
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Options
 
@@ -105,8 +105,8 @@ const draft = useSessionStorage('draft', kv.string().default(''))
 
 <include>../_shared/snippets/options-providers/_header.mdx</include>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { LocalStorageOptionsProvider } from 'kvant/react'
 
@@ -114,8 +114,8 @@ import { LocalStorageOptionsProvider } from 'kvant/react'
   {children}
 </LocalStorageOptionsProvider>
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```vue
 <script setup lang="ts">
 import { provideLocalStorageOptions } from 'kvant/vue'
@@ -123,5 +123,5 @@ import { provideLocalStorageOptions } from 'kvant/vue'
 provideLocalStorageOptions({ fallback: { theme: 'light' } })
 </script>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>

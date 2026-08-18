@@ -22,8 +22,8 @@ input must degrade gracefully.
 When passing a Zod schema to kvant, make it total: either cover every
 possible input, or attach a fallback with `.catch()`:
 
-<Switch>
-  <Case react vue>
+<switch>
+  <case react vue>
 ```ts
 import * as z from 'zod'
 
@@ -33,8 +33,8 @@ useSearchParams('price', z.coerce.number())
 // ✅ Falls back to 1
 useSearchParams('price', z.coerce.number().min(1).catch(1))
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```ts
 import * as z from 'zod'
 
@@ -44,8 +44,8 @@ useRouterQuery('price', z.coerce.number())
 // ✅ Falls back to 1
 useRouterQuery('price', z.coerce.number().min(1).catch(1))
 ```
-  </Case>
-  <Case vue-router nuxt>
+  </case>
+  <case vue-router nuxt>
 ```ts
 import * as z from 'zod'
 
@@ -55,8 +55,8 @@ useRouteQuery('price', z.coerce.number())
 // ✅ Falls back to 1
 useRouteQuery('price', z.coerce.number().min(1).catch(1))
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Codecs
 

@@ -8,8 +8,8 @@ Until then, avoid binding state directly to
 quickly changing values (text inputs, sliders), or wrap the binding in a
 throttled layer with local state:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { useThrottleFn } from 'react-use'
 
@@ -23,8 +23,8 @@ function SearchInput() {
   return <input value={text} onChange={e => setText(e.target.value)} />
 }
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```tsx
 import { useThrottleFn } from 'react-use'
 
@@ -38,8 +38,8 @@ function SearchInput() {
   return <input value={text} onChange={e => setText(e.target.value)} />
 }
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```vue
 <script setup lang="ts">
 import { watchThrottled } from '@vueuse/core'
@@ -55,8 +55,8 @@ watchThrottled(text, v => search.value = v, { throttle: 300 })
   <input v-model="text">
 </template>
 ```
-  </Case>
-  <Case vue-router nuxt>
+  </case>
+  <case vue-router nuxt>
 ```vue
 <script setup lang="ts">
 import { watchThrottled } from '@vueuse/core'
@@ -72,6 +72,6 @@ watchThrottled(text, v => search.value = v, { throttle: 300 })
   <input v-model="text">
 </template>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 </Callout>

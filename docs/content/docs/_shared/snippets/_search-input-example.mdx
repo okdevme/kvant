@@ -2,8 +2,8 @@
 title: Search Input Example
 ---
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```ts
 import { useSearchParams } from 'kvant/react'
 import * as kv from 'kvant/schema'
@@ -19,8 +19,8 @@ function SearchInput() {
   )
 }
 ```
-  </Case>
-  <Case next>
+  </case>
+  <case next>
 ```ts
 import { useSearchParams } from 'kvant/next'
 import * as kv from 'kvant/schema'
@@ -36,8 +36,8 @@ function SearchInput() {
   )
 }
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```ts
 import { useRouterQuery } from 'kvant/next/pages'
 import * as kv from 'kvant/schema'
@@ -53,8 +53,8 @@ function SearchInput() {
   )
 }
 ```
-  </Case>
-  <Case react-router>
+  </case>
+  <case react-router>
 ```ts
 import { useSearchParams } from 'kvant/react-router'
 import * as kv from 'kvant/schema'
@@ -70,8 +70,8 @@ function SearchInput() {
   )
 }
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```vue
 <script setup lang="ts">
 import { useSearchParams } from 'kvant/vue'
@@ -84,8 +84,8 @@ const query = useSearchParams('q', kv.string().default(''))
   <input v-model="query">
 </template>
 ```
-  </Case>
-  <Case vue-router>
+  </case>
+  <case vue-router>
 ```vue
 <script setup lang="ts">
 import { useRouteQuery } from 'kvant/vue-router'
@@ -98,8 +98,8 @@ const query = useRouteQuery('q', kv.string().default(''))
   <input v-model="query">
 </template>
 ```
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```vue
 <script setup lang="ts">
 import { useRouteQuery } from 'kvant/nuxt'
@@ -112,5 +112,5 @@ const query = useRouteQuery('q', kv.string().default(''))
   <input v-model="query">
 </template>
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>

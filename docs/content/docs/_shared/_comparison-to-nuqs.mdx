@@ -9,8 +9,8 @@ using parsers to convert between strings and typed values. kvant takes heavy
 inspiration from nuqs — if you've used it, the core loop (schema → hook →
 URL as source of truth) will feel familiar.
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```ts tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
@@ -23,8 +23,8 @@ import * as kv from 'kvant/schema'
 
 const [page, setPage] = useSearchParams('page', kv.index().default(0))
 ```
-  </Case>
-  <Case next>
+  </case>
+  <case next>
 ```ts tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
@@ -37,8 +37,8 @@ import * as kv from 'kvant/schema'
 
 const [page, setPage] = useSearchParams('page', kv.index().default(0))
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```ts tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
@@ -51,8 +51,8 @@ import * as kv from 'kvant/schema'
 
 const [page, setPage] = useRouterQuery('page', kv.index().default(0))
 ```
-  </Case>
-  <Case react-router>
+  </case>
+  <case react-router>
 ```ts tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
@@ -65,8 +65,8 @@ import * as kv from 'kvant/schema'
 
 const [page, setPage] = useSearchParams('page', kv.index().default(0))
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
@@ -79,8 +79,8 @@ import * as kv from 'kvant/schema'
 
 const page = useSearchParams('page', kv.index().default(0))
 ```
-  </Case>
-  <Case vue-router>
+  </case>
+  <case vue-router>
 ```ts tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
@@ -93,8 +93,8 @@ import * as kv from 'kvant/schema'
 
 const page = useRouteQuery('page', kv.index().default(0))
 ```
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```ts tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
@@ -107,8 +107,8 @@ import * as kv from 'kvant/schema'
 
 const page = useRouteQuery('page', kv.index().default(0))
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Key differences
 

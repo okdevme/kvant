@@ -5,30 +5,30 @@ description: Get productive with kvant in seconds.
 
 ## Core principle
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 kvant turns key-value interfaces into React state. Bind a key, pass a
 schema from `kvant/schema`, and read/write it like `useState` — the
 interface (here, the URL) stays the single source of truth:
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 kvant turns key-value interfaces into Vue refs. Bind a key, pass a schema
 from `kvant/schema`, and read/write it like any writable `Ref` — the
 interface (here, the URL) stays the single source of truth:
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 <include>./snippets/_search-input-example.mdx</include>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 `?q=hello` in the URL → `query` is `'hello'`. Calling `setQuery` writes back to the URL.
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 `?q=hello` in the URL → `query.value` is `'hello'`. Assigning to
 `query.value` writes back to the URL.
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Multiple keys
 
@@ -40,52 +40,52 @@ Bind a whole key map in one call — updates batch into a single write:
 
 Pass options as the last argument:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
   history: 'push', // add browser history entries
 })
 ```
-  </Case>
-  <Case next>
+  </case>
+  <case next>
 ```tsx
 const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
   history: 'push', // add browser history entries
   shallow: false,  // go through the Next.js router (re-run server components)
 })
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```tsx
 const [query, setQuery] = useRouterQuery('q', kv.string().default(''), {
   history: 'push', // add browser history entries
   shallow: false,  // re-run data fetching (getServerSideProps)
 })
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 const query = useSearchParams('q', kv.string().default(''), {
   history: 'push', // add browser history entries
 })
 ```
-  </Case>
-  <Case vue-router nuxt>
+  </case>
+  <case vue-router nuxt>
 ```ts
 const query = useRouteQuery('q', kv.string().default(''), {
   history: 'push', // add browser history entries
 })
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Every interface
 
 The same pattern works for all supported key-value interfaces:
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvant/react'
 import * as kv from 'kvant/schema'
@@ -111,8 +111,8 @@ Full guides:
 [Search Params](./search-params) ·
 [Local Storage](./local-storage) ·
 [Cookies](./cookies)
-  </Case>
-  <Case next>
+  </case>
+  <case next>
 ```tsx
 import { useSearchParams } from 'kvant/next'
 import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
@@ -140,8 +140,8 @@ Full guides:
 [Search Params](./search-params) ·
 [Local Storage](./local-storage) ·
 [Cookies](./cookies)
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```tsx
 import { useRouterQuery } from 'kvant/next/pages'
 import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
@@ -169,8 +169,8 @@ Full guides:
 [Router Query](./router-query) ·
 [Local Storage](./local-storage) ·
 [Cookies](./cookies)
-  </Case>
-  <Case react-router>
+  </case>
+  <case react-router>
 ```tsx
 import { useSearchParams } from 'kvant/react-router'
 import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
@@ -198,8 +198,8 @@ Full guides:
 [Search Params](./search-params) ·
 [Local Storage](./local-storage) ·
 [Cookies](./cookies)
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvant/vue'
 import * as kv from 'kvant/schema'
@@ -223,8 +223,8 @@ Full guides:
 [Search Params](./search-params) ·
 [Local Storage](./local-storage) ·
 [Cookies](./cookies)
-  </Case>
-  <Case vue-router>
+  </case>
+  <case vue-router>
 ```ts
 import { useRouteParams, useRouteQuery } from 'kvant/vue-router'
 import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/vue'
@@ -253,8 +253,8 @@ Full guides:
 [Route Params](./route-params) ·
 [Local Storage](./local-storage) ·
 [Cookies](./cookies)
-  </Case>
-  <Case nuxt>
+  </case>
+  <case nuxt>
 ```ts
 import { useCookies, useRouteParams, useRouteQuery } from 'kvant/nuxt'
 import { useLocalStorage, useSessionStorage } from 'kvant/vue'
@@ -281,8 +281,8 @@ Full guides:
 [Route Params](./route-params) ·
 [Local Storage](./local-storage) ·
 [Cookies](./cookies)
-  </Case>
-</Switch>
+  </case>
+</switch>
 
 ## Global default options
 
@@ -290,19 +290,19 @@ Full guides:
 
 <include>./snippets/options-providers/_search-params-example.mdx</include>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 Nested providers merge with parent options by default (`extend: true`);
 pass `extend={false}` to replace instead of merge:
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 Nested provides merge with parent options by default (`extend: true`); pass
 `{ extend: false }` to replace instead of merge:
-  </Case>
-</Switch>
+  </case>
+</switch>
 
-<Switch>
-  <Case react>
+<switch>
+  <case react>
 ```tsx
 <SearchParamsOptionsProvider
   defaultOptions={{ history: 'push' }}
@@ -311,8 +311,8 @@ Nested provides merge with parent options by default (`extend: true`); pass
   {children}
 </SearchParamsOptionsProvider>
 ```
-  </Case>
-  <Case next-pages>
+  </case>
+  <case next-pages>
 ```tsx
 <RouterQueryOptionsProvider
   defaultOptions={{ history: 'push' }}
@@ -321,15 +321,15 @@ Nested provides merge with parent options by default (`extend: true`); pass
   {children}
 </RouterQueryOptionsProvider>
 ```
-  </Case>
-  <Case vue>
+  </case>
+  <case vue>
 ```ts
 provideSearchParamsOptions({ history: 'push' }, { extend: false })
 ```
-  </Case>
-  <Case vue-router nuxt>
+  </case>
+  <case vue-router nuxt>
 ```ts
 provideRouteQueryOptions({ history: 'push' }, { extend: false })
 ```
-  </Case>
-</Switch>
+  </case>
+</switch>
