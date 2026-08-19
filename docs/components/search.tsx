@@ -97,7 +97,7 @@ export default function DefaultSearchDialog({ open, onOpenChange, ...props }: Sh
             <PopoverContent className="flex flex-col p-1 gap-1" align="start">
               {items.map(item => (
                 <button
-                  key={item.value}
+                  key={item.value ?? 'all'}
                   onClick={() => {
                     setTag(item.value)
                     setSelectOpen(false)

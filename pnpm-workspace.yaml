@@ -30,6 +30,7 @@ catalog:
   '@react-router/dev': ^8
   '@react-router/node': ^8
   '@react-router/serve': ^8
+  '@reactuses/core': ^6.5.2
   '@standard-schema/spec': ^1.1.0
   '@tailwindcss/postcss': ^4.3.3
   '@tailwindcss/vite': ^4.2.2
@@ -43,6 +44,7 @@ catalog:
   '@types/react-dom': ^19
   '@vitejs/plugin-react': ^6.0.1
   '@vitejs/plugin-vue': ^6.0.5
+  animejs: ^4.5.0
   arktype: ^2.2.3
   cnfast: ^0.1.0
   eslint: ^10.8.0

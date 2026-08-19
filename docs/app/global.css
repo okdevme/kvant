@@ -2,9 +2,9 @@
 @import 'fumadocs-ui/css/solar.css';
 @import 'fumadocs-ui/css/preset.css';
 
-html {
+/* html {
   scrollbar-gutter: stable;
-}
+} */
 
 html > body[data-scroll-locked] {
   margin-right: 0px !important;
@@ -12,6 +12,7 @@ html > body[data-scroll-locked] {
 }
 
 @theme {
+  --breakpoint-xs: 30rem;
   --color-fd-primary: #231f20;
 }
 

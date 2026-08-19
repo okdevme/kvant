@@ -11,6 +11,8 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
+    "@reactuses/core": "catalog:",
+    "animejs": "catalog:",
     "cnfast": "catalog:",
     "fumadocs-core": "catalog:",
     "fumadocs-docgen": "catalog:",
