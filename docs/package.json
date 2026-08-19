@@ -12,11 +12,14 @@
   },
   "dependencies": {
     "@reactuses/core": "catalog:",
+    "@shikijs/transformers": "catalog:",
+    "@shikijs/twoslash": "catalog:",
     "animejs": "catalog:",
     "cnfast": "catalog:",
     "fumadocs-core": "catalog:",
     "fumadocs-docgen": "catalog:",
     "fumadocs-mdx": "catalog:",
+    "fumadocs-twoslash": "catalog:",
     "fumadocs-typescript": "catalog:",
     "fumadocs-ui": "catalog:",
     "kvant": "workspace:*",
@@ -24,6 +27,8 @@
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "twoslash": "catalog:",
+    "twoslash-vue": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -41,6 +46,7 @@
     "typescript": "catalog:",
     "unified": "catalog:",
     "unist-util-visit": "catalog:",
-    "vfile": "catalog:"
+    "vfile": "catalog:",
+    "vue": "catalog:"
   }
 }

@@ -7,6 +7,7 @@ const withMDX = createMDX({
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  serverExternalPackages: ['typescript', 'twoslash', 'twoslash-vue', '@vue/language-core'],
   async redirects() {
     return [
       {

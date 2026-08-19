@@ -32,14 +32,12 @@ import { useLocalStorage } from 'kvant/vue'
 import * as kv from 'kvant/schema'
 
 const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
-
-function toggle() {
-  theme.value = theme.value === 'light' ? 'dark' : 'light'
-}
 </script>
 
 <template>
-  <button @click="toggle">Theme: {{ theme }}</button>
+  <button @click="theme = theme === 'light' ? 'dark' : 'light'">
+    Theme: {{ theme }}
+  </button>
 </template>
 ```
   </case>

@@ -18,6 +18,9 @@ allowBuilds:
   unrs-resolver: true
   vue-demi: true
 
+overrides:
+  fumadocs-twoslash>twoslash: npm:twoslash-vue@^0.3.9
+
 catalog:
   '@antfu/eslint-config': ^9.3.0
   '@eslint-react/eslint-plugin': ^5.18.0
@@ -31,6 +34,8 @@ catalog:
   '@react-router/node': ^8
   '@react-router/serve': ^8
   '@reactuses/core': ^6.5.2
+  '@shikijs/transformers': ^4.4.3
+  '@shikijs/twoslash': ^4.4.3
   '@standard-schema/spec': ^1.1.0
   '@tailwindcss/postcss': ^4.3.3
   '@tailwindcss/vite': ^4.2.2
@@ -52,6 +57,7 @@ catalog:
   fumadocs-core: 16.14.3
   fumadocs-docgen: ^3.1.0
   fumadocs-mdx: 15.2.3
+  fumadocs-twoslash: ^3.3.0
   fumadocs-typescript: ^5.3.0
   fumadocs-ui: npm:@fumadocs/base-ui@16.14.3
   happy-dom: ^20.11.2
@@ -75,6 +81,8 @@ catalog:
   tailwindcss: ^4.3.3
   tsdown: ^0.22.14
   turbo: ^2.10.9
+  twoslash: ^0.3.9
+  twoslash-vue: ^0.3.9
   typescript: ^6.0.3
   unified: ^11.0.5
   unist-util-visit: ^5.1.0

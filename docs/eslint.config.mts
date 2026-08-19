@@ -7,7 +7,7 @@ export default antfu(
     pnpm: {
       catalogs: true,
     },
-    ignores: ['next-env.d.ts'],
+    ignores: ['next-env.d.ts', '.source'],
   },
   {
     rules: {
