@@ -1,8 +1,10 @@
 'use client'
 import type { ReactNode } from 'react'
-import { useElementBounding } from '@reactuses/core'
+import { useElementBounding, useReducedMotion } from '@reactuses/core'
 import { animate, createTimeline, stagger, waapi } from 'animejs'
 import { useTheme } from 'fumadocs-ui/provider/base'
+import { useLocalStorage } from 'kvant/react'
+import * as kv from 'kvant/schema'
 import { useEffect, useRef } from 'react'
 import WaveArcs from '../wave-arcs'
 
@@ -11,6 +13,10 @@ export interface HeroAnimationProps {
 }
 
 export function HeroAnimation({ children }: HeroAnimationProps) {
+  const globalReducedMotion = useReducedMotion(false)
+  const [localReducedMotion] = useLocalStorage('kvant.reducedMotion', kv.stringbool().optional())
+  const reducedMotion = localReducedMotion ?? globalReducedMotion
+
   const { resolvedTheme } = useTheme()
   const dark = resolvedTheme !== 'light'
 
@@ -45,13 +51,20 @@ export function HeroAnimation({ children }: HeroAnimationProps) {
         delay: stagger(100),
       }), '<-=200')
 
+    if (reducedMotion)
+      tl.complete()
+
     return () => void tl.cancel()
-  }, [])
+  }, [reducedMotion])
 
   return (
     <>
-      <div ref={containerRef} className="pointer-events-none absolute -z-10 -top-14 left-0 w-full h-[calc(100%+var(--spacing)*14)]">
+      <div
+        ref={containerRef}
+        className="pointer-events-none absolute -z-10 -top-14 left-0 w-full h-[calc(100%+var(--spacing)*14)]"
+      >
         <WaveArcs
+          active={!reducedMotion}
           alpha
           backgroundColor="transparent"
           lineColor={dark ? '#dce0df' : '#231f20'}

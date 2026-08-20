@@ -42,6 +42,7 @@ interface CanvasState {
 }
 
 function useCanvasAnimation({
+  active = true,
   alpha = false,
   deferStart = false,
   onSetup,
@@ -49,6 +50,7 @@ function useCanvasAnimation({
   onDraw,
   resizeDebounce = 100,
 }: {
+  active?: boolean
   alpha?: boolean
   deferStart?: boolean
   onSetup?: (ctx: CanvasRenderingContext2D, state: CanvasState) => void
@@ -87,6 +89,11 @@ function useCanvasAnimation({
     if (!ctx)
       return
     const st = stateRef.current
+
+    if (!active) {
+      ctx.clearRect(0, 0, st.width, st.height)
+      return
+    }
 
     const setup = () => {
       const dpr = window.devicePixelRatio || 1
@@ -179,7 +186,7 @@ function useCanvasAnimation({
       window.removeEventListener('resize', onResizeEv)
       document.removeEventListener('visibilitychange', onPageVis)
     }
-  }, [alpha, deferStart, resizeDebounce])
+  }, [active, alpha, deferStart, resizeDebounce])
 
   return { containerRef, canvasRef, stateRef }
 }
@@ -190,6 +197,7 @@ interface Offset {
 }
 
 interface InteractiveHeroCanvasProps {
+  active?: boolean
   alpha?: boolean
   backgroundColor?: string
   lineColor?: string
@@ -205,6 +213,7 @@ interface InteractiveHeroCanvasProps {
 }
 
 export default function InteractiveHeroCanvas({
+  active = true,
   alpha = false,
   backgroundColor = '#0A0A0A',
   lineColor = 'rgb(255, 255, 255)',
@@ -221,6 +230,7 @@ export default function InteractiveHeroCanvas({
   const mouseRef = useRef({ y: 0, targetY: 0 })
 
   const { containerRef, canvasRef, stateRef } = useCanvasAnimation({
+    active,
     alpha,
     deferStart: true,
 
