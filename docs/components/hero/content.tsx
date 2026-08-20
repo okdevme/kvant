@@ -10,6 +10,7 @@ export interface SnippetComponent {
   id: string
   frameworks?: FrameworkId[]
   label: (framework: Framework) => string
+  path?: (framework: Framework) => string
   render: (framework: Framework) => string
 }
 
@@ -28,6 +29,20 @@ export const snippetComponents: SnippetComponent[] = [
         case 'vue-router':
         case 'nuxt':
           return 'Route Query'
+      }
+    },
+    path: (framework) => {
+      switch (framework.id) {
+        case 'react':
+        case 'next':
+        case 'react-router':
+        case 'vue':
+          return 'search-params'
+        case 'next-pages':
+          return 'router-query'
+        case 'vue-router':
+        case 'nuxt':
+          return 'route-query'
       }
     },
     render: (framework) => {
@@ -197,6 +212,7 @@ export const snippetMap = Object.fromEntries(
       .filter(component => !component.frameworks || component.frameworks.includes(framework.id))
       .map(component => ({
         label: component.label(framework),
+        path: component.path?.(framework) ?? component.id,
         children: (
           <CachedCodeBlock
             lang={framework.family === 'vue' ? 'vue' : 'tsx'}

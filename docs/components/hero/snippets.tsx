@@ -13,6 +13,7 @@ import { FrameworkIcon } from '../framework-icon'
 
 export interface Snippet {
   label: string
+  path: string
   children: ReactNode
 }
 
@@ -106,7 +107,7 @@ export function HeroSnippets({ map }: HeroSnippetsProps) {
             >
               {snippet.children}
               <Link
-                href="/docs/next/quick-start"
+                href={`/docs/${framework.id}/${snippet.path}`}
                 className={cn(
                   buttonVariants({ color: 'ghost' }),
                   'gap-2 px-4 rounded-full absolute top-[calc(100%+var(--spacing)*2)] left-1/2 -translate-x-1/2',
