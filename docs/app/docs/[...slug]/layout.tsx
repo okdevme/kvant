@@ -9,7 +9,7 @@ function getPageAlts(page: (typeof source)['$inferPage']) {
   return [page.slugs.at(-1)!, ...(page.data.alt?.split(',') ?? [])]
 }
 
-export default async function Layout({ children, params }: LayoutProps<'/docs/[[...slug]]'>) {
+export default async function Layout({ children, params }: LayoutProps<'/docs/[...slug]'>) {
   const { slug: slugs = [] } = await params
 
   const currentPage = source.getPage(slugs)

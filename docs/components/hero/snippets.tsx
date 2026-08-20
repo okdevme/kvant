@@ -9,6 +9,7 @@ import { Check, ChevronsUpDown, LucideArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { defaultFramework, frameworks, getFramework } from '@/lib/frameworks'
+import { useFrameworkCookie } from '@/lib/frameworks.client'
 import { FrameworkIcon } from '../framework-icon'
 
 export interface Snippet {
@@ -82,7 +83,7 @@ function FrameworkSelect({
 }
 
 export function HeroSnippets({ map }: HeroSnippetsProps) {
-  const [frameworkId, setFrameworkId] = useState<FrameworkId>(defaultFramework.id)
+  const [frameworkId, setFrameworkId] = useFrameworkCookie()
   const framework = getFramework(frameworkId) ?? defaultFramework
   const list = map[framework.id]
 
@@ -110,13 +111,13 @@ export function HeroSnippets({ map }: HeroSnippetsProps) {
                 href={`/docs/${framework.id}/${snippet.path}`}
                 className={cn(
                   buttonVariants({ color: 'ghost' }),
-                  'gap-2 px-4 rounded-full absolute top-[calc(100%+var(--spacing)*2)] left-1/2 -translate-x-1/2',
+                  'gap-2 px-4 rounded-full whitespace-nowrap absolute top-[calc(100%+var(--spacing)*2)] left-1/2 -translate-x-1/2',
                 )}
               >
                 More on
                 {' '}
                 {snippet.label}
-                <LucideArrowRight className="size-4" />
+                <LucideArrowRight className="size-4 shrink-0" />
               </Link>
             </Tab>
           ))}

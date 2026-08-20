@@ -1,3 +1,5 @@
+import * as kv from 'kvant/schema'
+
 export type FrameworkFamily = 'react' | 'vue'
 export type FrameworkId = 'react' | 'next' | 'next-pages' | 'react-router' | 'vue' | 'vue-router' | 'nuxt'
 
@@ -46,6 +48,11 @@ export const frameworks: Framework[] = [
 ]
 
 export const defaultFramework = frameworks.find(f => f.id === 'next')!
+
+export const frameworkIds = frameworks.map(f => f.id)
+
+export const frameworkCookieName = 'kvant.framework'
+export const frameworkCookieSchema = kv.enum(frameworkIds).default(defaultFramework.id)
 
 export function getFramework(id: string | undefined): Framework | undefined {
   return frameworks.find(f => f.id === id)

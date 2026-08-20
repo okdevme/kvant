@@ -37,7 +37,7 @@ export function Hero() {
             Documentation
           </Link>
           <Link
-            href="/docs/next/quick-start"
+            href="/quick-start"
             className={cn(buttonVariants({ color: 'secondary' }), 'gap-2 px-4 rounded-full')}
           >
             <LucideRocket className="size-5" />

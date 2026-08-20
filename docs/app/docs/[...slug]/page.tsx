@@ -9,12 +9,13 @@ import {
 } from 'fumadocs-ui/layouts/docs/page'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import { notFound } from 'next/navigation'
+import { DocsNavigationSpy } from '@/components/docs'
 import { getMDXComponents } from '@/components/mdx'
 import { getFramework } from '@/lib/frameworks'
 import { gitConfig } from '@/lib/shared'
 import { getPageImageUrl, getPageMarkdownUrl, source } from '@/lib/source'
 
-export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
+export default async function Page(props: PageProps<'/docs/[...slug]'>) {
   const params = await props.params
   const page = source.getPage(params.slug)
   if (!page)
@@ -25,6 +26,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
+      <DocsNavigationSpy />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
       <div className="flex flex-row gap-2 items-center border-b pb-6">
@@ -50,7 +52,7 @@ export async function generateStaticParams() {
   return source.generateParams()
 }
 
-export async function generateMetadata(props: PageProps<'/docs/[[...slug]]'>): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<'/docs/[...slug]'>): Promise<Metadata> {
   const params = await props.params
   const page = source.getPage(params.slug)
   if (!page)
