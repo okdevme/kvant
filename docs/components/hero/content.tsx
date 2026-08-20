@@ -3,8 +3,8 @@ import type { Framework, FrameworkId } from '@/lib/frameworks'
 import { rehypeCodeDefaultOptions } from 'fumadocs-core/mdx-plugins'
 import { transformerTwoslash } from 'fumadocs-twoslash'
 import * as twoslashComponents from 'fumadocs-twoslash/ui'
+import { ServerCodeBlock } from 'fumadocs-ui/components/codeblock.rsc'
 import { frameworks } from '@/lib/frameworks'
-import { CachedCodeBlock } from './cached-codeblock'
 
 export interface SnippetComponent {
   id: string
@@ -213,16 +213,14 @@ export const snippetMap = Object.fromEntries(
       .map(component => ({
         label: component.label(framework),
         path: component.path?.(framework) ?? component.id,
-        children: (
-          <CachedCodeBlock
-            lang={framework.family === 'vue' ? 'vue' : 'tsx'}
-            code={component.render(framework)}
-            codeblock={{ className: 'border-0 shadow-none' }}
-            transformers={transformers}
-            meta={{ __raw: 'twoslash' }}
-            components={twoslashComponents}
-          />
-        ),
+        children: ServerCodeBlock({
+          lang: framework.family === 'vue' ? 'vue' : 'tsx',
+          code: component.render(framework),
+          codeblock: { className: 'border-0 shadow-none' },
+          transformers,
+          meta: { __raw: 'twoslash' },
+          components: twoslashComponents,
+        }),
       })),
   ]),
 ) as SnippetMap
