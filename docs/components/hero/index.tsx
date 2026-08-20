@@ -1,10 +1,9 @@
 import { buttonVariants } from 'fumadocs-ui/components/ui/button'
-import { LucideBookOpen, LucideRocket } from 'lucide-react'
-import Link from 'next/link'
 import { cn } from '@/lib/cn'
 import { KvantIcon, KvantTitle } from '../branding'
 import { HeroAnimation } from './animation'
 import { snippetMap } from './content'
+import { HeroDynamicLinks } from './links'
 import { HeroSnippets } from './snippets'
 
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -32,17 +31,7 @@ export function Hero() {
         </p>
 
         <div className="w-full flex flex-wrap items-stretch justify-center gap-3 flex-col xs:flex-row xs:items-center opacity-0 anim-supporter">
-          <Link href="/docs" className={cn(buttonVariants({ color: 'primary' }), 'gap-2 px-4 rounded-full')}>
-            <LucideBookOpen className="size-5" />
-            Documentation
-          </Link>
-          <Link
-            href="/quick-start"
-            className={cn(buttonVariants({ color: 'secondary' }), 'gap-2 px-4 rounded-full')}
-          >
-            <LucideRocket className="size-5" />
-            Quick Start
-          </Link>
+          <HeroDynamicLinks />
           <a
             href="https://github.com/okdevme/kvant"
             target="_blank"
