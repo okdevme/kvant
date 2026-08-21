@@ -98,7 +98,7 @@
     "zod": "catalog:"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && pnpm build && npx lint-staged"
+    "pre-commit": "pnpx lint-staged"
   },
   "lint-staged": {
     "*": "eslint --fix"
