@@ -22,7 +22,7 @@ export function Hero() {
           <KvantIcon className="relative size-32" />
         </HeroAnimation>
 
-        <KvantTitle className="text-6xl opacity-0 anim-supporter" />
+        <KvantTitle className="text-6xl z-20 dark:z-auto opacity-0 anim-supporter" />
 
         <p className="max-w-md text-fd-muted-foreground text-md opacity-0 anim-supporter">
           Universal, type-safe state manager
