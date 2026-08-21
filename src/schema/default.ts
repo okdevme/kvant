@@ -4,8 +4,6 @@ import type { input, KvantType, output, rawInput } from './core'
 import { shallowClone } from '../utils/object'
 import { generics } from './core'
 
-const basicIsDefault = (value: unknown, defaultValue: unknown): boolean => value === defaultValue
-
 export interface KvantDefaultOptions<
   S extends KvantGenericSchema,
   T extends NoUndefined<output<S>>,
@@ -50,7 +48,7 @@ export function _default<
 ): KvantDefault<S, T, Options> {
   const {
     clearOnDefault = true,
-    isDefault = basicIsDefault,
+    isDefault = Object.is,
   } = options ?? {}
 
   const getDefaultValue = (): T => typeof defaultValue === 'function'
@@ -131,7 +129,7 @@ export function prefault<
 ): KvantPrefault<S, T, Options> {
   const {
     clearOnDefault = true,
-    isDefault = basicIsDefault,
+    isDefault = Object.is,
   } = options ?? {}
 
   const getDefaultValue = (): T => typeof defaultValue === 'function'
