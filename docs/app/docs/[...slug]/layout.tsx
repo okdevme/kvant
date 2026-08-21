@@ -33,7 +33,7 @@ export default async function Layout({ children, params }: LayoutProps<'/docs/[.
     icon: (
       <FrameworkIcon
         id={framework.id}
-        className="w-full h-full"
+        className="w-full h-full layout-tab-icon"
       />
     ),
   }))

@@ -35,3 +35,7 @@ body.vue-router {
 body.nuxt {
   --color-fd-primary: #00dc82;
 } */
+
+.size-9:has(> .layout-tab-icon) {
+  @apply size-5!;
+}
