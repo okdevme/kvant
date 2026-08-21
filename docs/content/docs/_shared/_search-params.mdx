@@ -4,7 +4,7 @@ title: Search Params
 
 <switch>
   <case react>
-`useSearchParams` binds state to URL search params via the History API — no
+`useSearchParams` binds state to URL search params via the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API), with no
 router required. The URL is the single source of truth: refreshing, sharing,
 or bookmarking the link restores the exact state, and updates preserve the
 URL hash and any params managed by other code.
@@ -12,38 +12,38 @@ URL hash and any params managed by other code.
   <case next>
 `useSearchParams` binds state to URL search params. The URL is the single
 source of truth: refreshing, sharing, or bookmarking the link restores the
-exact state. Writes use the native History API by default (`shallow`), so
-no server round-trip happens — and updates are applied optimistically
+exact state. Writes use the native [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) by default (`shallow`), so
+no server round-trip happens, and updates are applied optimistically
 inside a React transition.
   </case>
   <case next-pages>
-`useRouterQuery` binds state to `router.query`, navigating through the
+`useRouterQuery` binds state to [`router.query`](https://nextjs.org/docs/pages/api-reference/functions/use-router#router-object), navigating through the
 Next.js pages router. The URL is the single source of truth: refreshing,
 sharing, or bookmarking the link restores the exact state. Writes are
-shallow by default, so data fetching methods don't re-run — and the URL
+shallow by default, so data fetching methods don't re-run, and the URL
 hash is preserved.
   </case>
   <case react-router>
 `useSearchParams` binds state to URL search params, navigating through
-React Router — so writes integrate with loaders, actions, and router-aware
+React Router, so writes integrate with loaders, actions, and router-aware
 scroll handling. The URL is the single source of truth: refreshing,
 sharing, or bookmarking the link restores the exact state.
   </case>
   <case vue>
-`useSearchParams` binds state to URL search params via the History API — no
+`useSearchParams` binds state to URL search params via the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API), with no
 router required. The URL is the single source of truth: refreshing, sharing,
 or bookmarking the link restores the exact state, and updates preserve the
 URL hash and any params managed by other code.
   </case>
   <case vue-router>
-`useRouteQuery` binds state to the router's query parameters, using Vue
-Router for navigation — so writes integrate with router guards, scroll
+`useRouteQuery` binds state to the router's [query parameters](https://router.vuejs.org/api/interfaces/RouteLocationNormalizedLoadedGeneric.html#query), using Vue
+Router for navigation, so writes integrate with router guards, scroll
 behavior, and history. The URL is the single source of truth: refreshing,
 sharing, or bookmarking the link restores the exact state.
   </case>
   <case nuxt>
-`useRouteQuery` binds state to the router's query parameters, using the
-Nuxt router for navigation — so writes integrate with middleware, scroll
+`useRouteQuery` binds state to the router's [query parameters](https://nuxt.com/docs/api/composables/use-route#api), using the
+Nuxt router for navigation, so writes integrate with middleware, scroll
 behavior, and history. The URL is the single source of truth: refreshing,
 sharing, or bookmarking the link restores the exact state.
   </case>

@@ -4,23 +4,23 @@ title: Cookies
 
 <switch>
   <case react vue>
-`useCookies` binds state to a cookie. Cookies **can be read by server**,
-which makes them ideal for values that affect SSR — locale, theme, feature flags.
+`useCookies` binds state to a [cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies). Cookies **can be read by server**,
+which makes them ideal for values that affect SSR: locale, theme, feature flags.
 Changes are picked up across tabs via the [Cookie Store API](https://developer.mozilla.org/en-US/docs/Web/API/Cookie_Store_API)
 where available.
   </case>
   <case nuxt>
-`useCookies` binds state to a cookie, built on Nuxt's SSR-aware
-[`useCookie`](https://nuxt.com/docs/api/composables/use-cookie) — cookies
+`useCookies` binds state to a [cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies), built on Nuxt's SSR-aware
+[`useCookie`](https://nuxt.com/docs/api/composables/use-cookie). Cookies
 work on both server and client with no fallback setup: the server reads the
-request's `Cookie` header and the value is serialized into the payload for
+request's [`Cookie` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cookie) and the value is serialized into the payload for
 hydration.
   </case>
 </switch>
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
 import { useCookies } from 'kvant/react'
 import * as kv from 'kvant/schema'
 
@@ -37,7 +37,7 @@ export function LocaleSelect() {
 ```
   </case>
   <case vue>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { useCookies } from 'kvant/vue'
 import * as kv from 'kvant/schema'
@@ -54,7 +54,7 @@ const locale = useCookies('locale', kv.string().default('en'))
 ```
   </case>
   <case nuxt>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { useCookies } from 'kvant/nuxt'
 import * as kv from 'kvant/schema'
@@ -78,7 +78,10 @@ Key maps work too:
 
 <switch>
   <case react>
-```tsx
+```ts twoslash
+import { useCookies } from 'kvant/react'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [prefs, setPrefs] = useCookies({
   locale: kv.string().default('en'),
   theme: kv.enum(['light', 'dark']).default('light'),
@@ -88,7 +91,10 @@ setPrefs(prev => ({ ...prev, theme: 'dark' }))
 ```
   </case>
   <case vue>
-```ts
+```ts twoslash
+import { useCookies } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+// ---cut---
 const prefs = useCookies({
   locale: kv.string().default('en'),
   theme: kv.enum(['light', 'dark']).default('light'),
@@ -104,7 +110,7 @@ prefs.value.theme = 'dark' // deeply reactive!
 
 <switch>
   <case react vue>
-Options extend the standard `Set-Cookie` attributes:
+Options extend the standard [`Set-Cookie` attributes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie#attributes):
 
 <AutoTypeTable
   path="node_modules/kvant/dist/index.d.mts"
@@ -112,7 +118,7 @@ Options extend the standard `Set-Cookie` attributes:
 />
   </case>
   <case nuxt>
-Options are a subset of Nuxt's `CookieOptions`:
+Options are a subset of Nuxt's [`useCookie` parameters](https://nuxt.com/docs/api/composables/use-cookie#parameters):
 
 <AutoTypeTable
   path="node_modules/kvant/dist/nuxt.d.mts"
@@ -123,7 +129,10 @@ Options are a subset of Nuxt's `CookieOptions`:
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
+import { useCookies } from 'kvant/react'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [consent, setConsent] = useCookies(
   'consent',
   kv.stringbool().default(false),
@@ -132,7 +141,10 @@ const [consent, setConsent] = useCookies(
 ```
   </case>
   <case vue>
-```tsx
+```ts twoslash
+import { useCookies } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+// ---cut---
 const consent = useCookies(
   'consent',
   kv.stringbool().default(false),
@@ -146,7 +158,9 @@ const consent = useCookies(
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
+let children: React.ReactNode
+// ---cut---
 import { CookiesOptionsProvider } from 'kvant/react'
 
 <CookiesOptionsProvider
@@ -157,7 +171,7 @@ import { CookiesOptionsProvider } from 'kvant/react'
 ```
   </case>
   <case vue>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { provideCookiesOptions } from 'kvant/vue'
 
@@ -166,7 +180,7 @@ provideCookiesOptions({ maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' })
 ```
   </case>
   <case nuxt>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { provideCookiesOptions } from 'kvant/nuxt'
 

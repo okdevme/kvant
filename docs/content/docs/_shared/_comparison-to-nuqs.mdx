@@ -5,19 +5,19 @@ description: How kvant relates to nuqs, and the key differences between them.
 
 [nuqs](https://nuqs.dev) is the library that popularized type-safe URL query
 state for React: `useQueryState` syncs a piece of state with a search param,
-using parsers to convert between strings and typed values. kvant takes heavy
-inspiration from nuqs — if you've used it, the core loop (schema → hook →
+using [parsers](https://nuqs.dev/docs/parsers/built-in) to convert between strings and typed values.
+kvant's API is heavily inspired by nuqs. If you've used it, the core loop (schema to hook to
 URL as source of truth) will feel familiar.
 
 <switch>
   <case react>
-```ts tab="nuqs"
+```ts twoslash tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
 const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
-```ts tab="kvant"
+```ts twoslash tab="kvant"
 import { useSearchParams } from 'kvant/react'
 import * as kv from 'kvant/schema'
 
@@ -25,13 +25,13 @@ const [page, setPage] = useSearchParams('page', kv.index().default(0))
 ```
   </case>
   <case next>
-```ts tab="nuqs"
+```ts twoslash tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
 const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
-```ts tab="kvant"
+```ts twoslash tab="kvant"
 import { useSearchParams } from 'kvant/next'
 import * as kv from 'kvant/schema'
 
@@ -39,13 +39,13 @@ const [page, setPage] = useSearchParams('page', kv.index().default(0))
 ```
   </case>
   <case next-pages>
-```ts tab="nuqs"
+```ts twoslash tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
 const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
-```ts tab="kvant"
+```ts twoslash tab="kvant"
 import { useRouterQuery } from 'kvant/next/pages'
 import * as kv from 'kvant/schema'
 
@@ -53,13 +53,13 @@ const [page, setPage] = useRouterQuery('page', kv.index().default(0))
 ```
   </case>
   <case react-router>
-```ts tab="nuqs"
+```ts twoslash tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
 const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
-```ts tab="kvant"
+```ts twoslash tab="kvant"
 import { useSearchParams } from 'kvant/react-router'
 import * as kv from 'kvant/schema'
 
@@ -67,13 +67,13 @@ const [page, setPage] = useSearchParams('page', kv.index().default(0))
 ```
   </case>
   <case vue>
-```ts tab="nuqs"
+```ts twoslash tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
 const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
-```ts tab="kvant"
+```ts twoslash tab="kvant"
 import { useSearchParams } from 'kvant/vue'
 import * as kv from 'kvant/schema'
 
@@ -81,13 +81,13 @@ const page = useSearchParams('page', kv.index().default(0))
 ```
   </case>
   <case vue-router>
-```ts tab="nuqs"
+```ts twoslash tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
 const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
-```ts tab="kvant"
+```ts twoslash tab="kvant"
 import { useRouteQuery } from 'kvant/vue-router'
 import * as kv from 'kvant/schema'
 
@@ -95,13 +95,13 @@ const page = useRouteQuery('page', kv.index().default(0))
 ```
   </case>
   <case nuxt>
-```ts tab="nuqs"
+```ts twoslash tab="nuqs"
 import { parseAsIndex, useQueryState } from 'nuqs'
 
 const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
-```ts tab="kvant"
+```ts twoslash tab="kvant"
 import { useRouteQuery } from 'kvant/nuxt'
 import * as kv from 'kvant/schema'
 
@@ -112,7 +112,7 @@ const page = useRouteQuery('page', kv.index().default(0))
 
 ## Key differences
 
-### Many interfaces, not just search params
+### Many interfaces, not only search params
 
 nuqs syncs state with URL search params. kvant treats search params as one
 of many key-value interfaces, all sharing one API:
@@ -129,19 +129,27 @@ of many key-value interfaces, all sharing one API:
 
 Same mental model everywhere:
 
-```ts
-const [query, setQuery] = useSearchParams('q', kv.string().default(''))
-const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
-const [locale, setLocale] = useCookies('locale', kv.string().default('en'))
-```
+<include>./snippets/_every-interface-demo.mdx</include>
 
 ### Multiple framework families
 
-nuqs is React-only (with adapters for Next.js, React Router and other React-based frameworks).
+nuqs is React-only (with [adapters](https://nuqs.dev/docs/adapters) for Next.js, React Router and other React-based frameworks).
 kvant additionally supports **Vue, Vue Router, and Nuxt**
 with idiomatic composables that return writable refs:
 
-```vue
+<switch>
+  <case react vue>
+```vue twoslash
+<script setup lang="ts">
+import { useSearchParams } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+
+const query = useSearchParams('q', kv.string().default(''))
+</script>
+```
+  </case>
+  <case vue-router>
+```vue twoslash
 <script setup lang="ts">
 import { useRouteQuery } from 'kvant/vue-router'
 import * as kv from 'kvant/schema'
@@ -149,30 +157,38 @@ import * as kv from 'kvant/schema'
 const query = useRouteQuery('q', kv.string().default(''))
 </script>
 ```
+  </case>
+  <case nuxt>
+```vue twoslash
+<script setup lang="ts">
+import { useRouteQuery } from 'kvant/nuxt'
+import * as kv from 'kvant/schema'
+
+const query = useRouteQuery('q', kv.string().default(''))
+</script>
+```
+  </case>
+</switch>
 
 ### Options live at binding time, not call time
 
 In nuqs, you can pass options per `setState` call
-(`setPage(2, { history: 'push' })`). kvant doesn't allow this by design:
-options are set when binding (hook call) or globally (options providers,
-`defineKvantState` defaults).
+(`setPage(2, { history: 'push' }){:ts}`). kvant doesn't allow this by design:
+options are set when binding (hook call) or globally ([options providers](./quick-start#global-default-options),
+[`defineKvantState`](./advanced-usage#definekvantstate) defaults).
 
 kvant hooks mirror the framework's original state API as closely
-as possible: React's `setState` doesn't take options, Vue's `ref.value =`
-can't take options — so kvant's setters don't either. One state API to
+as possible: React's `setState` doesn't take options, Vue's `ref.value ={:ts}`
+can't take options, so kvant's setters don't either. One state API to
 learn, no surprises when switching interfaces.
 
 ### Schemas instead of parsers
 
-nuqs parsers define `parse`/`serialize` (with `eq` for comparison). kvant
-schemas define `parse`/`encode` and add a fluent, Zod-like API on top —
-checks, transforms, defaults, structures — via the built-in
-[`kvant/schema`](./schema.mdx) library. Zod and other validation libraries
+nuqs [parsers](https://nuqs.dev/docs/parsers/built-in) define `parse`/`serialize` (with `eq` for comparison). kvant
+[schemas](./schema) define `parse`/`encode` and add a fluent, Zod-like API on top:
+checks, transforms, defaults, structures, via the built-in
+[`kvant/schema`](./schema.mdx) library. [Zod](./zod) and [other validation libraries](./custom-schema#adapting-other-schema-libraries)
 slot in too.
-
-## Feature gaps
-
-<include>../_shared/snippets/_throttle-warning.mdx</include>
 
 ## Migrating from nuqs?
 
@@ -180,9 +196,9 @@ The concepts map closely:
 
 | nuqs | kvant |
 | ---- | ----- |
-| `useQueryState(key, parser)` | `useSearchParams(key, schema)` |
-| `useQueryStates(keyMap)` | `useSearchParams(keyMap)` |
-| parsers (`parseAsInteger`, ...) | schemas (`kv.int()`, ...) |
+| `useQueryState(key, parser){:ts}` | `useSearchParams(key, schema){:ts}` |
+| `useQueryStates(keyMap){:ts}` | `useSearchParams(keyMap){:ts}` |
+| parsers (`parseAsInteger`, ...) | schemas (`kv.int(){:ts}`, ...) |
 | `parse` / `serialize` | `parse` / `encode` |
-| `.withDefault(value)` | `.default(value)` |
-| `clearOnDefault` | `.default(value, { clearOnDefault })` |
+| `.withDefault(value){:ts}` | `.default(value){:ts}` |
+| `clearOnDefault` | `.default(value, { clearOnDefault }){:ts}` |

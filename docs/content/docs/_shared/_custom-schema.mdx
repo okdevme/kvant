@@ -7,8 +7,8 @@ Any object with `parse` and `encode` functions is a valid kvant schema:
 
 ```ts
 interface KvantSchema<Output, Input = Output, RawInput = unknown> {
-  parse: (value: RawInput) => Output  // storage → state
-  encode: (value: Output) => Input    // state → storage
+  parse: (value: RawInput) => Output  // storage to state
+  encode: (value: Output) => Input    // state to storage
 }
 ```
 
@@ -16,8 +16,11 @@ interface KvantSchema<Output, Input = Output, RawInput = unknown> {
 
 The simplest schema is a plain object:
 
-```ts
+<switch>
+  <case react>
+```ts twoslash
 import type { KvantSchema } from 'kvant'
+import { useLocalStorage } from 'kvant/react'
 
 const commaListSchema: KvantSchema<string[] | undefined, string | undefined> = {
   parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
@@ -28,30 +31,67 @@ commaListSchema.parse('a,b,c') // ['a', 'b', 'c']
 commaListSchema.encode(['a', 'b']) // 'a,b'
 commaListSchema.encode([]) // undefined (removes the key)
 
-useLocalStorage('tags', commaListSchema)
+const [tags, setTags] = useLocalStorage('tags', commaListSchema)
 ```
+  </case>
+  <case vue>
+```ts twoslash
+import type { KvantSchema } from 'kvant'
+import { useLocalStorage } from 'kvant/vue'
 
-You can also use `kv.custom()` from `kvant/schema`, which gives you the same
+const commaListSchema: KvantSchema<string[] | undefined, string | undefined> = {
+  parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
+  encode: value => value?.length ? value.join(',') : undefined,
+}
+
+commaListSchema.parse('a,b,c') // ['a', 'b', 'c']
+commaListSchema.encode(['a', 'b']) // 'a,b'
+commaListSchema.encode([]) // undefined (removes the key)
+
+const tags = useLocalStorage('tags', commaListSchema)
+```
+  </case>
+</switch>
+
+You can also use [`kv.custom()`](./schema#custom) from `kvant/schema`, which gives you the same
 result with full type inference and access to the chainable combinators
 (`.default()`, `.pipe()`, `.refine()`, ...):
 
-```ts
+<switch>
+  <case react>
+```ts twoslash
 import * as kv from 'kvant/schema'
+import { useLocalStorage } from 'kvant/react'
 
 const commaListSchema = kv.custom<string[] | undefined, string | undefined>({
   parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
   encode: value => value?.length ? value.join(',') : undefined,
 })
 
-useLocalStorage('tags', commaListSchema.default([]))
+const [tags, setTags] = useLocalStorage('tags', commaListSchema.default([]))
 ```
+  </case>
+  <case vue>
+```ts twoslash
+import * as kv from 'kvant/schema'
+import { useLocalStorage } from 'kvant/vue'
+
+const commaListSchema = kv.custom<string[] | undefined, string | undefined>({
+  parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
+  encode: value => value?.length ? value.join(',') : undefined,
+})
+
+const tags = useLocalStorage('tags', commaListSchema.default([]))
+```
+  </case>
+</switch>
 
 Contract, in short:
 
-1. **Never throw** — return `undefined` for invalid input instead — URLs, cookies, and storage
+1. **Never throw.** Return `undefined` for invalid input instead. URLs, cookies, and storage
 are user-editable, and throwing turns a bad value into a broken page.
-2. **Lossless** — `encode(parse(v))` preserves valid values.
-3. **Pure** — no side effects; same input, same output.
+2. **Lossless.** `encode(parse(v))` preserves valid values.
+3. **Pure.** No side effects: same input, same output.
 
 ## Adapting other schema libraries
 
@@ -124,5 +164,5 @@ function standard<T>(
 ```
 
 The pattern is always the same: **safe-parse on the way in, identity (or a
-codec) on the way out**, and `undefined` — never an exception — for invalid
+codec) on the way out**, and `undefined`, never an exception, for invalid
 input.

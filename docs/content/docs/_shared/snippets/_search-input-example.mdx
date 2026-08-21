@@ -4,7 +4,7 @@ title: Search Input Example
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
 import { useSearchParams } from 'kvant/react'
 import * as kv from 'kvant/schema'
 
@@ -21,7 +21,7 @@ function SearchInput() {
 ```
   </case>
   <case next>
-```tsx
+```tsx twoslash
 import { useSearchParams } from 'kvant/next'
 import * as kv from 'kvant/schema'
 
@@ -38,7 +38,7 @@ function SearchInput() {
 ```
   </case>
   <case next-pages>
-```tsx
+```tsx twoslash
 import { useRouterQuery } from 'kvant/next/pages'
 import * as kv from 'kvant/schema'
 
@@ -55,7 +55,7 @@ function SearchInput() {
 ```
   </case>
   <case react-router>
-```tsx
+```tsx twoslash
 import { useSearchParams } from 'kvant/react-router'
 import * as kv from 'kvant/schema'
 
@@ -72,7 +72,7 @@ function SearchInput() {
 ```
   </case>
   <case vue>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { useSearchParams } from 'kvant/vue'
 import * as kv from 'kvant/schema'
@@ -86,7 +86,7 @@ const query = useSearchParams('q', kv.string().default(''))
 ```
   </case>
   <case vue-router>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { useRouteQuery } from 'kvant/vue-router'
 import * as kv from 'kvant/schema'
@@ -100,7 +100,7 @@ const query = useRouteQuery('q', kv.string().default(''))
 ```
   </case>
   <case nuxt>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { useRouteQuery } from 'kvant/nuxt'
 import * as kv from 'kvant/schema'

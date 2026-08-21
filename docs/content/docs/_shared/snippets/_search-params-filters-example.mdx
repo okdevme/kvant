@@ -9,7 +9,7 @@ const [filters, setFilters] = useSearchParams({
   q: kv.string().default(''),
   page: kv.index().default(0),
   sort: kv.enum(['asc', 'desc']).default('asc'),
-  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+  tags: kv.array(kv.string()).default([]), // repeated params: ?tags=a&tags=b
 })
 ```
   </case>
@@ -19,7 +19,7 @@ const [filters, setFilters] = useRouterQuery({
   q: kv.string().default(''),
   page: kv.index().default(0),
   sort: kv.enum(['asc', 'desc']).default('asc'),
-  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+  tags: kv.array(kv.string()).default([]), // repeated params: ?tags=a&tags=b
 })
 ```
   </case>
@@ -29,7 +29,7 @@ const filters = useSearchParams({
   q: kv.string().default(''),
   page: kv.index().default(0),
   sort: kv.enum(['asc', 'desc']).default('asc'),
-  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+  tags: kv.array(kv.string()).default([]), // repeated params: ?tags=a&tags=b
 })
 ```
   </case>
@@ -39,7 +39,7 @@ const filters = useRouteQuery({
   q: kv.string().default(''),
   page: kv.index().default(0),
   sort: kv.enum(['asc', 'desc']).default('asc'),
-  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+  tags: kv.array(kv.string()).default([]), // repeated params: ?tags=a&tags=b
 })
 ```
   </case>

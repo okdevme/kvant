@@ -4,12 +4,12 @@ title: Route Params
 
 <switch>
   <case vue-router>
-`useRouteParams` binds state to the **route params** — the dynamic
+`useRouteParams` binds state to the [**route params**](https://router.vuejs.org/guide/essentials/dynamic-matching.html), the dynamic
 segments of the route (`/users/:id`). Useful when an identifier belongs in
 the path rather than the query string.
   </case>
   <case nuxt>
-`useRouteParams` binds state to the **route params** — the dynamic
+`useRouteParams` binds state to the [**route params**](https://nuxt.com/docs/getting-started/routing#route-parameters), the dynamic
 segments of the route (`/users/[id]`). Useful when an identifier belongs in
 the path rather than the query string.
   </case>
@@ -17,7 +17,7 @@ the path rather than the query string.
 
 <switch>
   <case vue-router>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { useRouteParams } from 'kvant/vue-router'
 import * as kv from 'kvant/schema'
@@ -32,7 +32,7 @@ const id = useRouteParams('id', kv.string())
 ```
   </case>
   <case nuxt>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { useRouteParams } from 'kvant/nuxt'
 import * as kv from 'kvant/schema'
@@ -57,23 +57,28 @@ id.value = '42' // navigates to /users/42
 <Callout type="warn">
 Route params are only as writable as your route definitions allow. Writing
 a param not present in the current route's pattern has no effect on the
-path; for values that don't belong in the path, prefer
-[query parameters](./route-query).
+path; for values that don't belong in the path, prefer [query parameters](./route-query).
 </Callout>
 
 Repeatable params work too:
 
 <switch>
   <case vue-router>
-```ts
+```ts twoslash
+import { useRouteParams } from 'kvant/vue-router'
+import * as kv from 'kvant/schema'
+// ---cut---
 // Route: /docs/:slug*
-const slug = useRouteParams('slug', kv.string().array().default([]))
+const slug = useRouteParams('slug', kv.array(kv.string()).default([]))
 ```
   </case>
   <case nuxt>
-```ts
+```ts twoslash
+import { useRouteParams } from 'kvant/nuxt'
+import * as kv from 'kvant/schema'
+// ---cut---
 // Route: /docs/[[...slug]]
-const slug = useRouteParams('slug', kv.string().array().default([]))
+const slug = useRouteParams('slug', kv.array(kv.string()).default([]))
 ```
   </case>
 </switch>
@@ -82,7 +87,10 @@ Key maps bind several params at once:
 
 <switch>
   <case vue-router>
-```ts
+```ts twoslash
+import { useRouteParams } from 'kvant/vue-router'
+import * as kv from 'kvant/schema'
+// ---cut---
 // Route: /:org/:repo
 const route = useRouteParams({
   org: kv.string(),
@@ -91,7 +99,10 @@ const route = useRouteParams({
 ```
   </case>
   <case nuxt>
-```ts
+```ts twoslash
+import { useRouteParams } from 'kvant/nuxt'
+import * as kv from 'kvant/schema'
+// ---cut---
 // Route: /[org]/[repo]
 const route = useRouteParams({
   org: kv.string(),
@@ -122,7 +133,7 @@ const route = useRouteParams({
 
 <switch>
   <case vue-router>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { provideRouteParamsOptions } from 'kvant/vue-router'
 
@@ -131,7 +142,7 @@ provideRouteParamsOptions({ history: 'push' })
 ```
   </case>
   <case nuxt>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { provideRouteParamsOptions } from 'kvant/nuxt'
 

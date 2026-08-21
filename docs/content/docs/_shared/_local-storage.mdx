@@ -2,12 +2,12 @@
 title: Local Storage
 ---
 
-`useLocalStorage` binds state to a `localStorage` entry. Values persist
-across reloads, and changes **sync across tabs** via the `storage` event.
+`useLocalStorage` binds state to a [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) entry. Values persist
+across reloads, and changes **sync across tabs** via the [`storage` event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event).
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
 import { useLocalStorage } from 'kvant/react'
 import * as kv from 'kvant/schema'
 
@@ -26,7 +26,7 @@ export function ThemeToggle() {
 ```
   </case>
   <case vue>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { useLocalStorage } from 'kvant/vue'
 import * as kv from 'kvant/schema'
@@ -49,7 +49,10 @@ Key maps work too:
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
+import { useLocalStorage } from 'kvant/react'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [prefs, setPrefs] = useLocalStorage({
   theme: kv.enum(['light', 'dark']).default('light'),
   fontSize: kv.number().default(16),
@@ -59,7 +62,10 @@ setPrefs(prev => ({ ...prev, fontSize: prev.fontSize + 1 }))
 ```
   </case>
   <case vue>
-```ts
+```tsx twoslash
+import { useLocalStorage } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+// ---cut---
 const prefs = useLocalStorage({
   theme: kv.enum(['light', 'dark']).default('light'),
   fontSize: kv.number().default(16),
@@ -73,20 +79,23 @@ prefs.value.fontSize += 1 // deeply reactive!
 
 ## Session storage
 
-The same API exists for `sessionStorage` via `useSessionStorage` — scoped
-to the current tab, cleared when the tab closes, and not shared across
-tabs:
+The same API exists for [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) via `useSessionStorage`.
+It is scoped to the current tab, cleared when the tab closes, and not shared across tabs:
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
+import * as kv from 'kvant/schema'
+// ---cut---
 import { useSessionStorage } from 'kvant/react'
 
 const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
 ```
   </case>
   <case vue>
-```ts
+```tsx twoslash
+import * as kv from 'kvant/schema'
+// ---cut---
 import { useSessionStorage } from 'kvant/vue'
 
 const draft = useSessionStorage('draft', kv.string().default(''))
@@ -105,7 +114,9 @@ const draft = useSessionStorage('draft', kv.string().default(''))
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
+let children: React.ReactNode
+// ---cut---
 import { LocalStorageOptionsProvider } from 'kvant/react'
 
 <LocalStorageOptionsProvider defaultOptions={{ fallback: { theme: 'light' } }}>
@@ -114,7 +125,7 @@ import { LocalStorageOptionsProvider } from 'kvant/react'
 ```
   </case>
   <case vue>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { provideLocalStorageOptions } from 'kvant/vue'
 

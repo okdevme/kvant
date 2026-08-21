@@ -3,9 +3,9 @@ title: Introduction
 description: What kvant is, the problem it solves, and why you might want it.
 ---
 
-**kvant** is a universal, type-safe state manager for key-value interfaces:
+**kvant** is a universal, type-safe state manager for **key-value interfaces**:
 URL search params, router query and params, cookies, `localStorage`, and
-`sessionStorage` — for React, Next.js, React Router, Vue, Vue Router, and Nuxt.
+`sessionStorage`. It works with React, Next.js, React Router, Vue, Vue Router, and Nuxt.
 
 ## The problem
 
@@ -16,35 +16,37 @@ framework router objects… Reading and writing them by hand means:
 - **No type safety.** Everything is a string (at best), so you re-implement
   parsing, serialization, and validation at every call site.
 - **No reactivity.** Storages don't notify your UI when they change.
-- **No sync.** Two components bound to the same key drift apart; other tabs
+- **No sync.** Two components bound to the same key drift apart, other tabs
   never hear about your updates.
 - **Repetition.** Encoding rules (numbers, booleans, dates, JSON) get
   copy-pasted and slowly diverge.
 
-## The kvant way
+## The solution
 
-kvant turns any key-value interface into plain framework state — <switch>
+kvant turns any key-value interface into plain framework state: <switch>
   <case react>a `useState`-style tuple</case>
   <case vue>a writable `Ref`</case>
-</switch> — with a schema
-defining how values are parsed from storage and encoded back:
+</switch> with a schema
+that defines how values are parsed from storage and encoded back.
 
 <include>./snippets/_search-input-example.mdx</include>
 
 The URL stays the single source of truth: the state is read from it, every
-update writes back to it, and all hooks bound to the same key stay in sync —
+update writes back to it, and all hooks bound to the same key stay in sync,
 across components and, for storage interfaces, across tabs.
 
 ## What you get
 
 - **Type-safe by construction.** Schemas define both directions:
-  `parse` (storage → state) and `encode` (state → storage).
+  `parse` (storage to state) and `encode` (state to storage).
 - **Framework-idiomatic.** Hooks feel like `useState` in React, composables
   return refs in Vue. No new state paradigm to learn.
 - **One mental model, many interfaces.** Search params, router query, route
   params, cookies, and web storage all share the same API.
-- **SSR-ready.** kvant interfaces support server-side rendering.
-- **Lossless and safe.** Serialization is pure and reversible; invalid stored
+- **Reusability.** kvant schemas are standalone, so you can define them once and use them
+  as you would any plain validation library, both inside and outside of kvant.
+- **SSR-ready.** kvant provides a full support for server-side usage.
+- **Lossless and safe.** Serialization is pure and reversible, invalid stored
   values fall back instead of throwing.
 
 ## A deeper look

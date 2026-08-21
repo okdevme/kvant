@@ -7,29 +7,32 @@ title: Cookies SSR Setup
 <switch>
   <case react>
 In a React SPA there is no server rendering by default, but if you render
-on the server (custom SSR, prerendering), `document.cookie` is unavailable.
-Provide the request's `Cookie` header as a `fallback` via the options
-provider:
+on the server (custom SSR, prerendering), [`document.cookie`](https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie) is unavailable.
+Provide the request's [`Cookie` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cookie)
+as a `fallback` via the [**options provider**](./quick-start#global-default-options):
 
-```tsx
+```tsx twoslash
+let children: React.ReactNode
+// ---cut---
 import { CookiesOptionsProvider } from 'kvant/react'
 
-// cookieHeader comes from your server entry
+const cookieHeader: string = '...'; // comes from your server entry
+
 <CookiesOptionsProvider defaultOptions={{ fallback: cookieHeader }}>
-  <App />
+  {children}
 </CookiesOptionsProvider>
 ```
   </case>
   <case next>
-On the server there is no `document.cookie`, so provide the request's
-cookies as a `fallback` via the options provider. In the app router, you can do it
-in a layout or page:
+On the server there is no [`document.cookie`](https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie), so provide the request's
+cookies as a `fallback` via the [**options provider**](./quick-start#global-default-options). In the app router, you can do it
+in a [layout](https://nextjs.org/docs/app/api-reference/file-conventions/layout) or [page](https://nextjs.org/docs/app/api-reference/file-conventions/page):
 
-```tsx title="app/layout.tsx"
-import { cookies } from 'next/headers'
+```tsx twoslash title="app/layout.tsx"
 import { CookiesOptionsProvider } from 'kvant/react'
+import { cookies } from 'next/headers'
 
-export default async function RootLayout({ children }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies()
 
   return (
@@ -47,13 +50,14 @@ export default async function RootLayout({ children }) {
 ```
   </case>
   <case next-pages>
-On the server there is no `document.cookie`, so provide the request's
-cookies as a `fallback` via the options provider — for example from
-`getServerSideProps` into `_app`:
+On the server there is no [`document.cookie`](https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie), so provide the request's
+cookies as a `fallback` via the [**options provider**](./quick-start#global-default-options), for example from
+[`getServerSideProps`](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props)
+into [custom app](https://nextjs.org/docs/pages/building-your-application/routing/custom-app):
 
-```tsx title="pages/_app.tsx"
-import type { AppProps } from 'next/app'
+```tsx twoslash title="pages/_app.tsx"
 import { CookiesOptionsProvider } from 'kvant/react'
+import type { AppProps } from 'next/app'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -66,25 +70,39 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 ```
 
-```ts title="pages/index.tsx"
-export const getServerSideProps = async ({ req }) => ({
+```ts twoslash title="pages/index.tsx"
+import type { GetServerSideProps } from 'next'
+
+export const getServerSideProps = (async ({ req }) => ({
   props: { cookieHeader: req.headers.cookie ?? '' },
-})
+})) satisfies GetServerSideProps<{ cookieHeader: string }>
 ```
   </case>
   <case react-router>
-When server-rendering with React Router (framework mode), `document.cookie`
-is unavailable. Provide the request's `Cookie` header as a `fallback` via
-the options provider — e.g. pass it from your loader to the root route:
+When server-rendering with React Router ([framework mode](https://reactrouter.com/start/modes#framework)), [`document.cookie`](https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie)
+is unavailable. Provide the request's [`Cookie` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cookie) as a `fallback` via
+the [**options provider**](./quick-start#global-default-options), e.g. pass it from your [loader](https://reactrouter.com/start/framework/data-loading#server-data-loading)
+to the [root route](https://reactrouter.com/start/framework/routing#root-route):
 
-```tsx title="app/root.tsx"
+```tsx twoslash title="app/root.tsx"
+namespace Route {
+  export interface LoaderArgs {
+    request: Request
+  }
+
+  export interface ComponentProps {
+    loaderData: Awaited<ReturnType<typeof loader>>
+  }
+}
+// ---cut---
 import { CookiesOptionsProvider } from 'kvant/react'
+import { Outlet } from 'react-router'
 
 export async function loader({ request }: Route.LoaderArgs) {
   return { cookieHeader: request.headers.get('cookie') ?? '' }
 }
 
-export default function Root({ loaderData }: Route.ComponentProps) {
+export default function App({ loaderData }: Route.ComponentProps) {
   return (
     <CookiesOptionsProvider
       defaultOptions={{ fallback: loaderData.cookieHeader }}
@@ -96,15 +114,16 @@ export default function Root({ loaderData }: Route.ComponentProps) {
 ```
   </case>
   <case vue>
-When rendering on the server (or prerendering), `document.cookie` is
-unavailable. Provide the request's `Cookie` header as a `fallback` with the
-provide function in a top-level component:
+When rendering on the server (or prerendering), [`document.cookie`](https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie) is
+unavailable. Provide the request's [`Cookie` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cookie) as a `fallback` with the
+[**provide function**](./quick-start#global-default-options) in a top-level component:
 
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { provideCookiesOptions } from 'kvant/vue'
 
-// cookieHeader comes from your server entry, e.g. via SSR context
+const cookieHeader: string = '...' // comes from your server entry, e.g. via SSR context
+
 provideCookiesOptions({ fallback: cookieHeader })
 </script>
 ```
@@ -112,4 +131,4 @@ provideCookiesOptions({ fallback: cookieHeader })
 </switch>
 
 With the fallback in place, the first client render matches the
-server-rendered HTML — no hydration mismatch.
+server-rendered HTML, with no hydration mismatch.

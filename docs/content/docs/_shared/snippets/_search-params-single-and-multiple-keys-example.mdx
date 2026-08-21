@@ -4,7 +4,10 @@ title: Search Params Single and Multiple Keys Example
 
 <switch>
   <case react>
-```ts
+```ts twoslash
+import { useSearchParams } from 'kvant/react'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [page, setPage] = useSearchParams('page', kv.index().default(0))
 
 const [filters, setFilters] = useSearchParams({
@@ -15,7 +18,10 @@ const [filters, setFilters] = useSearchParams({
 ```
   </case>
   <case next-pages>
-```ts
+```ts twoslash
+import { useRouterQuery } from 'kvant/next/pages'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [page, setPage] = useRouterQuery('page', kv.index().default(0))
 
 const [filters, setFilters] = useRouterQuery({
@@ -26,7 +32,10 @@ const [filters, setFilters] = useRouterQuery({
 ```
   </case>
   <case vue>
-```ts
+```ts twoslash
+import { useSearchParams } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+// ---cut---
 const page = useSearchParams('page', kv.index().default(0))
 
 const filters = useSearchParams({
@@ -37,7 +46,10 @@ const filters = useSearchParams({
 ```
   </case>
   <case vue-router nuxt>
-```ts
+```ts twoslash
+import { useRouteQuery } from 'kvant/vue-router'
+import * as kv from 'kvant/schema'
+// ---cut---
 const page = useRouteQuery('page', kv.index().default(0))
 
 const filters = useRouteQuery({

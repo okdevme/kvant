@@ -2,8 +2,8 @@
 title: Custom Adapters
 ---
 
-When the built-in interfaces aren't enough — an external store, an in-memory map, a
-query-string dialect, a native bridge — you can write your own adapter for any key-value interface.
+When the [built-in interfaces](./quick-start#every-interface) aren't enough (an external store, an in-memory map, a
+query-string dialect, a native bridge), you can write your own adapter for **any** key-value interface.
 
 ## The adapter contract
 
@@ -72,7 +72,7 @@ check out the source code of the built-in adapters:
 
 ## Framework-agnostic adapters
 
-If you want to share an adapter across framework families (React, Vue) —
+If you want to share an adapter across framework families (React, Vue),
 you can implement a low-level, framework-agnostic adapter:
 
 ```ts

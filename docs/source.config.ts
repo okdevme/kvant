@@ -13,13 +13,22 @@ export default defineConfig({
       },
     },
     rehypeCodeOptions: {
+      inline: 'tailing-curly-colon',
       themes: {
         light: 'github-light',
         dark: 'github-dark',
       },
       transformers: [
         ...(rehypeCodeDefaultOptions.transformers ?? []),
-        transformerTwoslash({ langs: ['ts', 'tsx', 'js', 'jsx', 'vue'] }),
+        transformerTwoslash({
+          langs: ['ts', 'tsx', 'js', 'jsx', 'vue'],
+          twoslashOptions: {
+            compilerOptions: {
+              moduleResolution: 100, // Bundler
+              jsx: 4, // React JSX
+            },
+          },
+        }),
       ],
       langs: ['js', 'jsx', 'ts', 'tsx', 'vue'],
     },

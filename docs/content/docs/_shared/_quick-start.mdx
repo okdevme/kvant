@@ -8,12 +8,12 @@ description: Get productive with kvant in seconds.
 <switch>
   <case react>
 kvant turns key-value interfaces into React state. Bind a key, pass a
-schema from `kvant/schema`, and read/write it like `useState` — the
+schema from [`kvant/schema`](./schema), and read/write it like `useState`. The
 interface (here, the URL) stays the single source of truth:
   </case>
   <case vue>
 kvant turns key-value interfaces into Vue refs. Bind a key, pass a schema
-from `kvant/schema`, and read/write it like any writable `Ref` — the
+from [`kvant/schema`](./schema), and read/write it like any writable `Ref`. The
 interface (here, the URL) stays the single source of truth:
   </case>
 </switch>
@@ -22,17 +22,17 @@ interface (here, the URL) stays the single source of truth:
 
 <switch>
   <case react>
-`?q=hello` in the URL → `query` is `'hello'`. Calling `setQuery` writes back to the URL.
+`?q=hello` in the URL means `query` is `'hello'`. Calling `setQuery` writes back to the URL.
   </case>
   <case vue>
-`?q=hello` in the URL → `query.value` is `'hello'`. Assigning to
+`?q=hello` in the URL means `query.value` is `'hello'`. Assigning to
 `query.value` writes back to the URL.
   </case>
 </switch>
 
 ## Multiple keys
 
-Bind a whole key map in one call — updates batch into a single write:
+Bind a whole key map in one call. Updates batch into a single write:
 
 <include>./snippets/_search-params-filters-with-set-example.mdx</include>
 
@@ -42,14 +42,20 @@ Pass options as the last argument:
 
 <switch>
   <case react>
-```tsx
+```ts twoslash
+import { useSearchParams } from 'kvant/react'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
   history: 'push', // add browser history entries
 })
 ```
   </case>
   <case next>
-```tsx
+```ts twoslash
+import { useSearchParams } from 'kvant/next'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
   history: 'push', // add browser history entries
   shallow: false,  // go through the Next.js router (re-run server components)
@@ -57,7 +63,10 @@ const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
 ```
   </case>
   <case next-pages>
-```tsx
+```ts twoslash
+import { useRouterQuery } from 'kvant/next/pages'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [query, setQuery] = useRouterQuery('q', kv.string().default(''), {
   history: 'push', // add browser history entries
   shallow: false,  // re-run data fetching (getServerSideProps)
@@ -65,14 +74,20 @@ const [query, setQuery] = useRouterQuery('q', kv.string().default(''), {
 ```
   </case>
   <case vue>
-```ts
+```ts twoslash
+import { useSearchParams } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+// ---cut---
 const query = useSearchParams('q', kv.string().default(''), {
   history: 'push', // add browser history entries
 })
 ```
   </case>
   <case vue-router nuxt>
-```ts
+```ts twoslash
+import { useRouteQuery } from 'kvant/vue-router'
+import * as kv from 'kvant/schema'
+// ---cut---
 const query = useRouteQuery('q', kv.string().default(''), {
   history: 'push', // add browser history entries
 })
@@ -80,230 +95,37 @@ const query = useRouteQuery('q', kv.string().default(''), {
   </case>
 </switch>
 
-## Every interface
-
-The same pattern works for all supported key-value interfaces:
+## Global default options
 
 <switch>
   <case react>
-```tsx
-import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
-
-// URL search params — shareable, bookmarkable
-const [query, setQuery] = useSearchParams('q', kv.string().default(''))
-
-// localStorage — persists across reloads, syncs across tabs
-const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
-
-// sessionStorage — scoped to the current tab
-const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
-
-// Cookies — readable by the server, respect Set-Cookie attributes
-const [consent, setConsent] = useCookies(
-  'consent',
-  kv.stringbool().default(false),
-  { maxAge: 60 * 60 * 24 * 365 },
-)
-```
-
-Full guides:
-[Search Params](./search-params) ·
-[Local Storage](./local-storage) ·
-[Cookies](./cookies)
-  </case>
-  <case next>
-```tsx
-import { useSearchParams } from 'kvant/next'
-import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
-
-// URL search params — shareable, bookmarkable
-const [query, setQuery] = useSearchParams('q', kv.string().default(''))
-
-// localStorage — persists across reloads, syncs across tabs
-const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
-
-// sessionStorage — scoped to the current tab
-const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
-
-// Cookies — readable by the server, respect Set-Cookie attributes
-// (requires additional setup for SSR — see the full guide)
-const [consent, setConsent] = useCookies(
-  'consent',
-  kv.stringbool().default(false),
-  { maxAge: 60 * 60 * 24 * 365 },
-)
-```
-
-Full guides:
-[Search Params](./search-params) ·
-[Local Storage](./local-storage) ·
-[Cookies](./cookies)
-  </case>
-  <case next-pages>
-```tsx
-import { useRouterQuery } from 'kvant/next/pages'
-import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
-
-// Router query — shareable, bookmarkable
-const [query, setQuery] = useRouterQuery('q', kv.string().default(''))
-
-// localStorage — persists across reloads, syncs across tabs
-const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
-
-// sessionStorage — scoped to the current tab
-const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
-
-// Cookies — readable by the server, respect Set-Cookie attributes
-// (requires additional setup for SSR — see the full guide)
-const [consent, setConsent] = useCookies(
-  'consent',
-  kv.stringbool().default(false),
-  { maxAge: 60 * 60 * 24 * 365 },
-)
-```
-
-Full guides:
-[Router Query](./router-query) ·
-[Local Storage](./local-storage) ·
-[Cookies](./cookies)
-  </case>
-  <case react-router>
-```tsx
-import { useSearchParams } from 'kvant/react-router'
-import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
-
-// URL search params — shareable, bookmarkable
-const [query, setQuery] = useSearchParams('q', kv.string().default(''))
-
-// localStorage — persists across reloads, syncs across tabs
-const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
-
-// sessionStorage — scoped to the current tab
-const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
-
-// Cookies — readable by the server, respect Set-Cookie attributes
-// (requires additional setup for SSR — see the full guide)
-const [consent, setConsent] = useCookies(
-  'consent',
-  kv.stringbool().default(false),
-  { maxAge: 60 * 60 * 24 * 365 },
-)
-```
-
-Full guides:
-[Search Params](./search-params) ·
-[Local Storage](./local-storage) ·
-[Cookies](./cookies)
+Set options once for a component subtree using the **options provider**:
   </case>
   <case vue>
-```ts
-import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
-
-// URL search params — shareable, bookmarkable
-const query = useSearchParams('q', kv.string().default(''))
-
-// localStorage — persists across reloads, syncs across tabs
-const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
-
-// sessionStorage — scoped to the current tab
-const draft = useSessionStorage('draft', kv.string().default(''))
-
-// Cookies — readable by the server, respect Set-Cookie attributes
-const consent = useCookies('consent', kv.stringbool().default(false), {
-  maxAge: 60 * 60 * 24 * 365,
-})
-```
-
-Full guides:
-[Search Params](./search-params) ·
-[Local Storage](./local-storage) ·
-[Cookies](./cookies)
-  </case>
-  <case vue-router>
-```ts
-import { useRouteParams, useRouteQuery } from 'kvant/vue-router'
-import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
-
-// Route query — shareable, bookmarkable
-const query = useRouteQuery('q', kv.string().default(''))
-
-// Route params — identifiers that belong in the path (/users/[id])
-const id = useRouteParams('id', kv.number().int().min(1))
-
-// localStorage — persists across reloads, syncs across tabs
-const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
-
-// sessionStorage — scoped to the current tab
-const draft = useSessionStorage('draft', kv.string().default(''))
-
-// Cookies — readable by the server, respect Set-Cookie attributes
-const consent = useCookies('consent', kv.stringbool().default(false), {
-  maxAge: 60 * 60 * 24 * 365,
-})
-```
-
-Full guides:
-[Route Query](./route-query) ·
-[Route Params](./route-params) ·
-[Local Storage](./local-storage) ·
-[Cookies](./cookies)
-  </case>
-  <case nuxt>
-```ts
-import { useCookies, useRouteParams, useRouteQuery } from 'kvant/nuxt'
-import { useLocalStorage, useSessionStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
-
-// Route query — shareable, bookmarkable
-const query = useRouteQuery('q', kv.string().default(''))
-
-// Route params — identifiers that belong in the path (/users/[id])
-const id = useRouteParams('id', kv.number().int().min(1))
-
-// localStorage — persists across reloads, syncs across tabs
-const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
-
-// sessionStorage — scoped to the current tab
-const draft = useSessionStorage('draft', kv.string().default(''))
-
-// Cookies — SSR-ready out of the box (built on Nuxt's useCookie)
-const locale = useCookies('locale', kv.string().default('en'))
-```
-
-Full guides:
-[Route Query](./route-query) ·
-[Route Params](./route-params) ·
-[Local Storage](./local-storage) ·
-[Cookies](./cookies)
+Set options once for a component subtree using
+the [**provide function**](https://vuejs.org/guide/components/provide-inject.html):
   </case>
 </switch>
-
-## Global default options
-
-<include>./snippets/options-providers/_header.mdx</include>
 
 <include>./snippets/options-providers/_search-params-example.mdx</include>
 
 <switch>
   <case react>
-Nested providers merge with parent options by default (`extend: true`);
-pass `extend={false}` to replace instead of merge:
+Nested providers merge with parent options by default (`extend: true{:ts}`).
+Pass `extend={false}{:tsx}` to replace instead of merge:
   </case>
   <case vue>
-Nested provides merge with parent options by default (`extend: true`); pass
-`{ extend: false }` to replace instead of merge:
+Nested provides merge with parent options by default (`extend: true{:ts}`).
+Pass `{ extend: false }{:ts}` to replace instead of merge:
   </case>
 </switch>
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
+import { SearchParamsOptionsProvider } from 'kvant/react'
+let children: React.ReactNode
+// ---cut---
 <SearchParamsOptionsProvider
   defaultOptions={{ history: 'push' }}
   extend={false}
@@ -313,7 +135,10 @@ Nested provides merge with parent options by default (`extend: true`); pass
 ```
   </case>
   <case next-pages>
-```tsx
+```tsx twoslash
+import { RouterQueryOptionsProvider } from 'kvant/next/pages'
+let children: React.ReactNode
+// ---cut---
 <RouterQueryOptionsProvider
   defaultOptions={{ history: 'push' }}
   extend={false}
@@ -323,13 +148,24 @@ Nested provides merge with parent options by default (`extend: true`); pass
 ```
   </case>
   <case vue>
-```ts
+```ts twoslash
+import { provideSearchParamsOptions } from 'kvant/vue'
+// ---cut---
 provideSearchParamsOptions({ history: 'push' }, { extend: false })
 ```
   </case>
   <case vue-router nuxt>
-```ts
+```ts twoslash
+import { provideRouteQueryOptions } from 'kvant/vue-router'
+// ---cut---
 provideRouteQueryOptions({ history: 'push' }, { extend: false })
 ```
   </case>
 </switch>
+
+
+## Every interface
+
+The same pattern works for all supported key-value interfaces:
+
+<include>./snippets/_every-interface-demo.mdx</include>

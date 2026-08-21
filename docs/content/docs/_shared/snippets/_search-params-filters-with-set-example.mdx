@@ -4,36 +4,45 @@ title: Search Params Filters Example
 
 <switch>
   <case react>
-```tsx
+```ts twoslash
+import { useSearchParams } from 'kvant/react'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [filters, setFilters] = useSearchParams({
   q: kv.string().default(''),
   page: kv.index().default(0),
   sort: kv.enum(['asc', 'desc']).default('asc'),
-  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+  tags: kv.array(kv.string()).default([]), // repeated params: ?tags=a&tags=b
 })
 
 setFilters(prev => ({ ...prev, page: prev.page + 1 }))
 ```
   </case>
   <case next-pages>
-```tsx
+```ts twoslash
+import { useRouterQuery } from 'kvant/next/pages'
+import * as kv from 'kvant/schema'
+// ---cut---
 const [filters, setFilters] = useRouterQuery({
   q: kv.string().default(''),
   page: kv.index().default(0),
   sort: kv.enum(['asc', 'desc']).default('asc'),
-  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+  tags: kv.array(kv.string()).default([]), // repeated params: ?tags=a&tags=b
 })
 
 setFilters(prev => ({ ...prev, page: prev.page + 1 }))
 ```
   </case>
   <case vue>
-```tsx
+```ts twoslash
+import { useSearchParams } from 'kvant/vue'
+import * as kv from 'kvant/schema'
+// ---cut---
 const filters = useSearchParams({
   q: kv.string().default(''),
   page: kv.index().default(0),
   sort: kv.enum(['asc', 'desc']).default('asc'),
-  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+  tags: kv.array(kv.string()).default([]), // repeated params: ?tags=a&tags=b
 })
 
 filters.value = { ...filters.value, page: filters.value.page + 1 }
@@ -41,12 +50,15 @@ filters.value.page += 1 // deeply reactive!
 ```
   </case>
   <case vue-router nuxt>
-```tsx
+```ts twoslash
+import { useRouteQuery } from 'kvant/vue-router'
+import * as kv from 'kvant/schema'
+// ---cut---
 const filters = useRouteQuery({
   q: kv.string().default(''),
   page: kv.index().default(0),
   sort: kv.enum(['asc', 'desc']).default('asc'),
-  tags: kv.string().array().default([]), // repeated params: ?tags=a&tags=b
+  tags: kv.array(kv.string()).default([]), // repeated params: ?tags=a&tags=b
 })
 
 filters.value = { ...filters.value, page: filters.value.page + 1 }

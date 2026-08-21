@@ -4,7 +4,9 @@ title: Search Params Example
 
 <switch>
   <case react>
-```tsx
+```tsx twoslash
+let children: React.ReactNode
+// ---cut---
 import { SearchParamsOptionsProvider } from 'kvant/react'
 
 <SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
@@ -13,7 +15,9 @@ import { SearchParamsOptionsProvider } from 'kvant/react'
 ```
   </case>
   <case next>
-```tsx
+```tsx twoslash
+let children: React.ReactNode
+// ---cut---
 import { SearchParamsOptionsProvider } from 'kvant/next'
 
 <SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
@@ -22,7 +26,9 @@ import { SearchParamsOptionsProvider } from 'kvant/next'
 ```
   </case>
   <case next-pages>
-```tsx
+```tsx twoslash
+let children: React.ReactNode
+// ---cut---
 import { RouterQueryOptionsProvider } from 'kvant/next/pages'
 
 <RouterQueryOptionsProvider defaultOptions={{ history: 'push' }}>
@@ -31,7 +37,9 @@ import { RouterQueryOptionsProvider } from 'kvant/next/pages'
 ```
   </case>
   <case react-router>
-```tsx
+```tsx twoslash
+let children: React.ReactNode
+// ---cut---
 import { SearchParamsOptionsProvider } from 'kvant/react-router'
 
 <SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
@@ -40,7 +48,7 @@ import { SearchParamsOptionsProvider } from 'kvant/react-router'
 ```
   </case>
   <case vue>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { provideSearchParamsOptions } from 'kvant/vue'
 
@@ -49,7 +57,7 @@ provideSearchParamsOptions({ history: 'push' })
 ```
   </case>
   <case vue-router>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { provideRouteQueryOptions } from 'kvant/vue-router'
 
@@ -58,7 +66,7 @@ provideRouteQueryOptions({ history: 'push' })
 ```
   </case>
   <case nuxt>
-```vue
+```vue twoslash
 <script setup lang="ts">
 import { provideRouteQueryOptions } from 'kvant/nuxt'
 
