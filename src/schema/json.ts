@@ -3,8 +3,11 @@ import type { KvantType, output } from './core'
 import { generics } from './core'
 
 export interface KvantJSONOptions {
+  /** @see [`JSON.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#reviver) */
   reviver?: (key: string, value: unknown) => unknown
+  /** @see [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#replacer) */
   replacer?: (key: string, value: unknown) => unknown
+  /** @see [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space) */
   space?: string | number
 }
 
