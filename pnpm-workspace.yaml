@@ -66,6 +66,7 @@ catalog:
   jiti: ^2.7.0
   lint-staged: ^17.3.0
   lucide-react: ^1.28.0
+  mdast-util-find-and-replace: ^3.0.2
   mdast-util-mdx-jsx: ^3.2.0
   # 16.3.0 is having an issue with useRouter() in pages router
   # (isolated to turbopack, perhaps a next.js regression)

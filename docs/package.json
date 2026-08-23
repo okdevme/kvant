@@ -42,6 +42,7 @@
     "@types/react-dom": "catalog:",
     "eslint": "catalog:",
     "h3": "catalog:",
+    "mdast-util-find-and-replace": "catalog:",
     "mdast-util-mdx-jsx": "catalog:",
     "nuqs": "catalog:",
     "postcss": "catalog:",

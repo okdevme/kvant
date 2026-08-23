@@ -138,6 +138,9 @@ catalogs:
     lucide-react:
       specifier: ^1.28.0
       version: 1.31.0
+    mdast-util-find-and-replace:
+      specifier: ^3.0.2
+      version: 3.0.2
     mdast-util-mdx-jsx:
       specifier: ^3.2.0
       version: 3.2.0
@@ -402,6 +405,9 @@ importers:
       h3:
         specifier: 'catalog:'
         version: 2.0.1-rc.29(crossws@0.4.10(srvx@0.11.22))
+      mdast-util-find-and-replace:
+        specifier: 'catalog:'
+        version: 3.0.2
       mdast-util-mdx-jsx:
         specifier: 'catalog:'
         version: 3.2.0(supports-color@10.2.2)

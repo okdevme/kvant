@@ -1,12 +1,13 @@
 import { rehypeCodeDefaultOptions } from 'fumadocs-core/mdx-plugins'
 import { defineConfig } from 'fumadocs-mdx/config'
 import { transformerTwoslash } from 'fumadocs-twoslash'
+import { remarkPeer } from './lib/remark-peer'
 import { remarkSwitch } from './lib/remark-switch'
 
 export default defineConfig({
   mdxOptions: {
     preset: 'fumadocs',
-    remarkPlugins: [remarkSwitch],
+    remarkPlugins: [remarkSwitch, remarkPeer],
     remarkNpmOptions: {
       persist: {
         id: 'package-manager',
