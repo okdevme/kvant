@@ -3,8 +3,8 @@
   "version": "0.0.14",
   "private": true,
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
+    "build": "pnpm --filter kvant build && next build",
+    "dev": "pnpm --filter kvant build && next dev",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint",

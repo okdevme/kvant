@@ -37,7 +37,10 @@
     "lint:fix": "eslint --fix",
     "test": "vitest",
     "test:e2e": "turbo run test --filter=\"./e2e/*\"",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "docs:dev": "pnpm --filter docs dev",
+    "docs:build": "pnpm --filter docs build",
+    "docs:start": "pnpm --filter docs start"
   },
   "peerDependencies": {
     "next": "^14.2.x || ^15 || ^16",
