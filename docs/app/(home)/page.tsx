@@ -1,9 +1,21 @@
 import type { Metadata } from 'next'
 import { Hero } from '@/components/hero'
+import { description, title } from '@/lib/shared'
+
+const openGraph = {
+  title,
+  description,
+  images: '/og/index.png',
+} satisfies Metadata['openGraph']
 
 export const metadata = {
   title: {
-    absolute: 'kvant | Universal, type-safe state manager for key-value interfaces',
+    absolute: `${title} | ${description}`,
+  },
+  openGraph,
+  twitter: {
+    card: 'summary_large_image',
+    ...openGraph,
   },
 } satisfies Metadata
 

@@ -1,9 +1,20 @@
-export const appName = 'kvant'
+import type { Metadata } from 'next'
+
+export const title = 'kvant'
+export const description = 'Universal, type-safe state manager for key-value interfaces'
+
+export const authors: Metadata['authors'] = [
+  {
+    name: 'Oleg Kapranov',
+    url: 'https://github.com/okdevme',
+  },
+]
+
+export const appName = title
 export const docsRoute = '/docs'
 export const docsImageRoute = '/og/docs'
 export const docsContentRoute = '/llms.mdx/docs'
 
-// fill this with your actual GitHub info, for example:
 export const gitConfig = {
   user: 'okdevme',
   repo: 'kvant',

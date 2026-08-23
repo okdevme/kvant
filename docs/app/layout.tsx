@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { authors, description, title } from '@/lib/shared'
 import { Body, Provider } from './layout.client'
 import './global.css'
 
@@ -10,16 +11,11 @@ const baseUrl
 
 export const metadata = {
   title: {
-    template: '%s | kvant',
-    default: 'kvant',
+    template: `%s | ${title}`,
+    default: title,
   },
-  description: 'Universal, type-safe state manager for key-value interfaces.',
-  authors: [
-    {
-      name: 'Oleg Kapranov',
-      url: 'https://github.com/okdevme',
-    },
-  ],
+  description,
+  authors,
   metadataBase: baseUrl,
 } satisfies Metadata
 
