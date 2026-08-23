@@ -11,6 +11,8 @@ import {
   int,
   isoDateToDate,
   json,
+  looseArray,
+  looseSet,
   map,
   nullable,
   number,
@@ -56,9 +58,10 @@ describe('schema type inference', () => {
   it('infers wrapper types', () => {
     expectTypeOf(optional(string()).parse).returns.toEqualTypeOf<string | undefined>()
     expectTypeOf(nullable(string()).parse).returns.toEqualTypeOf<string | null | undefined>()
-    // inner output (string | undefined) is preserved per item
-    expectTypeOf(array(string()).parse).returns.toEqualTypeOf<(string | undefined)[] | undefined>()
-    expectTypeOf(set(string()).parse).returns.toEqualTypeOf<Set<string | undefined> | undefined>()
+    expectTypeOf(looseArray(string()).parse).returns.toEqualTypeOf<(string | undefined)[] | undefined>()
+    expectTypeOf(array(string()).parse).returns.toEqualTypeOf<string[] | undefined>()
+    expectTypeOf(looseSet(string()).parse).returns.toEqualTypeOf<Set<string | undefined> | undefined>()
+    expectTypeOf(set(string()).parse).returns.toEqualTypeOf<Set<string> | undefined>()
     expectTypeOf(singular(string()).parse).returns.toEqualTypeOf<string | undefined>()
   })
 

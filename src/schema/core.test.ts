@@ -32,6 +32,10 @@ describe('kvantType combinators', () => {
     expect(number().array().parse(['1', '2'])).toEqual([1, 2])
   })
 
+  it('array filters out failed/undefined entries', () => {
+    expect(number().array().parse(['1', 'nope', '2', undefined])).toEqual([1, 2])
+  })
+
   it('default falls back on undefined', () => {
     const schema = number().default(7)
     expect(schema.parse(undefined)).toBe(7)
