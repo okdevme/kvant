@@ -36,6 +36,12 @@ body.nuxt {
   --color-fd-primary: #00dc82;
 } */
 
+/* Fix icon size for layout tabs on mobile */
 .size-9:has(> .layout-tab-icon) {
   @apply size-5!;
+}
+
+/* Fix twoslash popovers layering */
+[data-base-ui-portal] > div:has(> .fd-twoslash-popover) {
+  z-index: 100;
 }
