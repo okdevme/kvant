@@ -2,7 +2,7 @@
   "name": "kvant",
   "type": "module",
   "version": "0.1.0",
-  "packageManager": "pnpm@11.20.0",
+  "packageManager": "pnpm@11.22.0",
   "description": "A starter for creating a TypeScript package.",
   "author": "okdevme",
   "license": "MIT",
