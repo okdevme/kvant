@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRouteParams, useRouteQuery } from 'kvant/nuxt'
-import { string } from 'kvant/schema'
+import { useRouteParams, useRouteQuery } from 'kvantjs/nuxt'
+import { string } from 'kvantjs/schema'
 
 const org = useRouteParams('org', string())
 const repo = useRouteParams('repo', string())

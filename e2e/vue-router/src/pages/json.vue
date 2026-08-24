@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { any, json } from 'kvant/schema'
-import { useRouteQuery } from 'kvant/vue-router'
+import { any, json } from 'kvantjs/schema'
+import { useRouteQuery } from 'kvantjs/vue-router'
 
 const value = useRouteQuery('test', json(any()))
 </script>

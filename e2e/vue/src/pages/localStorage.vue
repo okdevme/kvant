@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { number, string } from 'kvant/schema'
-import { useLocalStorage } from 'kvant/vue'
+import { number, string } from 'kvantjs/schema'
+import { useLocalStorage } from 'kvantjs/vue'
 
 const value = useLocalStorage('test', string())
 const count = useLocalStorage('count', number())

@@ -5,8 +5,8 @@ title: Search Params Filters Example
 <switch>
   <case react>
 ```ts twoslash
-import { useSearchParams } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [filters, setFilters] = useSearchParams({
   q: kv.string().default(''),
@@ -20,8 +20,8 @@ setFilters(prev => ({ ...prev, page: prev.page + 1 }))
   </case>
   <case next-pages>
 ```ts twoslash
-import { useRouterQuery } from 'kvant/next/pages'
-import * as kv from 'kvant/schema'
+import { useRouterQuery } from 'kvantjs/next/pages'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [filters, setFilters] = useRouterQuery({
   q: kv.string().default(''),
@@ -35,8 +35,8 @@ setFilters(prev => ({ ...prev, page: prev.page + 1 }))
   </case>
   <case vue>
 ```ts twoslash
-import { useSearchParams } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const filters = useSearchParams({
   q: kv.string().default(''),
@@ -51,8 +51,8 @@ filters.value.page += 1 // deeply reactive!
   </case>
   <case vue-router nuxt>
 ```ts twoslash
-import { useRouteQuery } from 'kvant/vue-router'
-import * as kv from 'kvant/schema'
+import { useRouteQuery } from 'kvantjs/vue-router'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const filters = useRouteQuery({
   q: kv.string().default(''),

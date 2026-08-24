@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useCookies } from 'kvant/nuxt'
-import { string } from 'kvant/schema'
-import { useLocalStorage } from 'kvant/vue'
+import { useCookies } from 'kvantjs/nuxt'
+import { string } from 'kvantjs/schema'
+import { useLocalStorage } from 'kvantjs/vue'
 
 const value = useCookies('test', string())
 const stored = useLocalStorage('test', string())

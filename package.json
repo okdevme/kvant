@@ -1,5 +1,5 @@
 {
-  "name": "kvant",
+  "name": "kvantjs",
   "type": "module",
   "version": "0.0.0",
   "packageManager": "pnpm@11.22.0",

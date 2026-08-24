@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { string } from 'kvant/schema'
-import { useCookies } from 'kvant/vue'
+import { string } from 'kvantjs/schema'
+import { useCookies } from 'kvantjs/vue'
 
 const value = useCookies('test', string())
 const expiring = useCookies('expiring', string(), { maxAge: 3600 })

@@ -66,8 +66,8 @@ export const snippetComponents: SnippetComponent[] = [
       }[framework.id]
 
       switch (framework.family) {
-        case 'react': return `import { ${importName} } from 'kvant/${importEntry}'
-import * as kv from 'kvant/schema'
+        case 'react': return `import { ${importName} } from 'kvantjs/${importEntry}'
+import * as kv from 'kvantjs/schema'
 
 function SearchInput() {
   // [!code word:${importName}]
@@ -81,8 +81,8 @@ function SearchInput() {
   )
 }`
         case 'vue': return `<script setup lang="ts">
-import { ${importName} } from 'kvant/${importEntry}'
-import * as kv from 'kvant/schema'
+import { ${importName} } from 'kvantjs/${importEntry}'
+import * as kv from 'kvantjs/schema'
 
 // [!code word:${importName}]
 const query = ${importName}('q', kv.string().default(''))
@@ -103,8 +103,8 @@ const query = ${importName}('q', kv.string().default(''))
       const routePattern = framework.id === 'nuxt' ? '/users/[id]' : '/users/:id'
 
       return `<script setup lang="ts">
-import { useRouteParams } from 'kvant/${importEntry}'
-import * as kv from 'kvant/schema'
+import { useRouteParams } from 'kvantjs/${importEntry}'
+import * as kv from 'kvantjs/schema'
 
 // Route: ${routePattern}
 // [!code word:useRouteParams]
@@ -121,8 +121,8 @@ const id = useRouteParams('id', kv.string())
     label: () => 'Local Storage',
     render: (framework) => {
       switch (framework.family) {
-        case 'react': return `import { useLocalStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
+        case 'react': return `import { useLocalStorage } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 function ThemeToggle() {
   // [!code word:useLocalStorage]
@@ -135,8 +135,8 @@ function ThemeToggle() {
   )
 }`
         case 'vue': return `<script setup lang="ts">
-import { useLocalStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useLocalStorage } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 
 // [!code word:useLocalStorage]
 const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
@@ -155,8 +155,8 @@ const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light
     label: () => 'Cookies',
     render: (framework) => {
       switch (framework.family) {
-        case 'react': return `import { useCookies } from 'kvant/react'
-import * as kv from 'kvant/schema'
+        case 'react': return `import { useCookies } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 function LocaleSelect() {
   // [!code word:useCookies]
@@ -173,8 +173,8 @@ function LocaleSelect() {
           const importEntry = framework.id === 'nuxt' ? 'nuxt' : 'vue'
 
           return `<script setup lang="ts">
-import { useCookies } from 'kvant/${importEntry}'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/${importEntry}'
+import * as kv from 'kvantjs/schema'
 
 // [!code word:useCookies]
 const locale = useCookies('locale', kv.string().default('en'))

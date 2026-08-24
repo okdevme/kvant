@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { CookiesOptionsProvider } from 'kvant/react'
+import { CookiesOptionsProvider } from 'kvantjs/react'
 import { cookies } from 'next/headers'
 
 export default async function RootLayout({ children }: { children: ReactNode }) {

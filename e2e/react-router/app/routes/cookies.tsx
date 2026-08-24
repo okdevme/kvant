@@ -1,6 +1,6 @@
 import type { Route } from './+types/cookies'
-import { CookiesOptionsProvider, useCookies } from 'kvant/react'
-import { number, string } from 'kvant/schema'
+import { CookiesOptionsProvider, useCookies } from 'kvantjs/react'
+import { number, string } from 'kvantjs/schema'
 
 export function loader({ request }: Route.LoaderArgs) {
   return {

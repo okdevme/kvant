@@ -1,6 +1,6 @@
-import { useSearchParamsKvantAdapter } from 'kvant'
-import { defineKvantState } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useSearchParamsKvantAdapter } from 'kvantjs'
+import { defineKvantState } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 import qs from 'qs'
 
 // Setup copied from docs (_custom-search-serializer.mdx).

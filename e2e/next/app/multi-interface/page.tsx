@@ -1,8 +1,8 @@
 'use client'
 
-import { useSearchParams } from 'kvant/next'
-import { useCookies, useLocalStorage } from 'kvant/react'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import { useCookies, useLocalStorage } from 'kvantjs/react'
+import { string } from 'kvantjs/schema'
 import { Suspense } from 'react'
 
 function Bench() {

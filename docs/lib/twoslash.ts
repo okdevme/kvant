@@ -15,7 +15,7 @@ import { transformerTwoslash } from 'fumadocs-twoslash'
  * twoslasher per process; combine with the `lowmem` build mode (webpack,
  * single compilation process) to keep peak RSS within Vercel's 8 GB runner.
  *
- * Cache keys are versioned: any change to kvant's emitted `.d.mts` files,
+ * Cache keys are versioned: any change to kvantjs's emitted `.d.mts` files,
  * the TypeScript/twoslash/Vue toolchain versions, or `TWOSLASH_CACHE_SALT`
  * invalidates all entries, so stale hover info cannot survive a dependency
  * or library update.
@@ -148,7 +148,7 @@ export function createTwoslashTypesCache(
   const version = createHash('sha256')
   version.update(JSON.stringify({
     'salt': process.env.TWOSLASH_CACHE_SALT ?? 'v1',
-    'kvant': packageVersion('kvant', packageRoot),
+    'kvantjs': packageVersion('kvantjs', packageRoot),
     'typescript': packageVersion('typescript', packageRoot),
     'twoslash': packageVersion('twoslash', packageRoot),
     'twoslash-vue': packageVersion('twoslash-vue', packageRoot),
@@ -156,9 +156,9 @@ export function createTwoslashTypesCache(
     'vue': packageVersion('vue', packageRoot),
   }))
   try {
-    // kvant is workspace-linked and may rebuild without a version bump —
+    // kvantjs is workspace-linked and may rebuild without a version bump —
     // fingerprint its emitted declarations so dev builds never go stale.
-    const kvantDir = packageDir('kvant', packageRoot)
+    const kvantDir = packageDir('kvantjs', packageRoot)
     if (kvantDir)
       hashDeclarations(version, path.join(kvantDir, 'dist'))
   }

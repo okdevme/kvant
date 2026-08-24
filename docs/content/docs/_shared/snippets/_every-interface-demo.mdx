@@ -5,8 +5,8 @@ title: Every Interface Demo
 <switch>
   <case react>
 ```ts twoslash
-import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 // URL search params: shareable, bookmarkable
 const [query, setQuery] = useSearchParams('q', kv.string().default(''))
@@ -32,9 +32,9 @@ Full guides:
   </case>
   <case next>
 ```ts twoslash
-import { useSearchParams } from 'kvant/next'
-import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import { useCookies, useLocalStorage, useSessionStorage } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 // URL search params: shareable, bookmarkable
 const [query, setQuery] = useSearchParams('q', kv.string().default(''))
@@ -61,9 +61,9 @@ Full guides:
   </case>
   <case next-pages>
 ```ts twoslash
-import { useRouterQuery } from 'kvant/next/pages'
-import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useRouterQuery } from 'kvantjs/next/pages'
+import { useCookies, useLocalStorage, useSessionStorage } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 // Router query: shareable, bookmarkable
 const [query, setQuery] = useRouterQuery('q', kv.string().default(''))
@@ -90,9 +90,9 @@ Full guides:
   </case>
   <case react-router>
 ```ts twoslash
-import { useSearchParams } from 'kvant/react-router'
-import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react-router'
+import { useCookies, useLocalStorage, useSessionStorage } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 // URL search params: shareable, bookmarkable
 const [query, setQuery] = useSearchParams('q', kv.string().default(''))
@@ -119,8 +119,8 @@ Full guides:
   </case>
   <case vue>
 ```ts twoslash
-import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useCookies, useLocalStorage, useSearchParams, useSessionStorage } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 
 // URL search params: shareable, bookmarkable
 const query = useSearchParams('q', kv.string().default(''))
@@ -144,9 +144,9 @@ Full guides:
   </case>
   <case vue-router>
 ```ts twoslash
-import { useRouteParams, useRouteQuery } from 'kvant/vue-router'
-import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useRouteParams, useRouteQuery } from 'kvantjs/vue-router'
+import { useCookies, useLocalStorage, useSessionStorage } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 
 // Route query: shareable, bookmarkable
 const query = useRouteQuery('q', kv.string().default(''))
@@ -174,9 +174,9 @@ Full guides:
   </case>
   <case nuxt>
 ```ts twoslash
-import { useCookies, useRouteParams, useRouteQuery } from 'kvant/nuxt'
-import { useLocalStorage, useSessionStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useCookies, useRouteParams, useRouteQuery } from 'kvantjs/nuxt'
+import { useLocalStorage, useSessionStorage } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 
 // Route query: shareable, bookmarkable
 const query = useRouteQuery('q', kv.string().default(''))

@@ -5,8 +5,8 @@ title: Search Input Example
 <switch>
   <case react>
 ```tsx twoslash
-import { useSearchParams } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 function SearchInput() {
   const [query, setQuery] = useSearchParams('q', kv.string().default(''))
@@ -22,8 +22,8 @@ function SearchInput() {
   </case>
   <case next>
 ```tsx twoslash
-import { useSearchParams } from 'kvant/next'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import * as kv from 'kvantjs/schema'
 
 function SearchInput() {
   const [query, setQuery] = useSearchParams('q', kv.string().default(''))
@@ -39,8 +39,8 @@ function SearchInput() {
   </case>
   <case next-pages>
 ```tsx twoslash
-import { useRouterQuery } from 'kvant/next/pages'
-import * as kv from 'kvant/schema'
+import { useRouterQuery } from 'kvantjs/next/pages'
+import * as kv from 'kvantjs/schema'
 
 function SearchInput() {
   const [query, setQuery] = useRouterQuery('q', kv.string().default(''))
@@ -56,8 +56,8 @@ function SearchInput() {
   </case>
   <case react-router>
 ```tsx twoslash
-import { useSearchParams } from 'kvant/react-router'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react-router'
+import * as kv from 'kvantjs/schema'
 
 function SearchInput() {
   const [query, setQuery] = useSearchParams('q', kv.string().default(''))
@@ -74,8 +74,8 @@ function SearchInput() {
   <case vue>
 ```vue twoslash
 <script setup lang="ts">
-import { useSearchParams } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 
 const query = useSearchParams('q', kv.string().default(''))
 </script>
@@ -88,8 +88,8 @@ const query = useSearchParams('q', kv.string().default(''))
   <case vue-router>
 ```vue twoslash
 <script setup lang="ts">
-import { useRouteQuery } from 'kvant/vue-router'
-import * as kv from 'kvant/schema'
+import { useRouteQuery } from 'kvantjs/vue-router'
+import * as kv from 'kvantjs/schema'
 
 const query = useRouteQuery('q', kv.string().default(''))
 </script>
@@ -102,8 +102,8 @@ const query = useRouteQuery('q', kv.string().default(''))
   <case nuxt>
 ```vue twoslash
 <script setup lang="ts">
-import { useRouteQuery } from 'kvant/nuxt'
-import * as kv from 'kvant/schema'
+import { useRouteQuery } from 'kvantjs/nuxt'
+import * as kv from 'kvantjs/schema'
 
 const query = useRouteQuery('q', kv.string().default(''))
 </script>

@@ -10,7 +10,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "kvant": "workspace:*",
+    "kvantjs": "workspace:*",
     "nuxt": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"

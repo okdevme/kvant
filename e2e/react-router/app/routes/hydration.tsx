@@ -1,6 +1,6 @@
-import { CookiesOptionsProvider, useCookies } from 'kvant/react'
-import { useSearchParams } from 'kvant/react-router'
-import { string } from 'kvant/schema'
+import { CookiesOptionsProvider, useCookies } from 'kvantjs/react'
+import { useSearchParams } from 'kvantjs/react-router'
+import { string } from 'kvantjs/schema'
 
 // Force an SSR snapshot that intentionally mismatches the client cookie
 // ('server' here vs the 'client' cookie set by the spec). Hydration must

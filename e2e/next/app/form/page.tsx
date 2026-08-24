@@ -1,8 +1,8 @@
 'use client'
 
 import type { FormEvent } from 'react'
-import { useSearchParams } from 'kvant/next'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import { string } from 'kvantjs/schema'
 import { Suspense } from 'react'
 
 function Bench() {

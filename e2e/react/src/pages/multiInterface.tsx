@@ -1,5 +1,5 @@
-import { useCookies, useLocalStorage, useSearchParams } from 'kvant/react'
-import { string } from 'kvant/schema'
+import { useCookies, useLocalStorage, useSearchParams } from 'kvantjs/react'
+import { string } from 'kvantjs/schema'
 
 export function MultiInterfacePage() {
   const [query, setQuery] = useSearchParams('test', string())

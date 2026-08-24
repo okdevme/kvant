@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { number, string } from 'kvant/schema'
-import { useSessionStorage } from 'kvant/vue'
+import { number, string } from 'kvantjs/schema'
+import { useSessionStorage } from 'kvantjs/vue'
 
 const value = useSessionStorage('test', string())
 const count = useSessionStorage('count', number())

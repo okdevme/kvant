@@ -12,8 +12,8 @@ defining your own binding (see [Advanced Usage](./advanced-usage)):
 <switch>
   <case react>
 ```ts twoslash title="lib/search-params.ts"
-import { useSearchParamsKvantAdapter } from 'kvant'
-import { defineKvantState } from 'kvant/react'
+import { useSearchParamsKvantAdapter } from 'kvantjs'
+import { defineKvantState } from 'kvantjs/react'
 import qs from 'qs'
 
 export const {
@@ -31,8 +31,8 @@ export const {
   <case next>
 ```ts twoslash title="lib/search-params.ts"
 'use client'
-import { useSearchParamsKvantAdapter } from 'kvant/next'
-import { defineKvantState } from 'kvant/react'
+import { useSearchParamsKvantAdapter } from 'kvantjs/next'
+import { defineKvantState } from 'kvantjs/react'
 import qs from 'qs'
 
 export const {
@@ -49,8 +49,8 @@ export const {
   </case>
   <case react-router>
 ```ts twoslash title="lib/search-params.ts"
-import { useSearchParamsKvantAdapter } from 'kvant/react-router'
-import { defineKvantState } from 'kvant/react'
+import { useSearchParamsKvantAdapter } from 'kvantjs/react-router'
+import { defineKvantState } from 'kvantjs/react'
 import qs from 'qs'
 
 export const {
@@ -67,8 +67,8 @@ export const {
   </case>
   <case vue>
 ```ts twoslash title="lib/search-params.ts"
-import { useSearchParamsKvantAdapter } from 'kvant'
-import { defineKvantState } from 'kvant/vue'
+import { useSearchParamsKvantAdapter } from 'kvantjs'
+import { defineKvantState } from 'kvantjs/vue'
 import qs from 'qs'
 
 export const {
@@ -85,16 +85,16 @@ export const {
   </case>
 </switch>
 
-With `qs` handling (de)serialization, the full power of [`kvant/schema`](./schema)
+With `qs` handling (de)serialization, the full power of [`kvantjs/schema`](./schema)
 opens up inside the URL: objects, nested arrays, and more.
 
 <switch>
   <case react>
 ```ts twoslash
-import { useSearchParamsKvantAdapter } from 'kvant'
-import { defineKvantState } from 'kvant/react'
+import { useSearchParamsKvantAdapter } from 'kvantjs'
+import { defineKvantState } from 'kvantjs/react'
 import qs from 'qs'
-import * as kv from 'kvant/schema'
+import * as kv from 'kvantjs/schema'
 
 export const {
   useState: useSearchParams,
@@ -119,10 +119,10 @@ const [filters, setFilters] = useSearchParams(
   </case>
   <case vue>
 ```ts twoslash
-import { useSearchParamsKvantAdapter } from 'kvant'
-import { defineKvantState } from 'kvant/vue'
+import { useSearchParamsKvantAdapter } from 'kvantjs'
+import { defineKvantState } from 'kvantjs/vue'
 import qs from 'qs'
-import * as kv from 'kvant/schema'
+import * as kv from 'kvantjs/schema'
 
 export const {
   useState: useSearchParams,

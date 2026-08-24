@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { number, string } from 'kvant/schema'
-import { useRouteParams } from 'kvant/vue-router'
+import { number, string } from 'kvantjs/schema'
+import { useRouteParams } from 'kvantjs/vue-router'
 
 const id = useRouteParams('id', string())
 const tab = useRouteParams('tab', number())

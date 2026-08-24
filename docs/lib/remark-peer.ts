@@ -11,7 +11,7 @@ const require = createRequire(import.meta.url)
  * at build time, replacing them with the version range declared in the
  * peerDependencies of `node_modules/{package}/package.json`.
  *
- * Example: `{{peer:kvant:react}}` → `` `>=18.0.0` `` (inline code).
+ * Example: `{{peer:kvantjs:react}}` → `` `>=18.0.0` `` (inline code).
  *
  * Tokens referencing an unresolvable package or an unknown peer are left
  * untouched, so typos stay visible in the output instead of silently

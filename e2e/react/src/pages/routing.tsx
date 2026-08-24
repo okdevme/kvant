@@ -1,5 +1,5 @@
-import { useSearchParams } from 'kvant/react'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react'
+import { string } from 'kvantjs/schema'
 
 function navigate(mode: 'push' | 'replace', to: string) {
   window.history[`${mode}State`](null, '', to)

@@ -1,8 +1,8 @@
 'use client'
 
-import { useSearchParams } from 'kvant/next'
-import { CookiesOptionsProvider, useCookies } from 'kvant/react'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import { CookiesOptionsProvider, useCookies } from 'kvantjs/react'
+import { string } from 'kvantjs/schema'
 import { Suspense } from 'react'
 
 // Force an SSR snapshot that intentionally mismatches the client cookie

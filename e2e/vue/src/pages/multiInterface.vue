@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { string } from 'kvant/schema'
-import { useCookies, useLocalStorage, useSearchParams } from 'kvant/vue'
+import { string } from 'kvantjs/schema'
+import { useCookies, useLocalStorage, useSearchParams } from 'kvantjs/vue'
 
 const query = useSearchParams('test', string())
 const cookie = useCookies('test', string())

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRouteParams } from 'kvant/nuxt'
-import { number, string } from 'kvant/schema'
+import { useRouteParams } from 'kvantjs/nuxt'
+import { number, string } from 'kvantjs/schema'
 
 const id = useRouteParams('id', string())
 const tab = useRouteParams('tab', number())

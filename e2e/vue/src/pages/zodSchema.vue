@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSearchParams } from 'kvant/vue'
+import { useSearchParams } from 'kvantjs/vue'
 import * as z from 'zod'
 
 // Doc pattern (_zod.mdx): total schema via .catch().

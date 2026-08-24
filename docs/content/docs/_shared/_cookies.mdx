@@ -21,8 +21,8 @@ hydration.
 <switch>
   <case react>
 ```tsx twoslash
-import { useCookies } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 export function LocaleSelect() {
   const [locale, setLocale] = useCookies('locale', kv.string().default('en'))
@@ -39,8 +39,8 @@ export function LocaleSelect() {
   <case vue>
 ```vue twoslash
 <script setup lang="ts">
-import { useCookies } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 
 const locale = useCookies('locale', kv.string().default('en'))
 </script>
@@ -56,8 +56,8 @@ const locale = useCookies('locale', kv.string().default('en'))
   <case nuxt>
 ```vue twoslash
 <script setup lang="ts">
-import { useCookies } from 'kvant/nuxt'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/nuxt'
+import * as kv from 'kvantjs/schema'
 
 const locale = useCookies('locale', kv.string().default('en'))
 </script>
@@ -79,8 +79,8 @@ Key maps work too:
 <switch>
   <case react>
 ```ts twoslash
-import { useCookies } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [prefs, setPrefs] = useCookies({
   locale: kv.string().default('en'),
@@ -92,8 +92,8 @@ setPrefs(prev => ({ ...prev, theme: 'dark' }))
   </case>
   <case vue>
 ```ts twoslash
-import { useCookies } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const prefs = useCookies({
   locale: kv.string().default('en'),
@@ -113,7 +113,7 @@ prefs.value.theme = 'dark' // deeply reactive!
 Options extend the standard [`Set-Cookie` attributes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie#attributes):
 
 <AutoTypeTable
-  path="node_modules/kvant/dist/index.d.mts"
+  path="node_modules/kvantjs/dist/index.d.mts"
   name="CookiesKvantAdapterOptions"
 />
   </case>
@@ -121,7 +121,7 @@ Options extend the standard [`Set-Cookie` attributes](https://developer.mozilla.
 Options are a subset of Nuxt's [`useCookie` parameters](https://nuxt.com/docs/api/composables/use-cookie#parameters):
 
 <AutoTypeTable
-  path="node_modules/kvant/dist/nuxt.d.mts"
+  path="node_modules/kvantjs/dist/nuxt.d.mts"
   name="CookiesKvantAdapterOptions"
 />
   </case>
@@ -130,8 +130,8 @@ Options are a subset of Nuxt's [`useCookie` parameters](https://nuxt.com/docs/ap
 <switch>
   <case react>
 ```tsx twoslash
-import { useCookies } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [consent, setConsent] = useCookies(
   'consent',
@@ -142,8 +142,8 @@ const [consent, setConsent] = useCookies(
   </case>
   <case vue>
 ```ts twoslash
-import { useCookies } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const consent = useCookies(
   'consent',
@@ -161,7 +161,7 @@ const consent = useCookies(
 ```tsx twoslash
 let children: React.ReactNode
 // ---cut---
-import { CookiesOptionsProvider } from 'kvant/react'
+import { CookiesOptionsProvider } from 'kvantjs/react'
 
 <CookiesOptionsProvider
   defaultOptions={{ maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' }}
@@ -173,7 +173,7 @@ import { CookiesOptionsProvider } from 'kvant/react'
   <case vue>
 ```vue twoslash
 <script setup lang="ts">
-import { provideCookiesOptions } from 'kvant/vue'
+import { provideCookiesOptions } from 'kvantjs/vue'
 
 provideCookiesOptions({ maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' })
 </script>
@@ -182,7 +182,7 @@ provideCookiesOptions({ maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' })
   <case nuxt>
 ```vue twoslash
 <script setup lang="ts">
-import { provideCookiesOptions } from 'kvant/nuxt'
+import { provideCookiesOptions } from 'kvantjs/nuxt'
 
 provideCookiesOptions({ maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' })
 </script>

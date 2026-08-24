@@ -1,5 +1,5 @@
-import { useSearchParams } from 'kvant/react-router'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react-router'
+import { string } from 'kvantjs/schema'
 
 const SPECIAL = 'a b+c/d?e&f=g'
 

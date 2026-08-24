@@ -1,6 +1,6 @@
 'use client'
 import type { Framework } from './frameworks'
-import { useCookies } from 'kvant/react'
+import { useCookies } from 'kvantjs/react'
 import { useParams } from 'next/navigation'
 import { defaultFramework, frameworkCookieName, frameworkCookieSchema, getFramework } from './frameworks'
 

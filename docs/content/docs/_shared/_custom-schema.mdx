@@ -19,8 +19,8 @@ The simplest schema is a plain object:
 <switch>
   <case react>
 ```ts twoslash
-import type { KvantSchema } from 'kvant'
-import { useLocalStorage } from 'kvant/react'
+import type { KvantSchema } from 'kvantjs'
+import { useLocalStorage } from 'kvantjs/react'
 
 const commaListSchema: KvantSchema<string[] | undefined, string | undefined> = {
   parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
@@ -36,8 +36,8 @@ const [tags, setTags] = useLocalStorage('tags', commaListSchema)
   </case>
   <case vue>
 ```ts twoslash
-import type { KvantSchema } from 'kvant'
-import { useLocalStorage } from 'kvant/vue'
+import type { KvantSchema } from 'kvantjs'
+import { useLocalStorage } from 'kvantjs/vue'
 
 const commaListSchema: KvantSchema<string[] | undefined, string | undefined> = {
   parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
@@ -53,15 +53,15 @@ const tags = useLocalStorage('tags', commaListSchema)
   </case>
 </switch>
 
-You can also use [`kv.custom()`](./schema#custom) from `kvant/schema`, which gives you the same
+You can also use [`kv.custom()`](./schema#custom) from `kvantjs/schema`, which gives you the same
 result with full type inference and access to the chainable combinators
 (`.default()`, `.pipe()`, `.refine()`, ...):
 
 <switch>
   <case react>
 ```ts twoslash
-import * as kv from 'kvant/schema'
-import { useLocalStorage } from 'kvant/react'
+import * as kv from 'kvantjs/schema'
+import { useLocalStorage } from 'kvantjs/react'
 
 const commaListSchema = kv.custom<string[] | undefined, string | undefined>({
   parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
@@ -73,8 +73,8 @@ const [tags, setTags] = useLocalStorage('tags', commaListSchema.default([]))
   </case>
   <case vue>
 ```ts twoslash
-import * as kv from 'kvant/schema'
-import { useLocalStorage } from 'kvant/vue'
+import * as kv from 'kvantjs/schema'
+import { useLocalStorage } from 'kvantjs/vue'
 
 const commaListSchema = kv.custom<string[] | undefined, string | undefined>({
   parse: value => value ? String(value).split(',').filter(Boolean) : undefined,
@@ -102,7 +102,7 @@ encode side and a non-throwing parse:
 
 ```ts
 import * as v from 'valibot'
-import type { KvantSchema } from 'kvant'
+import type { KvantSchema } from 'kvantjs'
 
 function valibot<T>(
   schema: v.BaseSchema<unknown, T, v.BaseIssue<unknown>>
@@ -124,7 +124,7 @@ the adapter is straightforward:
 
 ```ts
 import { type Type, ArkErrors } from 'arktype'
-import type { KvantSchema } from 'kvant'
+import type { KvantSchema } from 'kvantjs'
 
 function arktype<T>(
   def: Type<T>
@@ -146,7 +146,7 @@ through the same adapter shape:
 
 ```ts
 import type { StandardSchemaV1 } from '@standard-schema/spec'
-import type { KvantSchema } from 'kvant'
+import type { KvantSchema } from 'kvantjs'
 
 function standard<T>(
   schema: StandardSchemaV1<unknown, T>

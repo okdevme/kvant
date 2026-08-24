@@ -1,5 +1,5 @@
-import { useSearchParams } from 'kvant/react-router'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react-router'
+import { string } from 'kvantjs/schema'
 import { Link } from 'react-router'
 
 export default function LinkingPage() {

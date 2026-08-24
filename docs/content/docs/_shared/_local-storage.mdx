@@ -8,8 +8,8 @@ across reloads, and changes **sync across tabs** via the [`storage` event](https
 <switch>
   <case react>
 ```tsx twoslash
-import { useLocalStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useLocalStorage } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 export function ThemeToggle() {
   const [theme, setTheme] = useLocalStorage(
@@ -28,8 +28,8 @@ export function ThemeToggle() {
   <case vue>
 ```vue twoslash
 <script setup lang="ts">
-import { useLocalStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useLocalStorage } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 
 const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
 </script>
@@ -50,8 +50,8 @@ Key maps work too:
 <switch>
   <case react>
 ```tsx twoslash
-import { useLocalStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useLocalStorage } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [prefs, setPrefs] = useLocalStorage({
   theme: kv.enum(['light', 'dark']).default('light'),
@@ -63,8 +63,8 @@ setPrefs(prev => ({ ...prev, fontSize: prev.fontSize + 1 }))
   </case>
   <case vue>
 ```tsx twoslash
-import { useLocalStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useLocalStorage } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const prefs = useLocalStorage({
   theme: kv.enum(['light', 'dark']).default('light'),
@@ -85,18 +85,18 @@ It is scoped to the current tab, cleared when the tab closes, and not shared acr
 <switch>
   <case react>
 ```tsx twoslash
-import * as kv from 'kvant/schema'
+import * as kv from 'kvantjs/schema'
 // ---cut---
-import { useSessionStorage } from 'kvant/react'
+import { useSessionStorage } from 'kvantjs/react'
 
 const [draft, setDraft] = useSessionStorage('draft', kv.string().default(''))
 ```
   </case>
   <case vue>
 ```tsx twoslash
-import * as kv from 'kvant/schema'
+import * as kv from 'kvantjs/schema'
 // ---cut---
-import { useSessionStorage } from 'kvant/vue'
+import { useSessionStorage } from 'kvantjs/vue'
 
 const draft = useSessionStorage('draft', kv.string().default(''))
 ```
@@ -106,7 +106,7 @@ const draft = useSessionStorage('draft', kv.string().default(''))
 ## Options
 
 <AutoTypeTable
-  path="node_modules/kvant/dist/index.d.mts"
+  path="node_modules/kvantjs/dist/index.d.mts"
   name="StorageKvantAdapterOptions"
 />
 
@@ -117,7 +117,7 @@ const draft = useSessionStorage('draft', kv.string().default(''))
 ```tsx twoslash
 let children: React.ReactNode
 // ---cut---
-import { LocalStorageOptionsProvider } from 'kvant/react'
+import { LocalStorageOptionsProvider } from 'kvantjs/react'
 
 <LocalStorageOptionsProvider defaultOptions={{ fallback: { theme: 'light' } }}>
   {children}
@@ -127,7 +127,7 @@ import { LocalStorageOptionsProvider } from 'kvant/react'
   <case vue>
 ```vue twoslash
 <script setup lang="ts">
-import { provideLocalStorageOptions } from 'kvant/vue'
+import { provideLocalStorageOptions } from 'kvantjs/vue'
 
 provideLocalStorageOptions({ fallback: { theme: 'light' } })
 </script>

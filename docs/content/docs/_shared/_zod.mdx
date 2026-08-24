@@ -1,6 +1,6 @@
 ---
 title: Zod
-description: Using Zod schemas with kvant, including codecs and piping from kvant/schema.
+description: Using Zod schemas with kvant, including codecs and piping from kvantjs/schema.
 ---
 
 kvant accepts **any** object with `parse` and `encode` methods, including
@@ -26,7 +26,7 @@ possible input, or attach a fallback with [`.catch()`](https://zod.dev/api#catch
   <case react>
 ```ts twoslash
 import * as z from 'zod'
-import { useSearchParams } from 'kvant/react'
+import { useSearchParams } from 'kvantjs/react'
 
 // ❌ Throws on ?price=abc
 const [unsafePrice] = useSearchParams('price', z.coerce.number())
@@ -34,14 +34,14 @@ const [unsafePrice] = useSearchParams('price', z.coerce.number())
 // ✅ Falls back to 0
 const [priceWithDefault] = useSearchParams('price', z.coerce.number().catch(0))
 
-// ✅ Falls back to undefined (kvant/schema's default behavior)
+// ✅ Falls back to undefined (kvantjs/schema's default behavior)
 const [price] = useSearchParams('price', z.coerce.number().optional().catch(undefined))
 ```
   </case>
   <case next>
 ```ts twoslash
 import * as z from 'zod'
-import { useSearchParams } from 'kvant/next'
+import { useSearchParams } from 'kvantjs/next'
 
 // ❌ Throws on ?price=abc
 const [unsafePrice] = useSearchParams('price', z.coerce.number())
@@ -49,14 +49,14 @@ const [unsafePrice] = useSearchParams('price', z.coerce.number())
 // ✅ Falls back to 0
 const [priceWithDefault] = useSearchParams('price', z.coerce.number().catch(0))
 
-// ✅ Falls back to undefined (kvant/schema's default behavior)
+// ✅ Falls back to undefined (kvantjs/schema's default behavior)
 const [price] = useSearchParams('price', z.coerce.number().optional().catch(undefined))
 ```
   </case>
   <case next-pages>
 ```ts twoslash
 import * as z from 'zod'
-import { useRouterQuery } from 'kvant/next/pages'
+import { useRouterQuery } from 'kvantjs/next/pages'
 
 // ❌ Throws on ?price=abc
 const [unsafePrice] = useRouterQuery('price', z.coerce.number())
@@ -64,14 +64,14 @@ const [unsafePrice] = useRouterQuery('price', z.coerce.number())
 // ✅ Falls back to 0
 const [priceWithDefault] = useRouterQuery('price', z.coerce.number().catch(0))
 
-// ✅ Falls back to undefined (kvant/schema's default behavior)
+// ✅ Falls back to undefined (kvantjs/schema's default behavior)
 const [price] = useRouterQuery('price', z.coerce.number().optional().catch(undefined))
 ```
   </case>
   <case react-router>
 ```ts twoslash
 import * as z from 'zod'
-import { useSearchParams } from 'kvant/react-router'
+import { useSearchParams } from 'kvantjs/react-router'
 
 // ❌ Throws on ?price=abc
 const [unsafePrice] = useSearchParams('price', z.coerce.number())
@@ -79,14 +79,14 @@ const [unsafePrice] = useSearchParams('price', z.coerce.number())
 // ✅ Falls back to 0
 const [priceWithDefault] = useSearchParams('price', z.coerce.number().catch(0))
 
-// ✅ Falls back to undefined (kvant/schema's default behavior)
+// ✅ Falls back to undefined (kvantjs/schema's default behavior)
 const [price] = useSearchParams('price', z.coerce.number().optional().catch(undefined))
 ```
   </case>
   <case vue>
 ```ts twoslash
 import * as z from 'zod'
-import { useSearchParams } from 'kvant/vue'
+import { useSearchParams } from 'kvantjs/vue'
 
 // ❌ Throws on ?price=abc
 const unsafePrice = useSearchParams('price', z.coerce.number())
@@ -94,14 +94,14 @@ const unsafePrice = useSearchParams('price', z.coerce.number())
 // ✅ Falls back to 0
 const priceWithDefault = useSearchParams('price', z.coerce.number().catch(0))
 
-// ✅ Falls back to undefined (kvant/schema's default behavior)
+// ✅ Falls back to undefined (kvantjs/schema's default behavior)
 const price = useSearchParams('price', z.coerce.number().optional().catch(undefined))
 ```
   </case>
   <case vue-router>
 ```ts twoslash
 import * as z from 'zod'
-import { useRouteQuery } from 'kvant/vue-router'
+import { useRouteQuery } from 'kvantjs/vue-router'
 
 // ❌ Throws on ?price=abc
 const unsafePrice = useRouteQuery('price', z.coerce.number())
@@ -109,14 +109,14 @@ const unsafePrice = useRouteQuery('price', z.coerce.number())
 // ✅ Falls back to 0
 const priceWithDefault = useRouteQuery('price', z.coerce.number().catch(0))
 
-// ✅ Falls back to undefined (kvant/schema's default behavior)
+// ✅ Falls back to undefined (kvantjs/schema's default behavior)
 const price = useRouteQuery('price', z.coerce.number().optional().catch(undefined))
 ```
   </case>
   <case nuxt>
 ```ts twoslash
 import * as z from 'zod'
-import { useRouteQuery } from 'kvant/nuxt'
+import { useRouteQuery } from 'kvantjs/nuxt'
 
 // ❌ Throws on ?price=abc
 const unsafePrice = useRouteQuery('price', z.coerce.number())
@@ -124,7 +124,7 @@ const unsafePrice = useRouteQuery('price', z.coerce.number())
 // ✅ Falls back to 0
 const priceWithDefault = useRouteQuery('price', z.coerce.number().catch(0))
 
-// ✅ Falls back to undefined (kvant/schema's default behavior)
+// ✅ Falls back to undefined (kvantjs/schema's default behavior)
 const price = useRouteQuery('price', z.coerce.number().optional().catch(undefined))
 ```
   </case>
@@ -139,7 +139,7 @@ naturally onto kvant's parse/encode contract without any intermediate layers:
   <case react>
 ```ts twoslash
 import * as z from 'zod'
-import { useLocalStorage } from 'kvant/react'
+import { useLocalStorage } from 'kvantjs/react'
 
 // Stored as an ISO string, used as a Date
 const dateCodec = z.codec(
@@ -158,7 +158,7 @@ const [lastVisit, setLastVisit] = useLocalStorage('last-visit', dateCodec)
   <case vue>
 ```ts twoslash
 import * as z from 'zod'
-import { useLocalStorage } from 'kvant/vue'
+import { useLocalStorage } from 'kvantjs/vue'
 
 // Stored as an ISO string, used as a Date
 const dateCodec = z.codec(
@@ -181,13 +181,13 @@ more useful codecs (`base64ToBytes`, `stringToURL`, etc.). All of them work with
 kvant as long as they can't throw on the inputs the desired interface can actually
 contain.
 
-## Mixing `kvant/schema` and Zod
+## Mixing `kvantjs/schema` and Zod
 
-The most practical setup: let [`kvant/schema`](./schema) handle the storage layer
+The most practical setup: let [`kvantjs/schema`](./schema) handle the storage layer
 (smart casting, defaults, clear-on-default) and pipe into Zod.
 
 ```ts twoslash
-import * as kv from 'kvant/schema'
+import * as kv from 'kvantjs/schema'
 import * as z from 'zod'
 
 const uriToEmail = kv.uriComponent().pipe(
@@ -195,7 +195,7 @@ const uriToEmail = kv.uriComponent().pipe(
 )
 ```
 
-[`.pipe(schema)`](./schema#pipe) and all other built-in `kvant/schema` wrappers and combinators
+[`.pipe(schema)`](./schema#pipe) and all other built-in `kvantjs/schema` wrappers and combinators
 accept any `{ parse, encode }` object, not only kvant schemas.
 The kvant side deals with the raw storage representation, and Zod
 validates the typed result. Encoding runs in reverse through the same chain.
@@ -205,5 +205,5 @@ Be careful with this power!
 
 - [Zod documentation](https://zod.dev)
 - [Zod codecs](https://zod.dev/codecs)
-- [kvant/schema](./schema) — the built-in alternative
+- [kvantjs/schema](./schema) — the built-in alternative
 - [Custom schema](./custom-schema) — adapting other libraries

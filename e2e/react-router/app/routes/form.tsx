@@ -1,6 +1,6 @@
 import type { FormEvent } from 'react'
-import { useSearchParams } from 'kvant/react-router'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react-router'
+import { string } from 'kvantjs/schema'
 
 export default function FormPage() {
   const [value, setValue] = useSearchParams('test', string())

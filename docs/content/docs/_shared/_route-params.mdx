@@ -19,8 +19,8 @@ the path rather than the query string.
   <case vue-router>
 ```vue twoslash
 <script setup lang="ts">
-import { useRouteParams } from 'kvant/vue-router'
-import * as kv from 'kvant/schema'
+import { useRouteParams } from 'kvantjs/vue-router'
+import * as kv from 'kvantjs/schema'
 
 // Route: /users/:id
 const id = useRouteParams('id', kv.string())
@@ -34,8 +34,8 @@ const id = useRouteParams('id', kv.string())
   <case nuxt>
 ```vue twoslash
 <script setup lang="ts">
-import { useRouteParams } from 'kvant/nuxt'
-import * as kv from 'kvant/schema'
+import { useRouteParams } from 'kvantjs/nuxt'
+import * as kv from 'kvantjs/schema'
 
 // Route: /users/[id]
 const id = useRouteParams('id', kv.string())
@@ -65,8 +65,8 @@ Repeatable params work too:
 <switch>
   <case vue-router>
 ```ts twoslash
-import { useRouteParams } from 'kvant/vue-router'
-import * as kv from 'kvant/schema'
+import { useRouteParams } from 'kvantjs/vue-router'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 // Route: /docs/:slug*
 const slug = useRouteParams('slug', kv.array(kv.string()).default([]))
@@ -74,8 +74,8 @@ const slug = useRouteParams('slug', kv.array(kv.string()).default([]))
   </case>
   <case nuxt>
 ```ts twoslash
-import { useRouteParams } from 'kvant/nuxt'
-import * as kv from 'kvant/schema'
+import { useRouteParams } from 'kvantjs/nuxt'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 // Route: /docs/[[...slug]]
 const slug = useRouteParams('slug', kv.array(kv.string()).default([]))
@@ -88,8 +88,8 @@ Key maps bind several params at once:
 <switch>
   <case vue-router>
 ```ts twoslash
-import { useRouteParams } from 'kvant/vue-router'
-import * as kv from 'kvant/schema'
+import { useRouteParams } from 'kvantjs/vue-router'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 // Route: /:org/:repo
 const route = useRouteParams({
@@ -100,8 +100,8 @@ const route = useRouteParams({
   </case>
   <case nuxt>
 ```ts twoslash
-import { useRouteParams } from 'kvant/nuxt'
-import * as kv from 'kvant/schema'
+import { useRouteParams } from 'kvantjs/nuxt'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 // Route: /[org]/[repo]
 const route = useRouteParams({
@@ -117,13 +117,13 @@ const route = useRouteParams({
 <switch>
   <case vue-router>
 <AutoTypeTable
-  path="node_modules/kvant/dist/vue-router.d.mts"
+  path="node_modules/kvantjs/dist/vue-router.d.mts"
   name="RouteParamsKvantAdapterOptions"
 />
   </case>
   <case nuxt>
 <AutoTypeTable
-  path="node_modules/kvant/dist/nuxt.d.mts"
+  path="node_modules/kvantjs/dist/nuxt.d.mts"
   name="RouteParamsKvantAdapterOptions"
 />
   </case>
@@ -135,7 +135,7 @@ const route = useRouteParams({
   <case vue-router>
 ```vue twoslash
 <script setup lang="ts">
-import { provideRouteParamsOptions } from 'kvant/vue-router'
+import { provideRouteParamsOptions } from 'kvantjs/vue-router'
 
 provideRouteParamsOptions({ history: 'push' })
 </script>
@@ -144,7 +144,7 @@ provideRouteParamsOptions({ history: 'push' })
   <case nuxt>
 ```vue twoslash
 <script setup lang="ts">
-import { provideRouteParamsOptions } from 'kvant/nuxt'
+import { provideRouteParamsOptions } from 'kvantjs/nuxt'
 
 provideRouteParamsOptions({ history: 'push' })
 </script>

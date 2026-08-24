@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useSearchParamsKvantAdapter } from 'kvant'
-import * as kv from 'kvant/schema'
-import { defineKvantState } from 'kvant/vue'
+import { useSearchParamsKvantAdapter } from 'kvantjs'
+import * as kv from 'kvantjs/schema'
+import { defineKvantState } from 'kvantjs/vue'
 import qs from 'qs'
 
 // Setup copied from docs (_custom-search-serializer.mdx).

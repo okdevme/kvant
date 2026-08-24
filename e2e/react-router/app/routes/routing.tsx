@@ -1,5 +1,5 @@
-import { useSearchParams } from 'kvant/react-router'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react-router'
+import { string } from 'kvantjs/schema'
 import { useNavigate } from 'react-router'
 
 const target = '/linking-target?test=routed'

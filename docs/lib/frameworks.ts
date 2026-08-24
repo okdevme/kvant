@@ -1,4 +1,4 @@
-import * as kv from 'kvant/schema'
+import * as kv from 'kvantjs/schema'
 
 export type FrameworkFamily = 'react' | 'vue'
 export type FrameworkId = 'react' | 'next' | 'next-pages' | 'react-router' | 'vue' | 'vue-router' | 'nuxt'

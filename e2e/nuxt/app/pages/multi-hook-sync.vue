@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRouteQuery } from 'kvant/nuxt'
-import { string } from 'kvant/schema'
+import { useRouteQuery } from 'kvantjs/nuxt'
+import { string } from 'kvantjs/schema'
 
 const a = useRouteQuery('test', string())
 const states = useRouteQuery({ test: string() })

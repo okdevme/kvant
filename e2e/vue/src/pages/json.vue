@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { any, json } from 'kvant/schema'
-import { useSearchParams } from 'kvant/vue'
+import { any, json } from 'kvantjs/schema'
+import { useSearchParams } from 'kvantjs/vue'
 
 const value = useSearchParams('test', json(any()))
 </script>

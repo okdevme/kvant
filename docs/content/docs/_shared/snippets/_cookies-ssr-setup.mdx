@@ -14,7 +14,7 @@ as a `fallback` via the [**options provider**](./quick-start#global-default-opti
 ```tsx twoslash
 let children: React.ReactNode
 // ---cut---
-import { CookiesOptionsProvider } from 'kvant/react'
+import { CookiesOptionsProvider } from 'kvantjs/react'
 
 const cookieHeader: string = '...'; // comes from your server entry
 
@@ -29,7 +29,7 @@ cookies as a `fallback` via the [**options provider**](./quick-start#global-defa
 in a [layout](https://nextjs.org/docs/app/api-reference/file-conventions/layout) or [page](https://nextjs.org/docs/app/api-reference/file-conventions/page):
 
 ```tsx twoslash title="app/layout.tsx"
-import { CookiesOptionsProvider } from 'kvant/react'
+import { CookiesOptionsProvider } from 'kvantjs/react'
 import { cookies } from 'next/headers'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -56,7 +56,7 @@ cookies as a `fallback` via the [**options provider**](./quick-start#global-defa
 into [custom app](https://nextjs.org/docs/pages/building-your-application/routing/custom-app):
 
 ```tsx twoslash title="pages/_app.tsx"
-import { CookiesOptionsProvider } from 'kvant/react'
+import { CookiesOptionsProvider } from 'kvantjs/react'
 import type { AppProps } from 'next/app'
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -95,7 +95,7 @@ namespace Route {
   }
 }
 // ---cut---
-import { CookiesOptionsProvider } from 'kvant/react'
+import { CookiesOptionsProvider } from 'kvantjs/react'
 import { Outlet } from 'react-router'
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -120,7 +120,7 @@ unavailable. Provide the request's [`Cookie` header](https://developer.mozilla.o
 
 ```vue twoslash
 <script setup lang="ts">
-import { provideCookiesOptions } from 'kvant/vue'
+import { provideCookiesOptions } from 'kvantjs/vue'
 
 const cookieHeader: string = '...' // comes from your server entry, e.g. via SSR context
 

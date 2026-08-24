@@ -1,5 +1,5 @@
-import { useSearchParams } from 'kvant/react'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react'
+import { string } from 'kvantjs/schema'
 
 export function MultiHookSyncPage() {
   const [a, setA] = useSearchParams('test', string())

@@ -16,6 +16,23 @@
 
 <br>
 
+## Installation
+
+Install kvant with your package manager of choice:
+
+```bash
+npm install kvantjs
+```
+```bash
+pnpm add kvantjs
+```
+```bash
+yarn add kvantjs
+```
+```bash
+bun add kvantjs
+```
+
 ## Documentation
 
 Read the **complete documentation** for your framework of choice:
@@ -36,12 +53,12 @@ Read the **complete documentation** for your framework of choice:
 > For complete docs on Next.js and other frameworks, please see the options above.
 
 kvant turns key-value interfaces into React state. Bind a key, pass a
-schema from [`kvant/schema`](https://kvantjs.dev/docs/next/schema), and read/write it like `useState`.
+schema from [`kvantjs/schema`](https://kvantjs.dev/docs/next/schema), and read/write it like `useState`.
 The interface (here, the URL) stays the single source of truth:
 
 ```tsx
-import { useSearchParams } from 'kvant/next'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import * as kv from 'kvantjs/schema'
 
 function SearchInput() {
   const [query, setQuery] = useSearchParams('q', kv.string().default(''))
@@ -88,7 +105,7 @@ const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
 Set options once for a component subtree using the **options provider**:
 
 ```tsx
-import { SearchParamsOptionsProvider } from 'kvant/next'
+import { SearchParamsOptionsProvider } from 'kvantjs/next'
 
 <SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
   {children}
@@ -100,9 +117,9 @@ import { SearchParamsOptionsProvider } from 'kvant/next'
 The same pattern works for all supported key-value interfaces:
 
 ```ts
-import { useSearchParams } from 'kvant/next'
-import { useCookies, useLocalStorage, useSessionStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import { useCookies, useLocalStorage, useSessionStorage } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 // URL search params: shareable, bookmarkable
 const [query, setQuery] = useSearchParams('q', kv.string().default(''))
@@ -131,7 +148,7 @@ Full guides:
 
 - [**nuqs**](https://github.com/47ng/nuqs) 🖤 played a marginal role in inspiring the kvant API,
   as well as providing bits and pieces of code for the kvant internals.
-- kvant API is shaped around [**zod**](https://github.com/colinhacks/zod) 💙 as [`kvant/schema`](https://kvantjs.dev/docs/next/schema)
+- kvant API is shaped around [**zod**](https://github.com/colinhacks/zod) 💙 as [`kvantjs/schema`](https://kvantjs.dev/docs/next/schema)
   builds on your existing Zod intuition, so defining schemas feels just like writing plain Zod.
 
 ## License

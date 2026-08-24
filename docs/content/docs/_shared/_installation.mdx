@@ -6,39 +6,39 @@ description: Install kvant with your package manager and check framework compati
 Install kvant with your package manager of choice:
 
 ```npm
-npm install kvant
+npm install kvantjs
 ```
 
 kvant ships as a single package with per-framework entry points:
 
-| Entry point          | Framework                        |
-| -------------------- | -------------------------------- |
-| `kvant/react`        | React (SPA)                      |
-| `kvant/next`         | Next.js (app router)             |
-| `kvant/next/pages`   | Next.js (pages router)           |
-| `kvant/react-router` | React Router                     |
-| `kvant/vue`          | Vue                              |
-| `kvant/vue-router`   | Vue Router                       |
-| `kvant/nuxt`         | Nuxt                             |
-| `kvant/schema`       | Schema library (all frameworks)  |
-| `kvant`              | Core adapters and types (advanced) |
+| Entry point            | Framework                        |
+| ---------------------- | -------------------------------- |
+| `kvantjs/react`        | React (SPA)                      |
+| `kvantjs/next`         | Next.js (app router)             |
+| `kvantjs/next/pages`   | Next.js (pages router)           |
+| `kvantjs/react-router` | React Router                     |
+| `kvantjs/vue`          | Vue                              |
+| `kvantjs/vue-router`   | Vue Router                       |
+| `kvantjs/nuxt`         | Nuxt                             |
+| `kvantjs/schema`       | Schema library (all frameworks)  |
+| `kvantjs`              | Core adapters and types (advanced) |
 
 Only install the peer dependency for the framework you use. The others are
 optional.
 
 ## Version compatibility
 
-| Framework    | Supported versions      |
-| ------------ | ----------------------- |
-| React        | [[peer:kvant:react]]        |
-| Next.js      | [[peer:kvant:next]]         |
-| React Router | [[peer:kvant:react-router]] |
-| Vue          | [[peer:kvant:vue]]          |
-| Vue Router   | [[peer:kvant:vue-router]]   |
-| Nuxt         | [[peer:kvant:nuxt]]         |
+| Framework    | Supported versions        |
+| ------------ | ------------------------- |
+| React        | [[peer:kvantjs:react]]        |
+| Next.js      | [[peer:kvantjs:next]]         |
+| React Router | [[peer:kvantjs:react-router]] |
+| Vue          | [[peer:kvantjs:vue]]          |
+| Vue Router   | [[peer:kvantjs:vue-router]]   |
+| Nuxt         | [[peer:kvantjs:nuxt]]         |
 
 <Callout type="info">
-React-based entry points (`kvant/react`, `kvant/next`, `kvant/next/pages`,
-`kvant/react-router`) ship with the `'use client'` directive, so they work out
+React-based entry points (`kvantjs/react`, `kvantjs/next`, `kvantjs/next/pages`,
+`kvantjs/react-router`) ship with the `'use client'` directive, so they work out
 of the box in React Server Components trees.
 </Callout>

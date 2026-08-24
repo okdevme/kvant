@@ -1,5 +1,5 @@
-import { useLocalStorage } from 'kvant/react'
-import { number, string } from 'kvant/schema'
+import { useLocalStorage } from 'kvantjs/react'
+import { number, string } from 'kvantjs/schema'
 
 export function LocalStoragePage() {
   const [value, setValue] = useLocalStorage('test', string())

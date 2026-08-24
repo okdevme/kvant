@@ -1,7 +1,7 @@
 'use client'
 
-import { useSearchParams } from 'kvant/next'
-import { number, string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import { number, string } from 'kvantjs/schema'
 import { Suspense } from 'react'
 
 function Bench() {

@@ -1,5 +1,5 @@
-import { useRouterQuery } from 'kvant/next/pages'
-import { number, string } from 'kvant/schema'
+import { useRouterQuery } from 'kvantjs/next/pages'
+import { number, string } from 'kvantjs/schema'
 
 export function getServerSideProps() {
   return { props: {} }

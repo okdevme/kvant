@@ -1,5 +1,5 @@
-import { SearchParamsOptionsProvider, useSearchParams } from 'kvant/react'
-import { string } from 'kvant/schema'
+import { SearchParamsOptionsProvider, useSearchParams } from 'kvantjs/react'
+import { string } from 'kvantjs/schema'
 
 function Inner() {
   // inherits history: 'push' from the provider

@@ -5,16 +5,16 @@ title: Cookies Locale Example
 <switch>
   <case react>
 ```ts twoslash
-import { useCookies } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [locale, setLocale] = useCookies('locale', kv.string().default('en'))
 ```
   </case>
   <case vue>
 ```ts twoslash
-import { useCookies } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useCookies } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const locale = useCookies('locale', kv.string().default('en'))
 ```

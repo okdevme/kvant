@@ -1,4 +1,4 @@
-import { useSearchParams } from 'kvant/react'
+import { useSearchParams } from 'kvantjs/react'
 import * as z from 'zod'
 
 // Doc pattern (_zod.mdx): total schema via .catch().

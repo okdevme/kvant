@@ -1,7 +1,7 @@
 'use client'
 
-import { useSearchParams } from 'kvant/next'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import { string } from 'kvantjs/schema'
 import Link from 'next/link'
 import { Suspense } from 'react'
 

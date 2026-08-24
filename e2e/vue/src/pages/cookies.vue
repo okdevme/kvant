@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { number, string } from 'kvant/schema'
-import { useCookies } from 'kvant/vue'
+import { number, string } from 'kvantjs/schema'
+import { useCookies } from 'kvantjs/vue'
 
 const value = useCookies('test', string())
 const count = useCookies('count', number())

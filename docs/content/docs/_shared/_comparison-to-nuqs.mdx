@@ -18,8 +18,8 @@ const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
 ```ts twoslash tab="kvant"
-import { useSearchParams } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 
 const [page, setPage] = useSearchParams('page', kv.index().default(0))
 ```
@@ -32,8 +32,8 @@ const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
 ```ts twoslash tab="kvant"
-import { useSearchParams } from 'kvant/next'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import * as kv from 'kvantjs/schema'
 
 const [page, setPage] = useSearchParams('page', kv.index().default(0))
 ```
@@ -46,8 +46,8 @@ const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
 ```ts twoslash tab="kvant"
-import { useRouterQuery } from 'kvant/next/pages'
-import * as kv from 'kvant/schema'
+import { useRouterQuery } from 'kvantjs/next/pages'
+import * as kv from 'kvantjs/schema'
 
 const [page, setPage] = useRouterQuery('page', kv.index().default(0))
 ```
@@ -60,8 +60,8 @@ const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
 ```ts twoslash tab="kvant"
-import { useSearchParams } from 'kvant/react-router'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react-router'
+import * as kv from 'kvantjs/schema'
 
 const [page, setPage] = useSearchParams('page', kv.index().default(0))
 ```
@@ -74,8 +74,8 @@ const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
 ```ts twoslash tab="kvant"
-import { useSearchParams } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 
 const page = useSearchParams('page', kv.index().default(0))
 ```
@@ -88,8 +88,8 @@ const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
 ```ts twoslash tab="kvant"
-import { useRouteQuery } from 'kvant/vue-router'
-import * as kv from 'kvant/schema'
+import { useRouteQuery } from 'kvantjs/vue-router'
+import * as kv from 'kvantjs/schema'
 
 const page = useRouteQuery('page', kv.index().default(0))
 ```
@@ -102,8 +102,8 @@ const [page, setPage] = useQueryState('page', parseAsIndex.withDefault(0))
 ```
 
 ```ts twoslash tab="kvant"
-import { useRouteQuery } from 'kvant/nuxt'
-import * as kv from 'kvant/schema'
+import { useRouteQuery } from 'kvantjs/nuxt'
+import * as kv from 'kvantjs/schema'
 
 const page = useRouteQuery('page', kv.index().default(0))
 ```
@@ -141,8 +141,8 @@ with idiomatic composables that return writable refs:
   <case react vue>
 ```vue twoslash
 <script setup lang="ts">
-import { useSearchParams } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 
 const query = useSearchParams('q', kv.string().default(''))
 </script>
@@ -151,8 +151,8 @@ const query = useSearchParams('q', kv.string().default(''))
   <case vue-router>
 ```vue twoslash
 <script setup lang="ts">
-import { useRouteQuery } from 'kvant/vue-router'
-import * as kv from 'kvant/schema'
+import { useRouteQuery } from 'kvantjs/vue-router'
+import * as kv from 'kvantjs/schema'
 
 const query = useRouteQuery('q', kv.string().default(''))
 </script>
@@ -161,8 +161,8 @@ const query = useRouteQuery('q', kv.string().default(''))
   <case nuxt>
 ```vue twoslash
 <script setup lang="ts">
-import { useRouteQuery } from 'kvant/nuxt'
-import * as kv from 'kvant/schema'
+import { useRouteQuery } from 'kvantjs/nuxt'
+import * as kv from 'kvantjs/schema'
 
 const query = useRouteQuery('q', kv.string().default(''))
 </script>
@@ -187,7 +187,7 @@ learn, no surprises when switching interfaces.
 nuqs [parsers](https://nuqs.dev/docs/parsers/built-in) define `parse`/`serialize` (with `eq` for comparison). kvant
 [schemas](./schema) define `parse`/`encode` and add a fluent, Zod-like API on top:
 checks, transforms, defaults, structures, via the built-in
-[`kvant/schema`](./schema) library. [Zod](./zod) and [other validation libraries](./custom-schema#adapting-other-schema-libraries)
+[`kvantjs/schema`](./schema) library. [Zod](./zod) and [other validation libraries](./custom-schema#adapting-other-schema-libraries)
 slot in too.
 
 ## Migrating from nuqs?

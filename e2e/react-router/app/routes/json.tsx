@@ -1,5 +1,5 @@
-import { useSearchParams } from 'kvant/react-router'
-import { any, json } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react-router'
+import { any, json } from 'kvantjs/schema'
 
 export default function JsonPage() {
   const [value, setValue] = useSearchParams('test', json(any()))

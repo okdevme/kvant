@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCookies } from 'kvant/nuxt'
-import { number, string } from 'kvant/schema'
+import { useCookies } from 'kvantjs/nuxt'
+import { number, string } from 'kvantjs/schema'
 
 const value = useCookies('test', string())
 const count = useCookies('count', number())

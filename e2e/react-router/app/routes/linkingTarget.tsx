@@ -1,5 +1,5 @@
-import { useSearchParams } from 'kvant/react-router'
-import { string } from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react-router'
+import { string } from 'kvantjs/schema'
 
 export default function LinkingTargetPage() {
   const [value] = useSearchParams('test', string())

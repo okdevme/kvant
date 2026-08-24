@@ -1,5 +1,5 @@
-import { useSessionStorage } from 'kvant/react'
-import { number, string } from 'kvant/schema'
+import { useSessionStorage } from 'kvantjs/react'
+import { number, string } from 'kvantjs/schema'
 
 export function SessionStoragePage() {
   const [value, setValue] = useSessionStorage('test', string())

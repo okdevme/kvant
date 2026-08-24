@@ -8,12 +8,12 @@ description: Get productive with kvant in seconds.
 <switch>
   <case react>
 kvant turns key-value interfaces into React state. Bind a key, pass a
-schema from [`kvant/schema`](./schema), and read/write it like `useState`. The
+schema from [`kvantjs/schema`](./schema), and read/write it like `useState`. The
 interface (here, the URL) stays the single source of truth:
   </case>
   <case vue>
 kvant turns key-value interfaces into Vue refs. Bind a key, pass a schema
-from [`kvant/schema`](./schema), and read/write it like any writable `Ref`. The
+from [`kvantjs/schema`](./schema), and read/write it like any writable `Ref`. The
 interface (here, the URL) stays the single source of truth:
   </case>
 </switch>
@@ -43,8 +43,8 @@ Pass options as the last argument:
 <switch>
   <case react>
 ```ts twoslash
-import { useSearchParams } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
   history: 'push', // add browser history entries
@@ -53,8 +53,8 @@ const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
   </case>
   <case next>
 ```ts twoslash
-import { useSearchParams } from 'kvant/next'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/next'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
   history: 'push', // add browser history entries
@@ -64,8 +64,8 @@ const [query, setQuery] = useSearchParams('q', kv.string().default(''), {
   </case>
   <case next-pages>
 ```ts twoslash
-import { useRouterQuery } from 'kvant/next/pages'
-import * as kv from 'kvant/schema'
+import { useRouterQuery } from 'kvantjs/next/pages'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [query, setQuery] = useRouterQuery('q', kv.string().default(''), {
   history: 'push', // add browser history entries
@@ -75,8 +75,8 @@ const [query, setQuery] = useRouterQuery('q', kv.string().default(''), {
   </case>
   <case vue>
 ```ts twoslash
-import { useSearchParams } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useSearchParams } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const query = useSearchParams('q', kv.string().default(''), {
   history: 'push', // add browser history entries
@@ -85,8 +85,8 @@ const query = useSearchParams('q', kv.string().default(''), {
   </case>
   <case vue-router nuxt>
 ```ts twoslash
-import { useRouteQuery } from 'kvant/vue-router'
-import * as kv from 'kvant/schema'
+import { useRouteQuery } from 'kvantjs/vue-router'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const query = useRouteQuery('q', kv.string().default(''), {
   history: 'push', // add browser history entries
@@ -123,7 +123,7 @@ Pass `{ extend: false }{:ts}` to replace instead of merge:
 <switch>
   <case react>
 ```tsx twoslash
-import { SearchParamsOptionsProvider } from 'kvant/react'
+import { SearchParamsOptionsProvider } from 'kvantjs/react'
 let children: React.ReactNode
 // ---cut---
 <SearchParamsOptionsProvider
@@ -136,7 +136,7 @@ let children: React.ReactNode
   </case>
   <case next-pages>
 ```tsx twoslash
-import { RouterQueryOptionsProvider } from 'kvant/next/pages'
+import { RouterQueryOptionsProvider } from 'kvantjs/next/pages'
 let children: React.ReactNode
 // ---cut---
 <RouterQueryOptionsProvider
@@ -149,14 +149,14 @@ let children: React.ReactNode
   </case>
   <case vue>
 ```ts twoslash
-import { provideSearchParamsOptions } from 'kvant/vue'
+import { provideSearchParamsOptions } from 'kvantjs/vue'
 // ---cut---
 provideSearchParamsOptions({ history: 'push' }, { extend: false })
 ```
   </case>
   <case vue-router nuxt>
 ```ts twoslash
-import { provideRouteQueryOptions } from 'kvant/vue-router'
+import { provideRouteQueryOptions } from 'kvantjs/vue-router'
 // ---cut---
 provideRouteQueryOptions({ history: 'push' }, { extend: false })
 ```

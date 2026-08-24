@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { number, string } from 'kvant/schema'
-import { useSearchParams } from 'kvant/vue'
+import { number, string } from 'kvantjs/schema'
+import { useSearchParams } from 'kvantjs/vue'
 
 const value = useSearchParams('test', string())
 const count = useSearchParams('count', number())

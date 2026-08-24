@@ -7,7 +7,7 @@ title: Search Params Example
 ```tsx twoslash
 let children: React.ReactNode
 // ---cut---
-import { SearchParamsOptionsProvider } from 'kvant/react'
+import { SearchParamsOptionsProvider } from 'kvantjs/react'
 
 <SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
   {children}
@@ -18,7 +18,7 @@ import { SearchParamsOptionsProvider } from 'kvant/react'
 ```tsx twoslash
 let children: React.ReactNode
 // ---cut---
-import { SearchParamsOptionsProvider } from 'kvant/next'
+import { SearchParamsOptionsProvider } from 'kvantjs/next'
 
 <SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
   {children}
@@ -29,7 +29,7 @@ import { SearchParamsOptionsProvider } from 'kvant/next'
 ```tsx twoslash
 let children: React.ReactNode
 // ---cut---
-import { RouterQueryOptionsProvider } from 'kvant/next/pages'
+import { RouterQueryOptionsProvider } from 'kvantjs/next/pages'
 
 <RouterQueryOptionsProvider defaultOptions={{ history: 'push' }}>
   {children}
@@ -40,7 +40,7 @@ import { RouterQueryOptionsProvider } from 'kvant/next/pages'
 ```tsx twoslash
 let children: React.ReactNode
 // ---cut---
-import { SearchParamsOptionsProvider } from 'kvant/react-router'
+import { SearchParamsOptionsProvider } from 'kvantjs/react-router'
 
 <SearchParamsOptionsProvider defaultOptions={{ history: 'push' }}>
   {children}
@@ -50,7 +50,7 @@ import { SearchParamsOptionsProvider } from 'kvant/react-router'
   <case vue>
 ```vue twoslash
 <script setup lang="ts">
-import { provideSearchParamsOptions } from 'kvant/vue'
+import { provideSearchParamsOptions } from 'kvantjs/vue'
 
 provideSearchParamsOptions({ history: 'push' })
 </script>
@@ -59,7 +59,7 @@ provideSearchParamsOptions({ history: 'push' })
   <case vue-router>
 ```vue twoslash
 <script setup lang="ts">
-import { provideRouteQueryOptions } from 'kvant/vue-router'
+import { provideRouteQueryOptions } from 'kvantjs/vue-router'
 
 provideRouteQueryOptions({ history: 'push' })
 </script>
@@ -68,7 +68,7 @@ provideRouteQueryOptions({ history: 'push' })
   <case nuxt>
 ```vue twoslash
 <script setup lang="ts">
-import { provideRouteQueryOptions } from 'kvant/nuxt'
+import { provideRouteQueryOptions } from 'kvantjs/nuxt'
 
 provideRouteQueryOptions({ history: 'push' })
 </script>

@@ -1,7 +1,7 @@
 'use client'
 
-import { useCookies } from 'kvant/react'
-import { number, string } from 'kvant/schema'
+import { useCookies } from 'kvantjs/react'
+import { number, string } from 'kvantjs/schema'
 
 export default function CookiesPage() {
   const [value, setValue] = useCookies('test', string())

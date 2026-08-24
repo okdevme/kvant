@@ -5,16 +5,16 @@ title: Local Storage Theme Example
 <switch>
   <case react>
 ```ts twoslash
-import { useLocalStorage } from 'kvant/react'
-import * as kv from 'kvant/schema'
+import { useLocalStorage } from 'kvantjs/react'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const [theme, setTheme] = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
 ```
   </case>
   <case vue>
 ```ts twoslash
-import { useLocalStorage } from 'kvant/vue'
-import * as kv from 'kvant/schema'
+import { useLocalStorage } from 'kvantjs/vue'
+import * as kv from 'kvantjs/schema'
 // ---cut---
 const theme = useLocalStorage('theme', kv.enum(['light', 'dark']).default('light'))
 ```
