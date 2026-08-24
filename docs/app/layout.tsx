@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Analytics } from '@vercel/analytics/next'
 import { Inter } from 'next/font/google'
 import { authors, baseUrl, description, title } from '@/lib/shared'
 import { Body, Provider } from './layout.client'
@@ -23,6 +24,7 @@ export default function Layout({ children }: LayoutProps<'/'>) {
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <Body>
         <Provider>{children}</Provider>
+        <Analytics />
       </Body>
     </html>
   )

@@ -15,6 +15,7 @@
     "@reactuses/core": "catalog:",
     "@shikijs/transformers": "catalog:",
     "@shikijs/twoslash": "catalog:",
+    "@vercel/analytics": "catalog:",
     "animejs": "catalog:",
     "cnfast": "catalog:",
     "fumadocs-core": "catalog:",
