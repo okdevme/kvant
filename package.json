@@ -3,17 +3,42 @@
   "type": "module",
   "version": "0.1.0",
   "packageManager": "pnpm@11.22.0",
-  "description": "A starter for creating a TypeScript package.",
+  "description": "Universal, type-safe state manager for key-value interfaces",
   "author": "okdevme",
   "license": "MIT",
-  "homepage": "https://github.com/author/library#readme",
+  "homepage": "https://kvantjs.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/author/library.git"
+    "url": "git+https://github.com/okdevme/kvant.git"
   },
   "bugs": {
-    "url": "https://github.com/author/library/issues"
+    "url": "https://github.com/okdevme/kvant/issues"
   },
+  "keywords": [
+    "state-management",
+    "url-state",
+    "search-params",
+    "query-params",
+    "query-string",
+    "localstorage",
+    "sessionstorage",
+    "cookies",
+    "key-value",
+    "type-safe",
+    "typescript",
+    "schema",
+    "validation",
+    "nuqs",
+    "zod",
+    "react",
+    "react-hooks",
+    "nextjs",
+    "react-router",
+    "vue",
+    "vue-composables",
+    "nuxt",
+    "vue-router"
+  ],
   "exports": {
     ".": "./dist/index.mjs",
     "./next": "./dist/next.mjs",
