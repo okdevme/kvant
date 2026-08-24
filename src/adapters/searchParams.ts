@@ -48,19 +48,21 @@ export function useSearchParamsKvantAdapter<T>(
     fallback = {},
   } = options
 
+  const serverSnapshot = normalizeSnapshot(
+    typeof fallback === 'string'
+      ? parseSearch(fallback)
+      : fallback,
+    keys,
+  )
+
   let search: string
   let snapshot: Record<string, T | undefined>
 
   function reconcile(): void {
     search = defaultWindow?.location.search ?? ''
-    const newSnapshot = normalizeSnapshot(
-      defaultWindow
-        ? parseSearch(defaultWindow.location.search)
-        : typeof fallback === 'string'
-          ? parseSearch(fallback)
-          : fallback,
-      keys,
-    )
+    const newSnapshot = defaultWindow
+      ? normalizeSnapshot(parseSearch(defaultWindow.location.search), keys)
+      : serverSnapshot
     if (snapshot && keys.every(key => newSnapshot[key] === snapshot[key]))
       return
     snapshot = newSnapshot
@@ -115,6 +117,7 @@ export function useSearchParamsKvantAdapter<T>(
     key: adapterKey,
     subscribe: hook.on,
     getSnapshot: () => snapshot,
+    getServerSnapshot: () => serverSnapshot,
     update,
     effects,
   }

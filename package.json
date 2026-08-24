@@ -78,6 +78,7 @@
     "@types/node": "catalog:",
     "@types/qs": "catalog:",
     "@types/react": "catalog:",
+    "@vue/server-renderer": "catalog:",
     "arktype": "catalog:",
     "eslint": "catalog:",
     "happy-dom": "catalog:",

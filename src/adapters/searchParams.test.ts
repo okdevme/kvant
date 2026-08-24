@@ -90,4 +90,30 @@ describe('useSearchParamsKvantAdapter', () => {
     scrollSpy.mockRestore()
     window.history.replaceState(null, '', '/')
   })
+
+  it('getServerSnapshot defaults to empty values', () => {
+    window.history.replaceState(null, '', '/?a=client')
+    const adapter = makeAdapter(['a'])
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: undefined })
+    window.history.replaceState(null, '', '/')
+  })
+
+  it('getServerSnapshot derives from the fallback, not from the client URL', () => {
+    window.history.replaceState(null, '', '/?a=client')
+    const adapter = makeAdapter(['a'], { fallback: '?a=server' })
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: 'server' })
+    expect(adapter.getSnapshot()).toEqual({ a: 'client' })
+    window.history.replaceState(null, '', '/')
+  })
+
+  it('getServerSnapshot stays stable across client updates', () => {
+    window.history.replaceState(null, '', '/')
+    const adapter = makeAdapter(['a'], { fallback: '?a=server' })
+    const cleanup = adapter.effects?.()
+    adapter.update({ a: 'client-write' })
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: 'server' })
+    expect(adapter.getSnapshot()).toEqual({ a: 'client-write' })
+    cleanup?.()
+    window.history.replaceState(null, '', '/')
+  })
 })

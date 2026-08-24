@@ -17,4 +17,5 @@ export default [
   route('scroll', 'routes/scroll.tsx'),
   route('routing', 'routes/routing.tsx'),
   route('cookie-attributes', 'routes/cookieAttributes.tsx'),
+  route('hydration', 'routes/hydration.tsx'),
 ] satisfies RouteConfig

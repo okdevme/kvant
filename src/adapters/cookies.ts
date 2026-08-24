@@ -26,14 +26,16 @@ export const useCookiesKvantAdapter: CookiesKvantAdapter = (keys, options) => {
     fallback = {},
   } = options
 
-  let snapshot = normalizeSnapshot(
-    defaultWindow
-      ? parseCookie(defaultWindow.document.cookie)
-      : typeof fallback === 'string'
-        ? parseCookie(fallback)
-        : fallback,
+  const serverSnapshot = normalizeSnapshot(
+    typeof fallback === 'string'
+      ? parseCookie(fallback)
+      : fallback,
     keys,
   )
+
+  let snapshot = defaultWindow
+    ? normalizeSnapshot(parseCookie(defaultWindow.document.cookie), keys)
+    : serverSnapshot
 
   const adapterKey = 'cookies'
   const bus = useEventBus<SyncEvent>(`adapter:${adapterKey}`)
@@ -114,6 +116,7 @@ export const useCookiesKvantAdapter: CookiesKvantAdapter = (keys, options) => {
     key: adapterKey,
     subscribe: hook.on,
     getSnapshot: () => snapshot,
+    getServerSnapshot: () => serverSnapshot,
     update,
     effects,
   }

@@ -122,6 +122,28 @@ describe('useLocalStorageKvantAdapter', () => {
     expect(listener).not.toHaveBeenCalled()
   })
 
+  it('getServerSnapshot defaults to empty values', () => {
+    localStorage.setItem('a', 'client')
+    const adapter = useLocalStorageKvantAdapter(['a'], {})
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: undefined })
+  })
+
+  it('getServerSnapshot derives from the fallback, not from client storage', () => {
+    localStorage.setItem('a', 'client')
+    const adapter = useLocalStorageKvantAdapter(['a'], { fallback: { a: 'server' } })
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: 'server' })
+    expect(adapter.getSnapshot()).toEqual({ a: 'client' })
+  })
+
+  it('getServerSnapshot stays stable across client updates', () => {
+    const adapter = useLocalStorageKvantAdapter(['a'], { fallback: { a: 'server' } })
+    const cleanup = adapter.effects?.()
+    adapter.update({ a: 'client-write' })
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: 'server' })
+    expect(adapter.getSnapshot()).toEqual({ a: 'client-write' })
+    cleanup?.()
+  })
+
   it('session storage adapter uses sessionStorage', () => {
     sessionStorage.clear()
     const adapter = useSessionStorageKvantAdapter(['a'], {})

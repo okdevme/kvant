@@ -19,6 +19,14 @@ export interface KvantAdapterInterface<T = any> {
   readonly subscribe: (callback: () => void) => () => void
   /** Returns the current raw values for the adapter's keys. */
   readonly getSnapshot: () => Record<string, T | undefined>
+  /**
+   * Returns the raw values as rendered on the server (SSR).
+   * Used as the server snapshot during hydration,
+   * the real client values are applied right after hydration.
+   *
+   * @default getSnapshot
+   */
+  readonly getServerSnapshot?: () => Record<string, T | undefined>
   /** Writes raw values to the underlying storage. */
   readonly update: KvantAdapterUpdateFn
   /**

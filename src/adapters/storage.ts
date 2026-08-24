@@ -28,13 +28,17 @@ export function useStorageKvantAdapter(
     fallback = {},
   } = options
 
-  let snapshot: Record<string, string | undefined> = mapValues(
-    normalizeSnapshot(
-      storage?.getItem.bind(storage) ?? fallback,
-      keys,
-    ),
+  const serverSnapshot: Record<string, string | undefined> = mapValues(
+    normalizeSnapshot(fallback, keys),
     value => value ?? undefined,
   )
+
+  let snapshot: Record<string, string | undefined> = storage
+    ? mapValues(
+        normalizeSnapshot(storage.getItem.bind(storage), keys),
+        value => value ?? undefined,
+      )
+    : serverSnapshot
 
   const adapterKey = `storage:${storageKey}`
   const bus = useEventBus<SyncEvent>(`adapter:${adapterKey}`)
@@ -110,6 +114,7 @@ export function useStorageKvantAdapter(
     key: adapterKey,
     subscribe: hook.on,
     getSnapshot: () => snapshot,
+    getServerSnapshot: () => serverSnapshot,
     update,
     effects,
   }

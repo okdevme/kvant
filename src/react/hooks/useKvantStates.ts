@@ -34,7 +34,7 @@ function useNormalizedAdapter<A extends KvantReactAdapter | KvantAdapter>(
   const snapshot = useSyncExternalStore(
     api.subscribe,
     api.getSnapshot,
-    api.getSnapshot,
+    api.getServerSnapshot ?? api.getSnapshot,
   )
 
   useEffect(() => api.effects?.(), [])

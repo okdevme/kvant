@@ -86,4 +86,31 @@ describe('useCookiesKvantAdapter', () => {
     adapter.update({ a: 'x' })
     expect(listener).not.toHaveBeenCalled()
   })
+
+  it('getServerSnapshot defaults to empty values', () => {
+    document.cookie = 'a=client'
+    const adapter = useCookiesKvantAdapter(['a'], {})
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: undefined })
+  })
+
+  it('getServerSnapshot derives from the fallback, not from client cookies', () => {
+    document.cookie = 'a=client'
+    const adapter = useCookiesKvantAdapter(['a'], { fallback: 'a=server' })
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: 'server' })
+    expect(adapter.getSnapshot()).toEqual({ a: 'client' })
+  })
+
+  it('getServerSnapshot supports record fallbacks', () => {
+    const adapter = useCookiesKvantAdapter(['a', 'b'], { fallback: { a: 'x' } })
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: 'x', b: undefined })
+  })
+
+  it('getServerSnapshot stays stable across client updates', () => {
+    const adapter = useCookiesKvantAdapter(['a'], { fallback: 'a=server' })
+    const cleanup = adapter.effects?.()
+    adapter.update({ a: 'client-write' })
+    expect(adapter.getServerSnapshot?.()).toEqual({ a: 'server' })
+    expect(adapter.getSnapshot()).toEqual({ a: 'client-write' })
+    cleanup?.()
+  })
 })

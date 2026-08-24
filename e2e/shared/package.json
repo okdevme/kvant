@@ -7,6 +7,7 @@
     "./playwright.config": "./playwright.config.ts",
     "./navigate": "./navigate.ts",
     "./expect-url": "./expect-url.ts",
+    "./hydration": "./hydration.ts",
     "./log-spy": "./log-spy.ts",
     "./specs": "./specs.ts"
   },
