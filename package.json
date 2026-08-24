@@ -40,6 +40,7 @@
     "prepare": "simple-git-hooks",
     "docs:dev": "pnpm --filter docs dev",
     "docs:build": "pnpm --filter docs build",
+    "docs:build:lowmem": "pnpm --filter docs build:lowmem",
     "docs:start": "pnpm --filter docs start"
   },
   "peerDependencies": {

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm --filter kvant build && next build",
+    "build:lowmem": "pnpm --filter kvant build && cross-env NEXT_LOW_MEMORY=1 next build --webpack",
     "dev": "pnpm --filter kvant build && next dev",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
@@ -40,6 +41,7 @@
     "@types/qs": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "cross-env": "catalog:",
     "eslint": "catalog:",
     "h3": "catalog:",
     "mdast-util-find-and-replace": "catalog:",

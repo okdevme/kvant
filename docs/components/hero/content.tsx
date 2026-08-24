@@ -1,10 +1,10 @@
 import type { SnippetMap } from './snippets'
 import type { Framework, FrameworkId } from '@/lib/frameworks'
 import { rehypeCodeDefaultOptions } from 'fumadocs-core/mdx-plugins'
-import { transformerTwoslash } from 'fumadocs-twoslash'
 import * as twoslashComponents from 'fumadocs-twoslash/ui'
 import { ServerCodeBlock } from 'fumadocs-ui/components/codeblock.rsc'
 import { frameworks } from '@/lib/frameworks'
+import { createTwoslashTransformer } from '@/lib/twoslash'
 
 export interface SnippetComponent {
   id: string
@@ -194,15 +194,7 @@ const locale = useCookies('locale', kv.string().default('en'))
 
 const transformers = [
   ...(rehypeCodeDefaultOptions.transformers ?? []),
-  transformerTwoslash({
-    langs: ['ts', 'tsx', 'js', 'jsx', 'vue'],
-    twoslashOptions: {
-      compilerOptions: {
-        moduleResolution: 100, // Bundler
-        jsx: 4, // React JSX
-      },
-    },
-  }),
+  createTwoslashTransformer(),
 ]
 
 export const snippetMap = Object.fromEntries(

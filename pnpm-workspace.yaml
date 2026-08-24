@@ -46,6 +46,7 @@ catalog:
   animejs: ^4.5.0
   arktype: ^2.2.3
   cnfast: ^0.1.0
+  cross-env: ^10.1.0
   eslint: ^10.9.0
   fumadocs-core: 16.14.3
   fumadocs-docgen: ^3.1.0
