@@ -22,6 +22,8 @@ overrides:
 
 catalog:
   '@antfu/eslint-config': ^9.3.0
+  '@changesets/changelog-github': ^1.0.0
+  '@changesets/cli': ^3.0.1
   '@iconify-json/simple-icons': ^1.2.93
   '@playwright/test': ^1.62.1
   '@react-router/dev': ^8.3.0
