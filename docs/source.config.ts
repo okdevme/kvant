@@ -1,6 +1,6 @@
 import { rehypeCodeDefaultOptions } from 'fumadocs-core/mdx-plugins'
 import { defineConfig } from 'fumadocs-mdx/config'
-// import { transformerTwoslash } from 'fumadocs-twoslash'
+import { transformerTwoslash } from 'fumadocs-twoslash'
 import { remarkPeer } from './lib/remark-peer'
 import { remarkSwitch } from './lib/remark-switch'
 
@@ -21,15 +21,15 @@ export default defineConfig({
       },
       transformers: [
         ...(rehypeCodeDefaultOptions.transformers ?? []),
-        // transformerTwoslash({
-        //   langs: ['ts', 'tsx', 'js', 'jsx', 'vue'],
-        //   twoslashOptions: {
-        //     compilerOptions: {
-        //       moduleResolution: 100, // Bundler
-        //       jsx: 4, // React JSX
-        //     },
-        //   },
-        // }),
+        transformerTwoslash({
+          langs: ['ts', 'tsx', 'js', 'jsx', 'vue'],
+          twoslashOptions: {
+            compilerOptions: {
+              moduleResolution: 100, // Bundler
+              jsx: 4, // React JSX
+            },
+          },
+        }),
       ],
       langs: ['js', 'jsx', 'ts', 'tsx', 'vue'],
     },
