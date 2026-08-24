@@ -1,5 +1,0 @@
----
-"kvantjs": minor
----
-
-Initial release

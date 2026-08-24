@@ -1,7 +1,7 @@
 {
   "name": "kvantjs",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "packageManager": "pnpm@11.22.0",
   "description": "Universal, type-safe state manager for key-value interfaces",
   "author": "okdevme",
