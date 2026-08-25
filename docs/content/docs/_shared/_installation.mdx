@@ -3,11 +3,43 @@ title: Installation
 description: Install kvant with your package manager and check framework compatibility.
 ---
 
+import { Step, Steps } from 'fumadocs-ui/components/steps'
+
+<switch>
+  <case react vue>
 Install kvant with your package manager of choice:
 
 ```npm
 npm install kvantjs
 ```
+  </case>
+  <case nuxt>
+<Steps>
+<Step>
+Install kvant with your package manager of choice:
+
+```npm
+npm install kvantjs
+```
+</Step>
+<Step>
+Add `kvantjs` to the [`build.transpile`](https://nuxt.com/docs/api/nuxt-config#transpile)
+array in your `nuxt.config.ts`:
+
+```ts title="nuxt.config.ts"
+export default defineNuxtConfig({
+  build: {
+    transpile: ['kvantjs'],
+  },
+})
+```
+</Step>
+<Step>
+You're all set!
+</Step>
+</Steps>
+  </case>
+</switch>
 
 kvant ships as a single package with per-framework entry points:
 
