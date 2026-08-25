@@ -39,7 +39,7 @@ export interface KvantVueAdapterInterface<T> {
   /** Current raw values for the adapter's keys. */
   readonly snapshot: Readonly<Ref<Record<string, T | undefined>>>
   /** Writes raw values to the underlying storage. */
-  readonly update: KvantAdapterUpdateFn
+  readonly update: (values: Record<string, unknown>) => void
 }
 
 type KvantVueAdapter<T, Options> = (
