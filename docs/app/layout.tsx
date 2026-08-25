@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import { Inter } from 'next/font/google'
-import { authors, baseUrl, description, title } from '@/lib/shared'
+import { baseUrl, description, title } from '@/lib/shared'
 import { Body, Provider } from './layout.client'
 import './global.css'
 
@@ -11,7 +11,7 @@ export const metadata = {
     default: title,
   },
   description,
-  authors,
+  // authors,
   metadataBase: baseUrl,
 } satisfies Metadata
 
