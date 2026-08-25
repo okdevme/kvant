@@ -16,12 +16,12 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/kvantjs" target="_blank">
-    <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/kvantjs.svg?variant=default&amp;size=sm&amp;mode=dark&amp;theme=red"><img alt="npm Version" src="https://www.shieldcn.dev/npm/kvantjs.svg?variant=default&amp;size=sm&amp;mode=light&amp;theme=red"></picture>
+    <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/kvantjs.svg?variant=default&amp;size=xs&amp;mode=dark&amp;theme=red"><img alt="npm Version" src="https://www.shieldcn.dev/npm/kvantjs.svg?variant=default&amp;size=xs&amp;mode=light&amp;theme=red"></picture>
   </a>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=sm&amp;mode=dark"><img alt="React" src="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=sm&amp;mode=light"></picture>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=sm&amp;mode=dark"><img alt="Vue" src="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=sm&amp;mode=light"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=xs&amp;mode=dark"><img alt="React" src="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=xs&amp;mode=light"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=xs&amp;mode=dark"><img alt="Vue" src="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=xs&amp;mode=light"></picture>
   <a href="https://github.com/okdevme/kvant/blob/main/LICENSE" target="_blank">
-    <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=sm&amp;mode=dark"><img alt="npm License" src="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=sm&amp;mode=light"></picture>
+    <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=xs&amp;mode=dark"><img alt="npm License" src="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=xs&amp;mode=light"></picture>
   </a>
 </p>
 
