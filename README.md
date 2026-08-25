@@ -8,7 +8,7 @@
 <br>
 
 <p align="center">
-  Universal, type-safe state manager for&nbsp;<b>key-value&nbsp;interfaces</b>:
+  Universal, type-safe state manager for&nbsp;<b>key&#8209;value&nbsp;interfaces</b>:
   <br>
   URL&nbsp;search&nbsp;params, cookies, <code>localStorage</code>, <code>sessionStorage</code>,
   and&nbsp;more.
