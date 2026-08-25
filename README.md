@@ -10,15 +10,19 @@
 <p align="center">
   Universal, type-safe state manager for&nbsp;<b>key-value&nbsp;interfaces</b>:
   <br>
-  URL search params, cookies, <code>localStorage</code>, <code>sessionStorage</code>,
-  and more.
+  URL&nbsp;search&nbsp;params, cookies, <code>localStorage</code>, <code>sessionStorage</code>,
+  and&nbsp;more.
 </p>
 
 <p align="center">
-  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/kvantjs.svg?variant=secondary&amp;size=sm&amp;mode=dark"><img alt="npm Version" src="https://www.shieldcn.dev/npm/kvantjs.svg?variant=secondary&amp;size=sm&amp;mode=light"></picture>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=sm&amp;mode=dark"><img alt="npm License" src="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=sm&amp;mode=light"></picture>
+  <a href="https://www.npmjs.com/package/kvantjs" target="_blank">
+    <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/kvantjs.svg?variant=default&amp;size=sm&amp;mode=dark&amp;theme=red"><img alt="npm Version" src="https://www.shieldcn.dev/npm/kvantjs.svg?variant=default&amp;size=sm&amp;mode=light&amp;theme=red"></picture>
+  </a>
   <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=sm&amp;mode=dark"><img alt="React" src="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=sm&amp;mode=light"></picture>
   <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=sm&amp;mode=dark"><img alt="Vue" src="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=sm&amp;mode=light"></picture>
+  <a href="https://github.com/okdevme/kvant/blob/main/LICENSE" target="_blank">
+    <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=sm&amp;mode=dark"><img alt="npm License" src="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=sm&amp;mode=light"></picture>
+  </a>
 </p>
 
 <br>
@@ -44,13 +48,13 @@ bun add kvantjs
 
 Read the **complete documentation** for your framework of choice:
 
-- [<img width="20px" src="./assets/icons/react.svg" alt="React" /> React](https://kvantjs.dev/docs/react)
-- [<img width="20px" src="./assets/icons/nextjs.svg" alt="Next.js (app router)" /> Next.js (app router)](https://kvantjs.dev/docs/next)
-- [<img width="20px" src="./assets/icons/nextjs.svg" alt="Next.js (pages router)" /> Next.js (pages router)](https://kvantjs.dev/docs/next-pages)
-- [<img width="20px" src="./assets/icons/react-router.svg" alt="React Router" /> React Router](https://kvantjs.dev/docs/react-router)
-- [<img width="20px" src="./assets/icons/vue.svg" alt="Vue" /> Vue](https://kvantjs.dev/docs/vue)
-- [<img width="20px" src="./assets/icons/vue.svg" alt="Vue Router" /> Vue Router](https://kvantjs.dev/docs/vue-router)
-- [<img width="20px" src="./assets/icons/nuxt.svg" alt="Nuxt" /> Nuxt](https://kvantjs.dev/docs/nuxt)
+- <a href="https://kvantjs.dev/docs/react" target="_blank"><img width="20px" valign="bottom" src="./assets/icons/react.svg" alt="React" /> React</a>
+- <a href="https://kvantjs.dev/docs/next" target="_blank"><img width="20px" valign="bottom" src="./assets/icons/nextjs.svg" alt="Next.js (app router)" /> Next.js (app router)</a>
+- <a href="https://kvantjs.dev/docs/next-pages" target="_blank"><img width="20px" valign="bottom" src="./assets/icons/nextjs.svg" alt="Next.js (pages router)" /> Next.js (pages router)</a>
+- <a href="https://kvantjs.dev/docs/react-router" target="_blank"><img width="20px" valign="bottom" src="./assets/icons/react-router.svg" alt="React Router" /> React Router</a>
+- <a href="https://kvantjs.dev/docs/vue" target="_blank"><img width="20px" valign="bottom" src="./assets/icons/vue.svg" alt="Vue" /> Vue</a>
+- <a href="https://kvantjs.dev/docs/vue-router" target="_blank"><img width="20px" valign="bottom" src="./assets/icons/vue.svg" alt="Vue Router" /> Vue Router</a>
+- <a href="https://kvantjs.dev/docs/nuxt" target="_blank"><img width="20px" valign="bottom" src="./assets/icons/nuxt.svg" alt="Nuxt" /> Nuxt</a>
 
 ## Quick Start
 
