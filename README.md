@@ -8,10 +8,17 @@
 <br>
 
 <p align="center">
-  Universal, type-safe state manager for <b>key-value interfaces</b>:
+  Universal, type-safe state manager for&nbsp;<b>key-value&nbsp;interfaces</b>:
   <br>
   URL search params, cookies, <code>localStorage</code>, <code>sessionStorage</code>,
   and more.
+</p>
+
+<p align="center">
+  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/kvantjs.svg?variant=secondary&amp;size=sm&amp;mode=dark"><img alt="npm Version" src="https://www.shieldcn.dev/npm/kvantjs.svg?variant=secondary&amp;size=sm&amp;mode=light"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=sm&amp;mode=dark"><img alt="npm License" src="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=sm&amp;mode=light"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=sm&amp;mode=dark"><img alt="React" src="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=sm&amp;mode=light"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=sm&amp;mode=dark"><img alt="Vue" src="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=sm&amp;mode=light"></picture>
 </p>
 
 <br>
@@ -37,20 +44,20 @@ bun add kvantjs
 
 Read the **complete documentation** for your framework of choice:
 
-- [<img width="18px" valign="bottom" src="./assets/icons/react.svg" alt="React" /> React](https://kvantjs.dev/docs/react)
-- [<img width="18px" valign="bottom" src="./assets/icons/nextjs.svg" alt="Next.js (app router)" /> Next.js (app router)](https://kvantjs.dev/docs/next)
-- [<img width="18px" valign="bottom" src="./assets/icons/nextjs.svg" alt="Next.js (pages router)" /> Next.js (pages router)](https://kvantjs.dev/docs/next-pages)
-- [<img width="18px" valign="bottom" src="./assets/icons/react-router.svg" alt="React Router" /> React Router](https://kvantjs.dev/docs/react-router)
-- [<img width="18px" valign="bottom" src="./assets/icons/vue.svg" alt="Vue" /> Vue](https://kvantjs.dev/docs/vue)
-- [<img width="18px" valign="bottom" src="./assets/icons/vue.svg" alt="Vue Router" /> Vue Router](https://kvantjs.dev/docs/vue-router)
-- [<img width="18px" valign="bottom" src="./assets/icons/nuxt.svg" alt="Nuxt" /> Nuxt](https://kvantjs.dev/docs/nuxt)
+- [<img width="20px" src="./assets/icons/react.svg" alt="React" /> React](https://kvantjs.dev/docs/react)
+- [<img width="20px" src="./assets/icons/nextjs.svg" alt="Next.js (app router)" /> Next.js (app router)](https://kvantjs.dev/docs/next)
+- [<img width="20px" src="./assets/icons/nextjs.svg" alt="Next.js (pages router)" /> Next.js (pages router)](https://kvantjs.dev/docs/next-pages)
+- [<img width="20px" src="./assets/icons/react-router.svg" alt="React Router" /> React Router](https://kvantjs.dev/docs/react-router)
+- [<img width="20px" src="./assets/icons/vue.svg" alt="Vue" /> Vue](https://kvantjs.dev/docs/vue)
+- [<img width="20px" src="./assets/icons/vue.svg" alt="Vue Router" /> Vue Router](https://kvantjs.dev/docs/vue-router)
+- [<img width="20px" src="./assets/icons/nuxt.svg" alt="Nuxt" /> Nuxt](https://kvantjs.dev/docs/nuxt)
 
 ## Quick Start
 
 > [!TIP]
 > Below you'll find a quick start guide based on *Next.js (app router)*.
 > 
-> For complete docs on Next.js and other frameworks, please see the options above.
+> For complete docs on Next.js and other frameworks, please see the [options](#documentation) above.
 
 kvant turns key-value interfaces into React state. Bind a key, pass a
 schema from [`kvantjs/schema`](https://kvantjs.dev/docs/next/schema), and read/write it like `useState`.
