@@ -493,7 +493,7 @@ Full ISO 8601 datetime strings to `Date`.
 import * as kv from 'kvantjs/schema'
 // ---cut---
 kv.isoDatetimeToDate().parse('2026-02-15T10:30:00.000Z')            // Date (2026-02-15T10:30:00.000Z)
-kv.isoDatetimeToDate().encode(new Date('2026-02-15T10:30:00.000Z')) // '2026-02-15T00:00:00.000Z'
+kv.isoDatetimeToDate().encode(new Date('2026-02-15T10:30:00.000Z')) // '2026-02-15T10:30:00.000Z'
 kv.isoDatetimeToDate().parse('not a date')                          // undefined
 ```
 
@@ -504,8 +504,8 @@ Shorter ISO format `YYYY-MM-DD` to `Date`.
 ```ts twoslash
 import * as kv from 'kvantjs/schema'
 // ---cut---
-kv.isoDateToDate().parse('2026-02-15T10:30:00.000Z')            // Date (2026-02-15T00:00:00.000Z)
-kv.isoDateToDate().encode(new Date('2026-02-15T10:30:00.000Z')) // '2026-02-15'
+kv.isoDateToDate().parse('2026-02-15')            // Date (2026-02-15T00:00:00.000Z)
+kv.isoDateToDate().encode(new Date('2026-02-15')) // '2026-02-15'
 ```
 
 #### `kv.isoYearMonthToDate()` [#isoyearmonthtodate]
@@ -515,8 +515,8 @@ Shorter ISO format `YYYY-MM` to `Date`.
 ```ts twoslash
 import * as kv from 'kvantjs/schema'
 // ---cut---
-kv.isoYearMonthToDate().parse('2026-02-15T10:30:00.000Z')            // Date (2026-02-01T00:00:00.000Z)
-kv.isoYearMonthToDate().encode(new Date('2026-02-15T10:30:00.000Z')) // '2026-02'
+kv.isoYearMonthToDate().parse('2026-02')            // Date (2026-02-01T00:00:00.000Z)
+kv.isoYearMonthToDate().encode(new Date('2026-02')) // '2026-02'
 ```
 
 #### `kv.isoYearToDate()` [#isoyeartodate]
@@ -526,8 +526,8 @@ Shorter ISO format `YYYY` to `Date`.
 ```ts twoslash
 import * as kv from 'kvantjs/schema'
 // ---cut---
-kv.isoYearToDate().parse('2026-02-15T10:30:00.000Z')            // Date (2026-01-01T00:00:00.000Z)
-kv.isoYearToDate().encode(new Date('2026-02-15T10:30:00.000Z')) // '2026'
+kv.isoYearToDate().parse('2026')            // Date (2026-01-01T00:00:00.000Z)
+kv.isoYearToDate().encode(new Date('2026')) // '2026'
 ```
 
 #### `kv.epochMillisToDate()` [#epochmillistodate]
