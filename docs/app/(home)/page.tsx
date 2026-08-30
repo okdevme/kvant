@@ -3,8 +3,8 @@ import { Hero } from '@/components/hero'
 import { description, title } from '@/lib/shared'
 
 const openGraph = {
-  title,
-  description,
+  title: `${title} | ${description}`,
+  description: `${description}. Supports React, Next.js, React Router, Vue, Vue Router and Nuxt.`,
   images: '/og/index.png',
 } satisfies Metadata['openGraph']
 
