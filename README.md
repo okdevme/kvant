@@ -16,12 +16,9 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/kvantjs"><picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/kvantjs.svg?variant=default&amp;size=xs&amp;mode=dark&amp;theme=red"><img alt="npm Version" src="https://www.shieldcn.dev/npm/kvantjs.svg?variant=default&amp;size=xs&amp;mode=light&amp;theme=red"></picture></a>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=xs&amp;mode=dark"><img alt="React" src="https://www.shieldcn.dev/badge/Stack-React-61DAFB.svg?logo=react&amp;variant=branded&amp;size=xs&amp;mode=light"></picture>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=xs&amp;mode=dark"><img alt="Vue" src="https://www.shieldcn.dev/badge/Stack-Vue-4FC08D.svg?logo=vuedotjs&amp;variant=branded&amp;size=xs&amp;mode=light"></picture>
-  <a href="https://github.com/okdevme/kvant/blob/main/LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=xs&amp;mode=dark"><img alt="npm License" src="https://www.shieldcn.dev/npm/license/kvantjs.svg?variant=ghost&amp;size=xs&amp;mode=light"></picture></a>
+  <a href="https://npmgraph.js.org/?q=kvantjs"><picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/dependencies-0.svg?variant=default&amp;size=xs&amp;theme=green&amp;logo=ri%3APiTree&amp;mode=dark"><img alt="badge" src="https://shieldcn.dev/badge/dependencies-0.svg?variant=default&amp;size=xs&amp;theme=green&amp;logo=ri%3APiTree&amp;mode=light"></picture></a>
+  <a href="https://bundlephobia.com/package/kvantjs"><picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/bundlephobia/minzip/kvantjs.svg?variant=default&amp;size=xs&amp;theme=blue&amp;mode=dark"><img alt="badge" src="https://shieldcn.dev/bundlephobia/minzip/kvantjs.svg?variant=default&amp;size=xs&amp;theme=blue&amp;mode=light"></picture></a>
 </p>
-
-<br>
 
 ## Installation
 
